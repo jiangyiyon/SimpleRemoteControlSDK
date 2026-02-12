@@ -62,6 +62,9 @@ add_executable(unit_tests
     # Unit tests for encoding
     unit/encoding/video_frame_test.cpp
 
+    # Unit tests for platform
+    unit/platform/gpu_detector_test.cpp
+
     # Unit tests for transport
     unit/transport/webrtc_manager_test.cpp
     unit/transport/connection_handler_test.cpp

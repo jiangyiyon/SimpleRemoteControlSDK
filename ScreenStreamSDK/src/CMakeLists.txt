@@ -18,6 +18,9 @@ set(SOURCE_FILES
 
     # Input
     input/windows_input.cpp
+
+    # Platform
+    platform/gpu_detector.cpp
 )
 
 # Header files
@@ -40,6 +43,9 @@ set(HEADER_FILES
 
     # Input
     ${CMAKE_SOURCE_DIR}/include/screensdk/input/windows_input.h
+
+    # Platform
+    ${CMAKE_SOURCE_DIR}/include/screensdk/platform/gpu_detector.h
 )
 
 # Create library

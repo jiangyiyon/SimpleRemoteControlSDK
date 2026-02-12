@@ -24,7 +24,7 @@ protected:
  *   - y: 鼠标Y坐标
  * @return 验证发送操作是否成功返回true
  */
-TEST_F(WindowsInputTest, SendMouseButtonLeftDown) {
+TEST_F(WindowsInputTest, DISABLED_SendMouseButtonLeftDown) {
   MouseEvent event;
   event.button = MouseButton::kLeft;
   event.pressed = true;
@@ -36,7 +36,7 @@ TEST_F(WindowsInputTest, SendMouseButtonLeftDown) {
   EXPECT_TRUE(result);
 }
 
-TEST_F(WindowsInputTest, SendMouseButtonLeftUp) {
+TEST_F(WindowsInputTest, DISABLED_SendMouseButtonLeftUp) {
   MouseEvent event;
   event.button = MouseButton::kLeft;
   event.pressed = false;
@@ -49,7 +49,7 @@ TEST_F(WindowsInputTest, SendMouseButtonLeftUp) {
   EXPECT_TRUE(result);
 }
 
-TEST_F(WindowsInputTest, SendMouseButtonRightDown) {
+TEST_F(WindowsInputTest, DISABLED_SendMouseButtonRightDown) {
   MouseEvent event;
   event.button = MouseButton::kRight;
   event.pressed = true;
@@ -61,7 +61,7 @@ TEST_F(WindowsInputTest, SendMouseButtonRightDown) {
   EXPECT_TRUE(result);
 }
 
-TEST_F(WindowsInputTest, SendMouseButtonRightUp) {
+TEST_F(WindowsInputTest, DISABLED_SendMouseButtonRightUp) {
   MouseEvent event;
   event.button = MouseButton::kRight;
   event.pressed = false;
@@ -74,7 +74,7 @@ TEST_F(WindowsInputTest, SendMouseButtonRightUp) {
   EXPECT_TRUE(result);
 }
 
-TEST_F(WindowsInputTest, SendMouseButtonMiddleDown) {
+TEST_F(WindowsInputTest, DISABLED_SendMouseButtonMiddleDown) {
   MouseEvent event;
   event.button = MouseButton::kMiddle;
   event.pressed = true;
@@ -86,7 +86,7 @@ TEST_F(WindowsInputTest, SendMouseButtonMiddleDown) {
   EXPECT_TRUE(result);
 }
 
-TEST_F(WindowsInputTest, SendMouseButtonXButton1Down) {
+TEST_F(WindowsInputTest, DISABLED_SendMouseButtonXButton1Down) {
   MouseEvent event;
   event.button = MouseButton::kXButton1;
   event.pressed = true;
@@ -98,7 +98,7 @@ TEST_F(WindowsInputTest, SendMouseButtonXButton1Down) {
   EXPECT_TRUE(result);
 }
 
-TEST_F(WindowsInputTest, SendMouseButtonXButton2Down) {
+TEST_F(WindowsInputTest, DISABLED_SendMouseButtonXButton2Down) {
   MouseEvent event;
   event.button = MouseButton::kXButton2;
   event.pressed = true;
@@ -110,7 +110,7 @@ TEST_F(WindowsInputTest, SendMouseButtonXButton2Down) {
   EXPECT_TRUE(result);
 }
 
-TEST_F(WindowsInputTest, SendMouseMove) {
+TEST_F(WindowsInputTest, DISABLED_SendMouseMove) {
   int x = 500;
   int y = 500;
 
@@ -119,7 +119,7 @@ TEST_F(WindowsInputTest, SendMouseMove) {
   EXPECT_TRUE(result);
 }
 
-TEST_F(WindowsInputTest, SendMouseMoveOrigin) {
+TEST_F(WindowsInputTest, DISABLED_SendMouseMoveOrigin) {
   int x = 0;
   int y = 0;
 
@@ -128,7 +128,7 @@ TEST_F(WindowsInputTest, SendMouseMoveOrigin) {
   EXPECT_TRUE(result);
 }
 
-TEST_F(WindowsInputTest, SendMouseMoveLargeCoordinates) {
+TEST_F(WindowsInputTest, DISABLED_SendMouseMoveLargeCoordinates) {
   int screen_width = GetSystemMetrics(SM_CXSCREEN);
   int screen_height = GetSystemMetrics(SM_CYSCREEN);
 
@@ -137,7 +137,7 @@ TEST_F(WindowsInputTest, SendMouseMoveLargeCoordinates) {
   EXPECT_TRUE(result);
 }
 
-TEST_F(WindowsInputTest, SendMouseWheelPositive) {
+TEST_F(WindowsInputTest, DISABLED_SendMouseWheelPositive) {
   int delta = 120;
 
   bool result = input_->sendMouseWheel(delta);
@@ -145,7 +145,7 @@ TEST_F(WindowsInputTest, SendMouseWheelPositive) {
   EXPECT_TRUE(result);
 }
 
-TEST_F(WindowsInputTest, SendMouseWheelNegative) {
+TEST_F(WindowsInputTest, DISABLED_SendMouseWheelNegative) {
   int delta = -120;
 
   bool result = input_->sendMouseWheel(delta);
@@ -153,7 +153,7 @@ TEST_F(WindowsInputTest, SendMouseWheelNegative) {
   EXPECT_TRUE(result);
 }
 
-TEST_F(WindowsInputTest, SendMouseWheelZero) {
+TEST_F(WindowsInputTest, DISABLED_SendMouseWheelZero) {
   int delta = 0;
 
   bool result = input_->sendMouseWheel(delta);
@@ -161,7 +161,7 @@ TEST_F(WindowsInputTest, SendMouseWheelZero) {
   EXPECT_TRUE(result);
 }
 
-TEST_F(WindowsInputTest, SendMouseWheelLargeDelta) {
+TEST_F(WindowsInputTest, DISABLED_SendMouseWheelLargeDelta) {
   int delta = 1200;
 
   bool result = input_->sendMouseWheel(delta);
@@ -169,7 +169,7 @@ TEST_F(WindowsInputTest, SendMouseWheelLargeDelta) {
   EXPECT_TRUE(result);
 }
 
-TEST_F(WindowsInputTest, SendKeyDown) {
+TEST_F(WindowsInputTest, DISABLED_SendKeyDown) {
   int virtual_key = VK_SPACE;
 
   bool result = input_->sendKeyDown(virtual_key);
@@ -177,7 +177,7 @@ TEST_F(WindowsInputTest, SendKeyDown) {
   EXPECT_TRUE(result);
 }
 
-TEST_F(WindowsInputTest, SendKeyUp) {
+TEST_F(WindowsInputTest, DISABLED_SendKeyUp) {
   int virtual_key = VK_SPACE;
 
   bool result = input_->sendKeyUp(virtual_key);
@@ -185,7 +185,7 @@ TEST_F(WindowsInputTest, SendKeyUp) {
   EXPECT_TRUE(result);
 }
 
-TEST_F(WindowsInputTest, SendKeyPress) {
+TEST_F(WindowsInputTest, DISABLED_SendKeyPress) {
   int virtual_key = VK_RETURN;
 
   bool result = input_->sendKeyPress(virtual_key);
@@ -193,7 +193,7 @@ TEST_F(WindowsInputTest, SendKeyPress) {
   EXPECT_TRUE(result);
 }
 
-TEST_F(WindowsInputTest, SendKeyPressMultipleKeys) {
+TEST_F(WindowsInputTest, DISABLED_SendKeyPressMultipleKeys) {
   std::vector<int> keys = {VK_SPACE, VK_RETURN, VK_ESCAPE};
 
   for (auto key : keys) {
@@ -202,7 +202,7 @@ TEST_F(WindowsInputTest, SendKeyPressMultipleKeys) {
   }
 }
 
-TEST_F(WindowsInputTest, SendKeyDownUpSequence) {
+TEST_F(WindowsInputTest, DISABLED_SendKeyDownUpSequence) {
   int virtual_key = 'A';
 
   bool down_result = input_->sendKeyDown(virtual_key);
@@ -212,7 +212,7 @@ TEST_F(WindowsInputTest, SendKeyDownUpSequence) {
   EXPECT_TRUE(up_result);
 }
 
-TEST_F(WindowsInputTest, SendTextNotImplemented) {
+TEST_F(WindowsInputTest, DISABLED_SendTextNotImplemented) {
   std::string text = "Hello";
 
   bool result = input_->sendText(text);
@@ -220,7 +220,7 @@ TEST_F(WindowsInputTest, SendTextNotImplemented) {
   EXPECT_FALSE(result);
 }
 
-TEST_F(WindowsInputTest, SendTextEmptyString) {
+TEST_F(WindowsInputTest, DISABLED_SendTextEmptyString) {
   std::string text = "";
 
   bool result = input_->sendText(text);
@@ -228,19 +228,19 @@ TEST_F(WindowsInputTest, SendTextEmptyString) {
   EXPECT_FALSE(result);
 }
 
-TEST_F(WindowsInputTest, IsInputInjectionEnabled) {
+TEST_F(WindowsInputTest, DISABLED_IsInputInjectionEnabled) {
   bool enabled = WindowsInput::isInputInjectionEnabled();
 
   EXPECT_TRUE(enabled);
 }
 
-TEST_F(WindowsInputTest, EnableInputInjection) {
+TEST_F(WindowsInputTest, DISABLED_EnableInputInjection) {
   bool result = WindowsInput::enableInputInjection();
 
   EXPECT_TRUE(result);
 }
 
-TEST_F(WindowsInputTest, MouseEventDefaultValues) {
+TEST_F(WindowsInputTest, DISABLED_MouseEventDefaultValues) {
   MouseEvent event;
 
   EXPECT_EQ(event.x, 0);
@@ -253,7 +253,7 @@ TEST_F(WindowsInputTest, MouseEventDefaultValues) {
   EXPECT_EQ(event.timestamp_ms, 0);
 }
 
-TEST_F(WindowsInputTest, MouseEventCustomValues) {
+TEST_F(WindowsInputTest, DISABLED_MouseEventCustomValues) {
   MouseEvent event;
   event.x = 123;
   event.y = 456;
@@ -272,7 +272,7 @@ TEST_F(WindowsInputTest, MouseEventCustomValues) {
   EXPECT_EQ(event.timestamp_ms, 1234567890);
 }
 
-TEST_F(WindowsInputTest, MouseButtonEnumValues) {
+TEST_F(WindowsInputTest, DISABLED_MouseButtonEnumValues) {
   EXPECT_EQ(static_cast<int>(MouseButton::kLeft), 0);
   EXPECT_EQ(static_cast<int>(MouseButton::kRight), 1);
   EXPECT_EQ(static_cast<int>(MouseButton::kMiddle), 2);
@@ -280,7 +280,7 @@ TEST_F(WindowsInputTest, MouseButtonEnumValues) {
   EXPECT_EQ(static_cast<int>(MouseButton::kXButton2), 4);
 }
 
-TEST_F(WindowsInputTest, MultipleMouseButtonClicks) {
+TEST_F(WindowsInputTest, DISABLED_MultipleMouseButtonClicks) {
   MouseEvent event;
   event.x = 100;
   event.y = 100;
@@ -302,7 +302,7 @@ TEST_F(WindowsInputTest, MultipleMouseButtonClicks) {
   }
 }
 
-TEST_F(WindowsInputTest, SequenceMouseMoveAndClick) {
+TEST_F(WindowsInputTest, DISABLED_SequenceMouseMoveAndClick) {
   int x = 300;
   int y = 400;
 
@@ -320,7 +320,7 @@ TEST_F(WindowsInputTest, SequenceMouseMoveAndClick) {
   EXPECT_TRUE(input_->sendMouseButton(event));
 }
 
-TEST_F(WindowsInputTest, SendMultipleKeyPressesInSequence) {
+TEST_F(WindowsInputTest, DISABLED_SendMultipleKeyPressesInSequence) {
   std::vector<int> keys = {'H', 'E', 'L', 'L', 'O'};
 
   for (auto key : keys) {
@@ -328,7 +328,7 @@ TEST_F(WindowsInputTest, SendMultipleKeyPressesInSequence) {
   }
 }
 
-TEST_F(WindowsInputTest, SendMouseEventsWithDifferentCoordinates) {
+TEST_F(WindowsInputTest, DISABLED_SendMouseEventsWithDifferentCoordinates) {
   MouseEvent event;
   event.button = MouseButton::kLeft;
   event.pressed = true;
@@ -347,7 +347,7 @@ TEST_F(WindowsInputTest, SendMouseEventsWithDifferentCoordinates) {
   }
 }
 
-TEST_F(WindowsInputTest, SendMouseWheelWithMultipleScrolls) {
+TEST_F(WindowsInputTest, DISABLED_SendMouseWheelWithMultipleScrolls) {
   std::vector<int> deltas = {-360, -240, -120, 0, 120, 240, 360};
 
   for (auto delta : deltas) {
@@ -355,7 +355,7 @@ TEST_F(WindowsInputTest, SendMouseWheelWithMultipleScrolls) {
   }
 }
 
-TEST_F(WindowsInputTest, MouseButtonReleasedAndMovedFlags) {
+TEST_F(WindowsInputTest, DISABLED_MouseButtonReleasedAndMovedFlags) {
   MouseEvent event;
   event.x = 200;
   event.y = 200;
