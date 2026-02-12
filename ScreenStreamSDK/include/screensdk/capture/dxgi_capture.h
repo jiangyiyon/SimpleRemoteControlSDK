@@ -86,6 +86,9 @@ private:
   std::atomic<bool> running_{false};
   FrameCallback frame_callback_;
 
+  // Frame buffer for CPU readback
+  std::vector<uint8_t> frame_buffer_;
+
   // Capture thread
   std::jthread capture_thread_;
 };

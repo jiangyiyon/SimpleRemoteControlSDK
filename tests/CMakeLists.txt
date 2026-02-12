@@ -45,6 +45,7 @@ add_executable(unit_tests
 
     # Unit tests for capture
     unit/display_detector_test.cpp
+    unit/capture/dxgi_capture_test.cpp
 
     # Unit tests for encoding
     unit/encoder_config_test.cpp

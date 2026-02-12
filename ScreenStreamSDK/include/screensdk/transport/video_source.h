@@ -17,6 +17,7 @@ struct VideoFrame {
   size_t size{0};
   int width{0};
   int height{0};
+  int stride{0};  // Bytes per row (may be larger than width * 4 due to alignment)
   uint64_t timestamp_ms{0};
 };
 
