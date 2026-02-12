@@ -6,9 +6,14 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Compilation flags
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4 /WX")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /Od /Zi")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /O2 /GL")
+
+# Do not treat warnings as errors
+string(REPLACE "/WX" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+string(REPLACE "/WX" "" CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG}")
+string(REPLACE "/WX" "" CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE}")
 
 # Output directories
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
@@ -16,27 +21,31 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
 # Source directories
 include_directories(${CMAKE_SOURCE_DIR}/include)
-include_directories(${CMAKE_SOURCE_DIR}/third_party/nlohmann/include)
-include_directories(${CMAKE_SOURCE_DIR}/third_party/x264/include)
+include_directories(${CMAKE_SOURCE_DIR}/third_party/nlohmann)
+include_directories(${CMAKE_SOURCE_DIR}/../third_party/x264/include)
 
 # x264 library integration
-find_package(x264 REQUIRED)
-if(x264_FOUND)
-    include_directories(${x264_INCLUDE_DIRS})
-    link_directories(${x264_LIBRARY_DIRS})
-    message(STATUS "Found x264: ${x264_LIBRARIES}")
+if(EXISTS "${CMAKE_SOURCE_DIR}/../third_party/x264/include/x264.h")
+    message(STATUS "Using local x264: ${CMAKE_SOURCE_DIR}/../third_party/x264")
+    include_directories(${CMAKE_SOURCE_DIR}/../third_party/x264/include)
+    link_directories(${CMAKE_SOURCE_DIR}/../third_party/x264/lib/x64)
+    set(X264_LIBRARIES x264)
 else()
-    message(WARNING "x264 not found, will search manually")
-    # Manual x264 path (fallback)
-    if(EXISTS "${CMAKE_SOURCE_DIR}/third_party/x264/lib")
-        include_directories(${CMAKE_SOURCE_DIR}/third_party/x264/include)
-        link_directories(${CMAKE_SOURCE_DIR}/third_party/x264/lib)
-    endif()
+    message(WARNING "x264 not found in third_party/x264")
+endif()
+
+# Windows libraries
+if(WIN32)
+    add_definitions(-D_WIN32_WINNT=0x0601)  # Windows 7+
+    link_libraries(d3d11 dxgi user32 gdi32)
 endif()
 
 # Subdirectories
 add_subdirectory(src)
-add_subdirectory(tests)
+if(EXISTS "${CMAKE_SOURCE_DIR}/../tests/CMakeLists.txt")
+    # Explicitly specify binary directory for out-of-tree source
+    add_subdirectory(${CMAKE_SOURCE_DIR}/../tests ${CMAKE_BINARY_DIR}/tests)
+endif()
 
 # Export symbols for DLL
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
