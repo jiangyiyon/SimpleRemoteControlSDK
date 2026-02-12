@@ -1,11 +1,14 @@
 #define SCREEN_STREAM_SDK_EXPORTS
 #include "screensdk/encoding/encoder_factory.h"
 
+#include "screensdk/encoding/x264_encoder.h"
+#include "screensdk/platform/gpu_detector.h"
+
 namespace screensdk {
 
 class EncoderFactoryImpl : public IEncoderFactory {
 public:
-  EncoderFactoryImpl() = default;
+  EncoderFactoryImpl();
   ~EncoderFactoryImpl() override = default;
 
   EncoderFactoryImpl(const EncoderFactoryImpl&) = delete;
@@ -13,45 +16,84 @@ public:
   EncoderFactoryImpl(EncoderFactoryImpl&&) = delete;
   EncoderFactoryImpl& operator=(EncoderFactoryImpl&&) = delete;
 
-  IVideoEncoder* createEncoder() override {
-    EncoderType type = getBestEncoderType();
-    return createEncoder(type);
-  }
+  IVideoEncoder* createEncoder() override;
+  IVideoEncoder* createEncoder(EncoderType type) override;
+  bool hasHardwareEncoder() const override;
+  EncoderType getBestEncoderType() const override;
+  std::string getEncoderTypeName(EncoderType type) const override;
 
-  IVideoEncoder* createEncoder(EncoderType type) override {
-    // TODO: Implement encoder instances
-    // - T038: NVENC hardware encoder
-    // - U1: Intel QuickSync encoder
-    // - T039: Software x264 encoder
-    (void)type;
-    return nullptr;
-  }
+private:
+  mutable bool gpu_detector_initialized_{false};
+  mutable bool has_nvenc_{false};
+  mutable bool has_quicksync_{false};
 
-  bool hasHardwareEncoder() const override {
-    // TODO: Check GPU availability
-    // - T026: Implement GPU capability detection
-    return false;
-  }
-
-  EncoderType getBestEncoderType() const override {
-    // TODO: Implement GPU detection and encoder selection
-    // Priority: NVENC > QuickSync > Software
-    return EncoderType::kSoftwareX264;
-  }
-
-  std::string getEncoderTypeName(EncoderType type) const override {
-    switch (type) {
-      case EncoderType::kHardwareNVENC:
-        return "NVENC (NVIDIA)";
-      case EncoderType::kHardwareQuickSync:
-        return "QuickSync (Intel)";
-      case EncoderType::kSoftwareX264:
-        return "x264 Software";
-      default:
-        return "Unknown";
-    }
-  }
+  void detectGpuCapabilities() const;
 };
+
+EncoderFactoryImpl::EncoderFactoryImpl() {
+  detectGpuCapabilities();
+}
+
+void EncoderFactoryImpl::detectGpuCapabilities() const {
+  if (gpu_detector_initialized_) {
+    return;
+  }
+
+  auto* gpu_detector = CreateGpuDetector();
+  if (gpu_detector != nullptr) {
+    has_nvenc_ = gpu_detector->isNvenconline();
+    has_quicksync_ = gpu_detector->isQuickSyncAvailable();
+    DestroyGpuDetector(gpu_detector);
+  }
+
+  gpu_detector_initialized_ = true;
+}
+
+IVideoEncoder* EncoderFactoryImpl::createEncoder() {
+  EncoderType type = getBestEncoderType();
+  return createEncoder(type);
+}
+
+IVideoEncoder* EncoderFactoryImpl::createEncoder(EncoderType type) {
+  switch (type) {
+    case EncoderType::kSoftwareX264:
+      return new X264EncoderImpl();
+
+    case EncoderType::kHardwareNVENC:
+    case EncoderType::kHardwareQuickSync:
+    default:
+      return nullptr;
+  }
+}
+
+bool EncoderFactoryImpl::hasHardwareEncoder() const {
+  return has_nvenc_ || has_quicksync_;
+}
+
+EncoderType EncoderFactoryImpl::getBestEncoderType() const {
+  detectGpuCapabilities();
+
+  if (has_nvenc_) {
+    return EncoderType::kHardwareNVENC;
+  }
+  if (has_quicksync_) {
+    return EncoderType::kHardwareQuickSync;
+  }
+  return EncoderType::kSoftwareX264;
+}
+
+std::string EncoderFactoryImpl::getEncoderTypeName(EncoderType type) const {
+  switch (type) {
+    case EncoderType::kHardwareNVENC:
+      return "NVENC (NVIDIA)";
+    case EncoderType::kHardwareQuickSync:
+      return "QuickSync (Intel)";
+    case EncoderType::kSoftwareX264:
+      return "x264 Software";
+    default:
+      return "Unknown";
+  }
+}
 
 extern "C" SCREEN_STREAM_SDK_EXPORT IEncoderFactory* CreateEncoderFactory() {
   return new EncoderFactoryImpl();

@@ -12,6 +12,7 @@ set(SOURCE_FILES
     # Encoding
     encoding/encoder_factory.cpp
     encoding/encoder_config.cpp
+    encoding/x264_encoder.cpp
 
     # Transport
     transport/video_source.cpp
@@ -37,6 +38,7 @@ set(HEADER_FILES
     # Encoding
     ${CMAKE_SOURCE_DIR}/include/screensdk/encoding/encoder_factory.h
     ${CMAKE_SOURCE_DIR}/include/screensdk/encoding/encoder_config.h
+    ${CMAKE_SOURCE_DIR}/include/screensdk/encoding/x264_encoder.h
 
     # Transport
     ${CMAKE_SOURCE_DIR}/include/screensdk/transport/video_source.h

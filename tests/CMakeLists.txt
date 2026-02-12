@@ -50,6 +50,7 @@ add_executable(unit_tests
     # Unit tests for encoding
     unit/encoder_config_test.cpp
     unit/encoder_factory_test.cpp
+    unit/encoding/x264_encoder_test.cpp
 
     # Unit tests for core components
     unit/core/session_test.cpp
@@ -115,6 +116,7 @@ gtest_discover_tests(unit_tests)
 # Integration tests
 add_executable(integration_tests
     integration/capture_encoding_test.cpp
+    integration/capture_encoder_test.cpp
     integration/encoding_fallback_test.cpp
     integration/transport_test.cpp
     integration/display_switch_test.cpp

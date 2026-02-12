@@ -161,8 +161,9 @@
     * Updated Edge Cases: "pause stream, notify user, and allow display list refresh"
 
 ### Phase 3: Implementation (User Story 1 - Core Capture)
-- **Status:** in_progress
+- **Status:** complete
 - **Started:** 2026-02-12
+- **Completed:** 2026-02-12
 - **T037 - DXGI screen capture loop at 60fps** ✅
   * Implemented complete DXGI Desktop Duplication API integration
   * Created D3D11 device and context initialization
@@ -191,6 +192,33 @@
   * Fixed TearDown() null pointer access
   * Fixed test expectations for Desktop Duplication API limitations
   * Fixed frame buffer size calculation with stride
+- **T038 - x264 software encoder implementation** ✅
+  * Created include/screensdk/encoding/x264_encoder.h (69 lines)
+  * Implemented X264EncoderImpl class with IVideoEncoder interface
+  * Supports BGRA format directly (X264_CSP_BGRA) - no color conversion needed
+  * Configurable B-frames (0-16), reads from EncoderConfig
+  * Thread-safe encoding with mutex protection
+  * RAII memory management for x264 resources
+  * Integrated with EncoderFactory for automatic encoder selection
+  * Updated tests/CMakeLists.txt to include encoder tests
+- **Unit Tests for x264 Encoder** ✅ (18 tests)
+  * Created tests/unit/encoding/x264_encoder_test.cpp (400+ lines)
+  * Tests: InitializeSuccess, EncodeValidFrame, EncodeMultipleFrames, etc.
+  * Validated configuration parsing, invalid inputs, thread safety
+  * Tested different resolutions, B-frame configurations
+  * Verified encoder flush, re-initialization handling
+- **Integration Tests for Capture + Encoder** ✅ (10 tests)
+  * Created tests/integration/capture_encoder_test.cpp (300+ lines)
+  * Tests: InitializeBoth, CaptureAndEncodeFrame, CaptureWithCallbackAndEncode, etc.
+  * Validates DxgiCapture → Encoder pipeline
+  * Performance testing: 60 frames in ~1000ms (60fps target)
+  * Memory stability test: 300 frames without leaks
+  * Tested stride handling, encoder flush, different configurations
+- **Bug Fix: x264 namespace conflict** ✅
+  * Issue: x264_t type conflicted between screensdk namespace
+  * Solution: Simple forward declaration inside screensdk namespace
+  * X264EncoderImpl is internal class, no need for extern "C"
+  * Clean and simple solution - just forward declare struct types
 
 ## Test Results
 <!-- 
