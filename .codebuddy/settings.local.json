@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__Windows_CLI_MCP_Server__execute_command"
+    ]
+  }
+}
