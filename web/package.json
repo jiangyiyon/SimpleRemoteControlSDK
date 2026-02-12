@@ -1,0 +1,16 @@
+{
+  "name": "remotedesktop-webclient",
+  "version": "1.0.0",
+  "description": "WebRTC client for Remote Desktop SDK",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "jest --coverage",
+    "lint": "eslint src/"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "jest": "^29.0.0",
+    "eslint": "^8.0.0"
+  }
+}
