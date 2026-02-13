@@ -34,6 +34,16 @@ else()
     message(WARNING "x264 not found in third_party/x264")
 endif()
 
+# libdatachannel library integration
+if(EXISTS "${CMAKE_SOURCE_DIR}/../third_party/webrtc/libdatachannel_x64-windows")
+    message(STATUS "Using libdatachannel: ${CMAKE_SOURCE_DIR}/../third_party/webrtc/libdatachannel_x64-windows")
+    include_directories(${CMAKE_SOURCE_DIR}/../third_party/webrtc/libdatachannel_x64-windows/include)
+    link_directories(${CMAKE_SOURCE_DIR}/../third_party/webrtc/libdatachannel_x64-windows/lib)
+    set(LIBDATACHANNEL_LIBRARIES datachannel)
+else()
+    message(WARNING "libdatachannel not found in third_party/webrtc/libdatachannel_x64-windows")
+endif()
+
 # Windows libraries
 if(WIN32)
     add_definitions(-D_WIN32_WINNT=0x0601)  # Windows 7+

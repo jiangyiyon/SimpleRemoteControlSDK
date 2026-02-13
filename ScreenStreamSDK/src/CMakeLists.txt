@@ -16,6 +16,7 @@ set(SOURCE_FILES
 
     # Transport
     transport/video_source.cpp
+    transport/data_channel.cpp
 
     # Input
     input/windows_input.cpp
@@ -42,6 +43,7 @@ set(HEADER_FILES
 
     # Transport
     ${CMAKE_SOURCE_DIR}/include/screensdk/transport/video_source.h
+    ${CMAKE_SOURCE_DIR}/include/screensdk/transport/data_channel.h
 
     # Input
     ${CMAKE_SOURCE_DIR}/include/screensdk/input/windows_input.h
@@ -57,6 +59,12 @@ add_library(screensdk STATIC ${SOURCE_FILES} ${HEADER_FILES})
 if(EXISTS "${CMAKE_SOURCE_DIR}/../third_party/x264/lib/x64/libx264.lib")
     target_link_libraries(screensdk
         ${CMAKE_SOURCE_DIR}/../third_party/x264/lib/x64/libx264.lib)
+endif()
+
+# Link libdatachannel
+if(EXISTS "${CMAKE_SOURCE_DIR}/../third_party/webrtc/libdatachannel_x64-windows/lib/datachannel.lib")
+    target_link_libraries(screensdk
+        ${CMAKE_SOURCE_DIR}/../third_party/webrtc/libdatachannel_x64-windows/lib/datachannel.lib)
 endif()
 
 # Windows libraries
