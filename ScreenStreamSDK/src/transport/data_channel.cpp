@@ -41,6 +41,27 @@ DataChannel::DataChannel(const DataChannelConfig& config)
     }
   });
 
+  pc_->onGatheringStateChange([this](rtc::PeerConnection::GatheringState state) {
+    std::lock_guard<std::mutex> lock(callback_mutex_);
+    if (ice_gathering_state_callback_) {
+      IceGatheringState mapped_state;
+      switch (state) {
+        case rtc::PeerConnection::GatheringState::New:
+          mapped_state = IceGatheringState::kNew;
+          break;
+        case rtc::PeerConnection::GatheringState::InProgress:
+          mapped_state = IceGatheringState::kInProgress;
+          break;
+        case rtc::PeerConnection::GatheringState::Complete:
+          mapped_state = IceGatheringState::kComplete;
+          break;
+        default:
+          return;
+      }
+      ice_gathering_state_callback_(mapped_state);
+    }
+  });
+
   pc_->onDataChannel([this](std::shared_ptr<rtc::DataChannel> remote_dc) {
     // Control side: receive DataChannel from controller
     dc_ = remote_dc;
@@ -174,6 +195,11 @@ void DataChannel::onIceCandidate(IceCandidateCallback callback) {
 void DataChannel::onLocalDescription(LocalDescriptionCallback callback) {
   std::lock_guard<std::mutex> lock(callback_mutex_);
   local_description_callback_ = std::move(callback);
+}
+
+void DataChannel::onIceGatheringStateChange(IceGatheringStateCallback callback) {
+  std::lock_guard<std::mutex> lock(callback_mutex_);
+  ice_gathering_state_callback_ = std::move(callback);
 }
 
 void DataChannel::disconnect() {

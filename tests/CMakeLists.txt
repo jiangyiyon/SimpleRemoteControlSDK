@@ -195,7 +195,10 @@ target_include_directories(integration_tests
 
 # End-to-end tests
 add_executable(e2e_tests
+    e2e/e2e_test_helper.cpp
     e2e/basic_connection_test.cpp
+    e2e/video_stream_test.cpp
+    e2e/latency_test.cpp
     e2e/stability_test.cpp
 )
 

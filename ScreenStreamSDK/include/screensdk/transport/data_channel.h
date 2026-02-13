@@ -37,6 +37,15 @@ enum class SdpType {
 };
 
 /**
+ * @brief ICE gathering 状态
+ */
+enum class IceGatheringState {
+  kNew = 0,
+  kInProgress = 1,
+  kComplete = 2
+};
+
+/**
  * @brief 数据接收回调
  */
 using DataCallback = std::function<void(const std::vector<uint8_t>& data)>;
@@ -55,6 +64,11 @@ using IceCandidateCallback = std::function<void(const std::string& candidate)>;
  * @brief 本地描述回调（SDP offer/answer）
  */
 using LocalDescriptionCallback = std::function<void(const std::string& sdp)>;
+
+/**
+ * @brief ICE gathering 状态变化回调
+ */
+using IceGatheringStateCallback = std::function<void(IceGatheringState state)>;
 
 /**
  * @brief DataChannel 配置
@@ -115,6 +129,11 @@ public:
   void onLocalDescription(LocalDescriptionCallback callback);
 
   /**
+   * @brief 设置 ICE gathering 状态变化回调
+   */
+  void onIceGatheringStateChange(IceGatheringStateCallback callback);
+
+  /**
    * @brief 断开连接
    */
   void disconnect();
@@ -161,10 +180,11 @@ private:
   std::atomic<DataChannelState> state_{DataChannelState::kNew};
   IceCandidateCallback ice_candidate_callback_;
   LocalDescriptionCallback local_description_callback_;
+  IceGatheringStateCallback ice_gathering_state_callback_;
   DataCallback data_callback_;
   StateCallback state_callback_;
   mutable std::mutex callback_mutex_;
-  
+
   std::shared_ptr<rtc::PeerConnection> pc_;
   std::shared_ptr<rtc::DataChannel> dc_;
 };
