@@ -60,7 +60,21 @@ IVideoEncoder* EncoderFactoryImpl::createEncoder(EncoderType type) {
       return new X264EncoderImpl();
 
     case EncoderType::kHardwareNVENC:
+      // NVENC encoder not implemented yet, fallback to software
+      if (!has_nvenc_) {
+        return new X264EncoderImpl();
+      }
+      // TODO: Implement NVENC encoder. For now, fallback to software
+      return new X264EncoderImpl();
+
     case EncoderType::kHardwareQuickSync:
+      // QuickSync encoder not implemented yet, fallback to software
+      if (!has_quicksync_) {
+        return new X264EncoderImpl();
+      }
+      // TODO: Implement QuickSync encoder. For now, fallback to software
+      return new X264EncoderImpl();
+
     default:
       return nullptr;
   }

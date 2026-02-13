@@ -46,11 +46,13 @@ add_executable(unit_tests
     # Unit tests for capture
     unit/display_detector_test.cpp
     unit/capture/dxgi_capture_test.cpp
+    unit/capture/display_switch_test.cpp
 
     # Unit tests for encoding
     unit/encoder_config_test.cpp
     unit/encoder_factory_test.cpp
     unit/encoding/x264_encoder_test.cpp
+    unit/encoding/encoding_fallback_test.cpp
 
     # Unit tests for core components
     unit/core/session_test.cpp
@@ -71,6 +73,7 @@ add_executable(unit_tests
     unit/transport/webrtc_manager_test.cpp
     unit/transport/connection_handler_test.cpp
     unit/transport/data_channel_test.cpp
+    unit/transport/transport_test.cpp
 )
 
 # Link Google Test
@@ -153,11 +156,8 @@ include(GoogleTest)
 
 # Integration tests
 add_executable(integration_tests
-    integration/capture_encoding_test.cpp
     integration/capture_encoder_test.cpp
-    integration/encoding_fallback_test.cpp
-    integration/transport_test.cpp
-    integration/display_switch_test.cpp
+    integration/capture_encoding_test.cpp
 )
 
 # Link Google Test and project libraries

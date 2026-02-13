@@ -466,4 +466,42 @@
   - Tests resource management and recovery
 
 ---
+
+## Session: 2026-02-13 (集成测试完善)
+- **Status:** 完成 ✅
+- **Actions taken:**
+  - **完善单元测试** ✅
+    * 创建 tests/unit/encoding/encoding_fallback_test.cpp (10个测试)
+    * 创建 tests/unit/capture/display_switch_test.cpp (10个测试)
+    * 创建 tests/unit/transport/transport_test.cpp (14个测试)
+  - **完善集成测试** ✅
+    * 保留 tests/integration/capture_encoding_test.cpp (12个测试)
+  - **修复编译错误** ✅
+    * 修复 VideoFrame 结构体字段访问 (format → 删除, timestamp → timestamp_ms)
+    * 修复 EncoderFactory 降级逻辑 (硬件编码器未实现时返回软件编码器)
+    * 添加 <numeric> 头文件用于 std::accumulate
+  - **更新 CMakeLists.txt** ✅
+    * 将 encoding_fallback_test.cpp, display_switch_test.cpp, transport_test.cpp 添加到 unit_tests
+    * 移除 integration_tests 中重复的测试文件
+  - **Bug Fixes** ✅
+    * EncoderFactory::createEncoder(EncoderType) 在硬件编码器不可用时返回 nullptr → 返回 X264EncoderImpl
+    * VideoFrame 没有 format 字段，移除 VideoFormat::kBGRA 赋值
+    * VideoFrame::timestamp 改为 timestamp_ms，类型为 uint64_t
+  - **Test Results:**
+    * 单元测试全部通过 ✅
+- **Files created:**
+  - tests/unit/encoding/encoding_fallback_test.cpp (10个测试)
+  - tests/unit/capture/display_switch_test.cpp (10个测试)
+  - tests/unit/transport/transport_test.cpp (14个测试)
+- **Files modified:**
+  - ScreenStreamSDK/src/encoding/encoder_factory.cpp (修复降级逻辑)
+  - tests/integration/capture_encoding_test.cpp (添加 <numeric>)
+  - tests/CMakeLists.txt (更新测试文件列表)
+- **Test Coverage:**
+  - 编码器降级测试: GPU检测、自动选择、软件降级、性能测试
+  - 显示切换测试: 多显示器枚举、跨显示器切换(≤100ms)、热插拔检测
+  - 传输层测试: 连接建立、消息传输、断线重连、并发处理
+  - 捕获编码管道测试: 完整管道初始化、单帧编码、持续捕获、性能延迟测试
+
+---
 *Update after completing each phase or encountering errors*
