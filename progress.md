@@ -252,41 +252,32 @@
   * Clean and simple solution - just forward declare struct types
 
 ### Phase 4: DataChannel Integration (libdatachannel)
-- **Status:** Phase 1 complete (基础结构)
+- **Status:** Phase 2 complete (DataChannel 完整实现)
 - **Started:** 2026-02-13
 - **Actions taken:**
-  - **Created Result<T> template class** ✅
-    * Added to include/screensdk/utils/error.h
-    * Supports both `Result<T>` and `Result<void>` specializations
-    * Contains either value of type T or ErrorDetail
-    * Thread-safe variant-based implementation
-  - **Created DataChannel class** ✅
-    * Created include/screensdk/transport/data_channel.h (151 lines)
-    * Defined DataChannelState enum (kNew, kConnecting, kOpen, kClosing, kClosed)
-    * Defined callback types: DataCallback, StateCallback, IceCandidateCallback, LocalDescriptionCallback
-    * Defined DataChannelConfig struct
-    * DataChannel class with public API methods
-  - **Created DataChannel implementation** ✅
-    * Created src/transport/data_channel.cpp (78 lines)
-    * All methods return "Not implemented" errors (placeholder)
-    * Thread-safe callbacks with std::mutex
-    * Atomic state management with std::atomic
-  - **Updated CMakeLists.txt** ✅
-    * Added libdatachannel include and lib paths to ScreenStreamSDK/CMakeLists.txt
-    * Added data_channel.cpp and data_channel.h to ScreenStreamSDK/src/CMakeLists.txt
-    * Added datachannel.lib linking configuration
-  - **Code design decisions:**
-    * No Pimpl pattern - direct class implementation
-    * No SCREEN_STREAM_SDK_EXPORT - internal class
-    * Thread-safe: std::mutex for callbacks, std::atomic for state
-    * LAN-only: no STUN/TURN servers (local ICE candidates only)
-- **Files created:**
-  - ScreenStreamSDK/include/screensdk/transport/data_channel.h
-  - ScreenStreamSDK/src/transport/data_channel.cpp
-- **Files modified:**
-  - ScreenStreamSDK/include/screensdk/utils/error.h (added Result<T> template)
-  - ScreenStreamSDK/CMakeLists.txt (added libdatachannel paths)
-  - ScreenStreamSDK/src/CMakeLists.txt (added source files and linking)
+  - **Phase 1: 基础结构** ✅
+    * Created Result<T> template class
+    * Created DataChannel class with public API
+    * Created DataChannel implementation (placeholder)
+    * Updated CMakeLists.txt
+  - **Phase 2: SDP Type Fix** ✅
+    * Fixed SDP type validation issue
+    * Added SdpType enum (kOffer, kAnswer)
+    * Modified setRemoteDescription() to accept SdpType parameter
+    * Updated all unit tests (155 tests passing)
+  - **Phase 3: DataChannel 完整实现** ✅
+    * 修复 PeerConnection 回调设置 (onLocalDescription, onLocalCandidate, onDataChannel, onStateChange)
+    * 在 createOffer() 中创建 rtc::DataChannel 并设置回调
+    * 修正 createAnswer() 逻辑 - 控制端通过 onDataChannel 接收 DataChannel
+    * 使用正确的 libdatachannel API:
+      - onLocalCandidate (不是 onIceCandidate)
+      - std::string(cand) 转换 Candidate 为字符串
+      - DataChannelInit.reliability 设置 (没有 ordered 字段)
+    * setupDataChannelCallbacks() 在 createOffer() 中被正确调用
+    * 所有回调正确设置：onOpen, onClosed, onMessage
+  - **Files modified:**
+    * ScreenStreamSDK/src/transport/data_channel.cpp
+  - **Test Results:** 155/155 unit tests passing ✅
 
 ## Test Results
 <!-- 
@@ -297,6 +288,9 @@
 || Test | Input | Expected | Actual | Status |
 ||-------|-------|----------|--------|--------|
 || Speckit analysis | spec.md, plan.md, tasks.md | Complete analysis report | Generated 21 findings with severity levels | ✓ |
+|| DxgiCapture unit tests | dxgi_capture_test.cpp (22 tests) | All pass | All 22 tests passing | ✓ |
+|| DataChannel unit tests | data_channel_test.cpp (33 tests) | All pass | All 33 tests passing | ✓ |
+|| All unit tests | 155 tests | All pass | All 155 tests passing | ✓ |
 || DxgiCapture unit tests | dxgi_capture_test.cpp (22 tests) | All pass | All 22 tests passing | ✓ |
 
 ## Test Results
@@ -355,4 +349,26 @@
   - Be detailed - this is your "what happened" log
   - Include timestamps for errors to track when issues occurred
 -->
+
+## Session: 2026-02-13 (DataChannel Complete Implementation)
+- **Status:** Phase 4 complete
+- **Actions taken:**
+  - **Fixed libdatachannel API usage** ✅
+    * Changed onIceCandidate → onLocalCandidate
+    * Changed cand.generate() → std::string(cand)
+    * Removed init.ordered (use init.reliability.unordered instead)
+    * Added onDataChannel callback for control side
+  - **Updated createOffer()** ✅
+    * Create rtc::DataChannel before creating offer
+    * Set up DataChannel callbacks via setupDataChannelCallbacks()
+  - **Updated createAnswer()** ✅
+    * Control side doesn't create DataChannel
+    * DataChannel received via onDataChannel callback
+  - **Test Results:**
+    * 155/155 unit tests passing
+    * 33 DataChannel tests all passing
+- **Files modified:**
+  - ScreenStreamSDK/src/transport/data_channel.cpp
+
+---
 *Update after completing each phase or encountering errors*

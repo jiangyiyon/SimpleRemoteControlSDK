@@ -25,6 +25,41 @@ DataChannel::DataChannel(const DataChannelConfig& config)
 
   // Create PeerConnection
   pc_ = std::make_shared<rtc::PeerConnection>(rtc_config);
+
+  // Set up PeerConnection callbacks
+  pc_->onLocalDescription([this](const rtc::Description& desc) {
+    std::lock_guard<std::mutex> lock(callback_mutex_);
+    if (local_description_callback_) {
+      local_description_callback_(desc.generateSdp());
+    }
+  });
+
+  pc_->onLocalCandidate([this](const rtc::Candidate& cand) {
+    std::lock_guard<std::mutex> lock(callback_mutex_);
+    if (ice_candidate_callback_) {
+      ice_candidate_callback_(std::string(cand));
+    }
+  });
+
+  pc_->onDataChannel([this](std::shared_ptr<rtc::DataChannel> remote_dc) {
+    // Control side: receive DataChannel from controller
+    dc_ = remote_dc;
+    setupDataChannelCallbacks();
+  });
+
+  pc_->onStateChange([this](rtc::PeerConnection::State state) {
+    if (state == rtc::PeerConnection::State::Connected) {
+      // Will set to kOpen when DataChannel opens
+    } else if (state == rtc::PeerConnection::State::Failed ||
+               state == rtc::PeerConnection::State::Closed ||
+               state == rtc::PeerConnection::State::Disconnected) {
+      state_.store(DataChannelState::kClosed, std::memory_order_release);
+      std::lock_guard<std::mutex> lock(callback_mutex_);
+      if (state_callback_) {
+        state_callback_(DataChannelState::kClosed);
+      }
+    }
+  });
 }
 
 DataChannel::~DataChannel() {
@@ -40,7 +75,29 @@ Result<std::string> DataChannel::createOffer() {
                                                "PeerConnection not initialized");
     }
 
-    // Create offer directly (without DataChannel for now)
+    if (dc_) {
+      return Result<std::string>::make_error(ErrorType::kNetworkError, 1001,
+                                               "DataChannel already created");
+    }
+
+    // Create DataChannel before creating offer
+    rtc::DataChannelInit init;
+    init.protocol = config_.protocol;
+    if (config_.maxRetransmits > 0) {
+      init.reliability.unordered = !config_.ordered;
+      init.reliability.maxRetransmits = config_.maxRetransmits;
+    }
+
+    dc_ = pc_->createDataChannel(config_.label, init);
+    if (!dc_) {
+      return Result<std::string>::make_error(ErrorType::kNetworkError, 1001,
+                                               "Failed to create DataChannel");
+    }
+
+    // Set up DataChannel callbacks
+    setupDataChannelCallbacks();
+
+    // Create offer
     rtc::Description offer = pc_->createOffer();
 
     std::string offer_str = offer.generateSdp();
@@ -62,7 +119,10 @@ Result<std::string> DataChannel::createAnswer() {
                                                "PeerConnection not initialized");
     }
 
-    // Create answer directly
+    // Control side: DataChannel will be received via onDataChannel callback
+    // after setRemoteDescription is called with the offer
+
+    // Create answer
     rtc::Description answer = pc_->createAnswer();
     return Result<std::string>::make_ok(std::string(answer));
   } catch (const std::exception& e) {
