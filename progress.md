@@ -11,6 +11,41 @@
   WHY: Helps track when work happened, useful for resuming after time gaps.
 -->
 
+### Phase 6: DisplayController Integration Tests
+<!--
+  WHAT: Added integration tests for DisplayController with SDP Renegotiation and single-display support.
+  WHY: Tests integration between DisplayController and SDP renegotiation; solves single-display environment testing issue.
+  WHEN: 2026-02-13
+-->
+- **Status:** complete
+- **Actions taken:**
+  - **Created DisplayController + SDP Renegotiation integration test** ✅
+    * Tests callback invocation on display switch
+    * Tests multiple display switches
+    * Tests switch timing requirements (< 100ms)
+    * Tests error handling and concurrent switches
+    * Tests callback updates and registration
+  - **Created single-display integration test** ✅
+    * 15 test cases for single-display environments
+    * Tests display selection, switch (same display), callbacks
+    * Tests initialization, enumeration, error handling
+    * Tests performance, reinitialization, multiple switches
+    * No test skipping required for single-display systems
+  - **Created test helper utilities** ✅
+    * MockDisplayDetector for mock display creation
+    * DisplayControllerTestHelper for test utilities
+    * Support for conditional test execution based on display count
+  - **Updated CMakeLists.txt** ✅
+    * Added display_controller_sdp_test.cpp to integration_tests
+    * Added display_controller_sdp_test_single_display.cpp to integration_tests
+- **Files created:**
+  - tests/integration/display_controller_sdp_test.cpp (351 lines)
+  - tests/integration/display_controller_sdp_test_single_display.cpp (290 lines)
+  - tests/integration/display_controller_test_helper.h (142 lines)
+  - ScreenStreamSDK/include/screensdk/capture/mock_display_detector.h (130 lines)
+- **Files modified:**
+  - tests/CMakeLists.txt
+
 ### Phase 5: IDisplayController Implementation (T059)
 <!--
   WHAT: Implemented IDisplayController interface for display management and multi-monitor switching.
