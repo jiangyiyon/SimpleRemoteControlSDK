@@ -1,0 +1,42 @@
+# Build directories
+build/
+bin/
+lib/
+.vs/
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+
+# Compiled files
+*.obj
+*.o
+*.so
+*.dll
+*.exe
+*.a
+*.lib
+
+# IDE files
+*.vcxproj
+*.vcxproj.filters
+*.sln
+*.suo
+*.user
+*.sdf
+*.opensdf
+
+# Temporary files
+*.log
+*.tlog
+*.pdb
+*.ilk
+*.exp
+
+# Dependency management
+download_webrtc*.bat
+
+# Documentation drafts
+tdd_coverage_report.md

@@ -158,6 +158,8 @@ include(GoogleTest)
 add_executable(integration_tests
     integration/capture_encoder_test.cpp
     integration/capture_encoding_test.cpp
+    integration/display_switch_integration_test.cpp
+    integration/encoding_fallback_test.cpp
 )
 
 # Link Google Test and project libraries
