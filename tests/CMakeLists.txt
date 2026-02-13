@@ -57,6 +57,7 @@ add_executable(unit_tests
     # Unit tests for core components
     unit/core/session_test.cpp
     unit/core/session_manager_test.cpp
+    unit/core/display_controller_test.cpp
 
     # Unit tests for input handling
     unit/input/input_event_test.cpp

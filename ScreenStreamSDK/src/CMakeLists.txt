@@ -22,6 +22,9 @@ set(SOURCE_FILES
     # Input
     input/windows_input.cpp
 
+    # Core
+    core/display_controller.cpp
+
     # Platform
     platform/gpu_detector.cpp
 )
@@ -49,6 +52,9 @@ set(HEADER_FILES
 
     # Input
     ${CMAKE_SOURCE_DIR}/include/screensdk/input/windows_input.h
+
+    # Core
+    ${CMAKE_SOURCE_DIR}/include/screensdk/core/display_controller.h
 
     # Platform
     ${CMAKE_SOURCE_DIR}/include/screensdk/platform/gpu_detector.h

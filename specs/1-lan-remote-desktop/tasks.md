@@ -136,7 +136,7 @@
 ### Implementation for User Story 2
 
 - [x] T058 [P] [US2] Implement DisplaySource data structure in ScreenStreamSDK/src/capture/display_detector.cpp
-- [ ] T059 [P] [US2] Implement IDisplayManager interface in ScreenStreamSDK/src/core/display_controller.cpp and ScreenStreamSDK/include/screensdk/core/display_controller.h
+- [x] T059 [P] [US2] Implement IDisplayManager interface in ScreenStreamSDK/src/core/display_controller.cpp and ScreenStreamSDK/include/screensdk/core/display_controller.h
 - [ ] T060 [US2] Implement display enumeration from DXGI in ScreenStreamSDK/src/capture/display_detector.cpp
 - [ ] T061 [US2] Implement display selection per session in ScreenStreamSDK/src/core/display_controller.cpp
 - [ ] T062 [US2] Implement display switch with SDP renegotiation for seamless transition (≤100ms) in ScreenStreamSDK/src/core/display_controller.cpp

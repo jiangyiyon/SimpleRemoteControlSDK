@@ -3,7 +3,6 @@
 #include <Windows.h>
 #include <string>
 #include <vector>
-#include <atomic>
 #include <cstdint>
 
 namespace screensdk {
@@ -35,7 +34,7 @@ struct DisplaySource {
   int resolution_height;
   int refresh_rate;
   bool is_primary;
-  std::atomic<bool> is_active;
+  bool is_active;
   void* capture_handle;
 
   DisplaySource()

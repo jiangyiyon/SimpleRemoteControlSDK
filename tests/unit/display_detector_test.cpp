@@ -121,7 +121,7 @@ TEST_F(DisplayDetectorTest, DisplaySourceInitialization) {
     EXPECT_EQ(source.resolution_height, displays[0].height);
     EXPECT_EQ(source.refresh_rate, displays[0].refresh_rate);
     EXPECT_EQ(source.is_primary, displays[0].is_primary);
-    EXPECT_FALSE(source.is_active.load());
+    EXPECT_FALSE(source.is_active);
     EXPECT_EQ(source.capture_handle, nullptr);
   }
 }
@@ -167,13 +167,13 @@ TEST_F(DisplayDetectorTest, DisplaySourceAtomicActiveState) {
   DisplaySource source;
   source.is_active = false;
 
-  EXPECT_FALSE(source.is_active.load());
+  EXPECT_FALSE(source.is_active);
 
-  source.is_active.store(true);
-  EXPECT_TRUE(source.is_active.load());
+  source.is_active = true;
+  EXPECT_TRUE(source.is_active);
 
-  source.is_active.store(false);
-  EXPECT_FALSE(source.is_active.load());
+  source.is_active = false;
+  EXPECT_FALSE(source.is_active);
 }
 
 TEST_F(DisplayDetectorTest, DisplaySourceOnlyOnePrimary) {
