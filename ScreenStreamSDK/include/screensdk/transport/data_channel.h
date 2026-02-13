@@ -2,12 +2,18 @@
 
 #include <atomic>
 #include <functional>
+#include <memory>
 #include <mutex>
 #include <string>
 #include <vector>
 
 #include "screensdk/export.h"
 #include "screensdk/utils/error.h"
+
+namespace rtc {
+class PeerConnection;
+class DataChannel;
+}
 
 namespace screensdk {
 
@@ -20,6 +26,14 @@ enum class DataChannelState {
   kOpen = 2,
   kClosing = 3,
   kClosed = 4
+};
+
+/**
+ * @brief SDP 类型
+ */
+enum class SdpType {
+  kOffer = 0,
+  kAnswer = 1
 };
 
 /**
@@ -80,8 +94,10 @@ public:
 
   /**
    * @brief 设置远程 SDP 描述
+   * @param sdp SDP 字符串
+   * @param type SDP 类型（offer 或 answer）
    */
-  Result<void> setRemoteDescription(const std::string& sdp);
+  Result<void> setRemoteDescription(const std::string& sdp, SdpType type = SdpType::kOffer);
 
   /**
    * @brief 添加远程 ICE 候选
@@ -139,6 +155,8 @@ public:
   void setStateCallback(StateCallback callback);
 
 private:
+  void setupDataChannelCallbacks();
+
   DataChannelConfig config_;
   std::atomic<DataChannelState> state_{DataChannelState::kNew};
   IceCandidateCallback ice_candidate_callback_;
@@ -146,6 +164,9 @@ private:
   DataCallback data_callback_;
   StateCallback state_callback_;
   mutable std::mutex callback_mutex_;
+  
+  std::shared_ptr<rtc::PeerConnection> pc_;
+  std::shared_ptr<rtc::DataChannel> dc_;
 };
 
 } // namespace screensdk

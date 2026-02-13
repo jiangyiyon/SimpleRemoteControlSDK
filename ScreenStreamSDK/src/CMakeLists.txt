@@ -62,9 +62,16 @@ if(EXISTS "${CMAKE_SOURCE_DIR}/../third_party/x264/lib/x64/libx264.lib")
 endif()
 
 # Link libdatachannel
-if(EXISTS "${CMAKE_SOURCE_DIR}/../third_party/webrtc/libdatachannel_x64-windows/lib/datachannel.lib")
-    target_link_libraries(screensdk
-        ${CMAKE_SOURCE_DIR}/../third_party/webrtc/libdatachannel_x64-windows/lib/datachannel.lib)
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    if(EXISTS "${CMAKE_SOURCE_DIR}/../third_party/webrtc/libdatachannel_x64-windows/debug/lib/datachannel.lib")
+        target_link_libraries(screensdk
+            ${CMAKE_SOURCE_DIR}/../third_party/webrtc/libdatachannel_x64-windows/debug/lib/datachannel.lib)
+    endif()
+else()
+    if(EXISTS "${CMAKE_SOURCE_DIR}/../third_party/webrtc/libdatachannel_x64-windows/lib/datachannel.lib")
+        target_link_libraries(screensdk
+            ${CMAKE_SOURCE_DIR}/../third_party/webrtc/libdatachannel_x64-windows/lib/datachannel.lib)
+    endif()
 endif()
 
 # Windows libraries
@@ -80,6 +87,7 @@ target_include_directories(screensdk PUBLIC
     ${CMAKE_SOURCE_DIR}/include
     E:/TestWebRTC/RemoteControlSDK/ScreenStreamSDK/third_party/nlohmann
     ${CMAKE_SOURCE_DIR}/../third_party/x264/include
+    ${CMAKE_SOURCE_DIR}/../third_party/webrtc/libdatachannel_x64-windows/include
 )
 
 # Compile definitions

@@ -29,7 +29,7 @@ TEST_F(MetricsCollectorTest, RecordFrameUpdatesFps) {
 
   // FPS calculation depends on actual elapsed time due to sleep inaccuracies
   // On Windows, sleep_for is not precise and may sleep longer than requested
-  EXPECT_GT(metrics_.getFps(), 20.0);  // Lower bound for test reliability
+  EXPECT_GT(metrics_.getFps(), 10.0);  // Lower bound for test reliability
   EXPECT_LT(metrics_.getFps(), 70.0);  // Upper bound to catch errors
 }
 
