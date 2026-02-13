@@ -17,6 +17,7 @@ set(SOURCE_FILES
     # Transport
     transport/video_source.cpp
     transport/data_channel.cpp
+    transport/sdp_renegotiation.cpp
 
     # Input
     input/windows_input.cpp
@@ -44,6 +45,7 @@ set(HEADER_FILES
     # Transport
     ${CMAKE_SOURCE_DIR}/include/screensdk/transport/video_source.h
     ${CMAKE_SOURCE_DIR}/include/screensdk/transport/data_channel.h
+    ${CMAKE_SOURCE_DIR}/include/screensdk/transport/sdp_renegotiation.h
 
     # Input
     ${CMAKE_SOURCE_DIR}/include/screensdk/input/windows_input.h

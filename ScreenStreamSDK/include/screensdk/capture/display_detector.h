@@ -3,11 +3,13 @@
 #include <Windows.h>
 #include <string>
 #include <vector>
+#include <atomic>
+#include <cstdint>
 
 namespace screensdk {
 
 /**
- * @brief Display information
+ * @brief Display information (legacy, use DisplaySource for new code)
  */
 struct DisplayInfo {
   int index;
@@ -17,6 +19,34 @@ struct DisplayInfo {
   int refresh_rate;
   bool is_primary;
   RECT desktop_rect;
+};
+
+/**
+ * @brief Display source for screen capture
+ *
+ * T058: Implement DisplaySource data structure
+ *
+ * Represents a Windows display device that can be captured and transmitted.
+ */
+struct DisplaySource {
+  int id;
+  std::string name;
+  int resolution_width;
+  int resolution_height;
+  int refresh_rate;
+  bool is_primary;
+  std::atomic<bool> is_active;
+  void* capture_handle;
+
+  DisplaySource()
+      : id(0),
+        name(),
+        resolution_width(0),
+        resolution_height(0),
+        refresh_rate(0),
+        is_primary(false),
+        is_active(false),
+        capture_handle(nullptr) {}
 };
 
 /**

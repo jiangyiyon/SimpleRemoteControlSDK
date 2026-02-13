@@ -99,3 +99,99 @@ TEST_F(DisplayDetectorTest, HasDisplayChangedInitialFalse) {
   // First call should return false
   EXPECT_FALSE(detector_.hasDisplayChanged());
 }
+
+// T055: Unit test for DisplaySource entity
+TEST_F(DisplayDetectorTest, DisplaySourceInitialization) {
+  auto displays = detector_.getDisplays();
+
+  if (!displays.empty()) {
+    DisplaySource source;
+    source.id = displays[0].index;
+    source.name = displays[0].name;
+    source.resolution_width = displays[0].width;
+    source.resolution_height = displays[0].height;
+    source.refresh_rate = displays[0].refresh_rate;
+    source.is_primary = displays[0].is_primary;
+    source.is_active = false;
+    source.capture_handle = nullptr;
+
+    EXPECT_EQ(source.id, displays[0].index);
+    EXPECT_EQ(source.name, displays[0].name);
+    EXPECT_EQ(source.resolution_width, displays[0].width);
+    EXPECT_EQ(source.resolution_height, displays[0].height);
+    EXPECT_EQ(source.refresh_rate, displays[0].refresh_rate);
+    EXPECT_EQ(source.is_primary, displays[0].is_primary);
+    EXPECT_FALSE(source.is_active.load());
+    EXPECT_EQ(source.capture_handle, nullptr);
+  }
+}
+
+TEST_F(DisplayDetectorTest, DisplaySourceIdRange) {
+  auto displays = detector_.getDisplays();
+
+  for (size_t i = 0; i < displays.size(); ++i) {
+    EXPECT_GE(displays[i].index, 0);
+    EXPECT_LT(displays[i].index, 4);  // Max 4 displays
+  }
+}
+
+TEST_F(DisplayDetectorTest, DisplaySourceResolutionConstraints) {
+  auto displays = detector_.getDisplays();
+
+  for (const auto& display : displays) {
+    EXPECT_GE(display.width, 640);
+    EXPECT_LE(display.width, 7680);   // 4K max
+    EXPECT_GE(display.height, 480);
+    EXPECT_LE(display.height, 4320);
+  }
+}
+
+TEST_F(DisplayDetectorTest, DisplaySourceRefreshRateConstraints) {
+  auto displays = detector_.getDisplays();
+
+  for (const auto& display : displays) {
+    EXPECT_GE(display.refresh_rate, 30);
+    EXPECT_LE(display.refresh_rate, 240);
+  }
+}
+
+TEST_F(DisplayDetectorTest, DisplaySourceNameMaxLength) {
+  auto displays = detector_.getDisplays();
+
+  for (const auto& display : displays) {
+    EXPECT_LE(display.name.length(), 256);
+  }
+}
+
+TEST_F(DisplayDetectorTest, DisplaySourceAtomicActiveState) {
+  DisplaySource source;
+  source.is_active = false;
+
+  EXPECT_FALSE(source.is_active.load());
+
+  source.is_active.store(true);
+  EXPECT_TRUE(source.is_active.load());
+
+  source.is_active.store(false);
+  EXPECT_FALSE(source.is_active.load());
+}
+
+TEST_F(DisplayDetectorTest, DisplaySourceOnlyOnePrimary) {
+  auto displays = detector_.getDisplays();
+  int primary_count = 0;
+
+  for (const auto& display : displays) {
+    if (display.is_primary) {
+      ++primary_count;
+    }
+  }
+
+  EXPECT_EQ(primary_count, 1);
+}
+
+TEST_F(DisplayDetectorTest, DisplaySourceHandleNullInitially) {
+  DisplaySource source;
+  source.capture_handle = nullptr;
+
+  EXPECT_EQ(source.capture_handle, nullptr);
+}

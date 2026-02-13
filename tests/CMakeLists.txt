@@ -73,6 +73,7 @@ add_executable(unit_tests
     unit/transport/webrtc_manager_test.cpp
     unit/transport/connection_handler_test.cpp
     unit/transport/data_channel_test.cpp
+    unit/transport/sdp_renegotiation_test.cpp
     unit/transport/transport_test.cpp
 )
 

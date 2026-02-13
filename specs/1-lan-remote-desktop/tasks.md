@@ -127,15 +127,15 @@
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T055 [P] [US2] Unit test for DisplaySource entity in tests/unit/capture/display_detector_test.cpp
-- [ ] U2 [P] [US2] Unit test for SDP renegotiation handler in tests/unit/transport/sdp_renegotiation_test.cpp
+- [x] T055 [P] [US2] Unit test for DisplaySource entity in tests/unit/capture/display_detector_test.cpp
+- [x] U2 [P] [US2] Unit test for SDP renegotiation handler in tests/unit/transport/sdp_renegotiation_test.cpp
 - [ ] T056 [P] [US2] Integration test for display enumeration in tests/integration/display_switch_test.cpp
 - [ ] T057 [P] [US2] Integration test for display switch timing (≤100ms) in tests/integration/display_switch_test.cpp
 - [ ] T057a [P] [US2] Integration test for display hot-plug (add/remove display during active session) in tests/integration/display_switch_test.cpp
 
 ### Implementation for User Story 2
 
-- [ ] T058 [P] [US2] Implement DisplaySource data structure in ScreenStreamSDK/src/capture/display_detector.cpp
+- [x] T058 [P] [US2] Implement DisplaySource data structure in ScreenStreamSDK/src/capture/display_detector.cpp
 - [ ] T059 [P] [US2] Implement IDisplayManager interface in ScreenStreamSDK/src/core/display_controller.cpp and ScreenStreamSDK/include/screensdk/core/display_controller.h
 - [ ] T060 [US2] Implement display enumeration from DXGI in ScreenStreamSDK/src/capture/display_detector.cpp
 - [ ] T061 [US2] Implement display selection per session in ScreenStreamSDK/src/core/display_controller.cpp
