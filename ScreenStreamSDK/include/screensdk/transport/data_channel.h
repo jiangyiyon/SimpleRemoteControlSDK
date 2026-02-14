@@ -18,7 +18,7 @@ class DataChannel;
 namespace screensdk {
 
 /**
- * @brief DataChannel 连接状态
+ * @brief DataChannel connection state
  */
 enum class DataChannelState {
   kNew = 0,
@@ -29,7 +29,7 @@ enum class DataChannelState {
 };
 
 /**
- * @brief SDP 类型
+ * @brief SDP type
  */
 enum class SdpType {
   kOffer = 0,
@@ -37,7 +37,7 @@ enum class SdpType {
 };
 
 /**
- * @brief ICE gathering 状态
+ * @brief ICE gathering state
  */
 enum class IceGatheringState {
   kNew = 0,
@@ -46,32 +46,32 @@ enum class IceGatheringState {
 };
 
 /**
- * @brief 数据接收回调
+ * @brief Data receive callback
  */
 using DataCallback = std::function<void(const std::vector<uint8_t>& data)>;
 
 /**
- * @brief 状态变化回调
+ * @brief State change callback
  */
 using StateCallback = std::function<void(DataChannelState state)>;
 
 /**
- * @brief ICE 候选回调（调用方需要传输给对方）
+ * @brief ICE candidate callback (caller needs to transmit to peer)
  */
 using IceCandidateCallback = std::function<void(const std::string& candidate)>;
 
 /**
- * @brief 本地描述回调（SDP offer/answer）
+ * @brief Local description callback (SDP offer/answer)
  */
 using LocalDescriptionCallback = std::function<void(const std::string& sdp)>;
 
 /**
- * @brief ICE gathering 状态变化回调
+ * @brief ICE gathering state change callback
  */
 using IceGatheringStateCallback = std::function<void(IceGatheringState state)>;
 
 /**
- * @brief DataChannel 配置
+ * @brief DataChannel configuration
  */
 struct DataChannelConfig {
   std::string label = "default";
@@ -81,10 +81,10 @@ struct DataChannelConfig {
 };
 
 /**
- * @brief WebRTC DataChannel 类
+ * @brief WebRTC DataChannel class
  *
- * 提供局域网内的 P2P 数据传输能力。
- * 信令交换（SDP + ICE candidates）由调用方完全控制。
+ * Provides P2P data transmission capability within local network.
+ * Signaling exchange (SDP + ICE candidates) is fully controlled by the caller.
  */
 class DataChannel {
 public:
@@ -97,79 +97,79 @@ public:
   DataChannel& operator=(DataChannel&&) = delete;
 
   /**
-   * @brief 创建 SDP offer（被控端调用）
+   * @brief Create SDP offer (called by controlled end)
    */
   Result<std::string> createOffer();
 
   /**
-   * @brief 创建 SDP answer（控制端调用）
+   * @brief Create SDP answer (called by controller)
    */
   Result<std::string> createAnswer();
 
   /**
-   * @brief 设置远程 SDP 描述
-   * @param sdp SDP 字符串
-   * @param type SDP 类型（offer 或 answer）
+   * @brief Set remote SDP description
+   * @param sdp SDP string
+   * @param type SDP type (offer or answer)
    */
   Result<void> setRemoteDescription(const std::string& sdp, SdpType type = SdpType::kOffer);
 
   /**
-   * @brief 添加远程 ICE 候选
+   * @brief Add remote ICE candidate
    */
   Result<void> addIceCandidate(const std::string& candidate);
 
   /**
-   * @brief 设置 ICE 候选回调
+   * @brief Set ICE candidate callback
    */
   void onIceCandidate(IceCandidateCallback callback);
 
   /**
-   * @brief 设置本地描述回调
+   * @brief Set local description callback
    */
   void onLocalDescription(LocalDescriptionCallback callback);
 
   /**
-   * @brief 设置 ICE gathering 状态变化回调
+   * @brief Set ICE gathering state change callback
    */
   void onIceGatheringStateChange(IceGatheringStateCallback callback);
 
   /**
-   * @brief 断开连接
+   * @brief Disconnect
    */
   void disconnect();
 
   /**
-   * @brief 检查是否已连接
+   * @brief Check if connected
    */
   bool isConnected() const noexcept;
 
   /**
-   * @brief 获取当前状态
+   * @brief Get current state
    */
   DataChannelState getState() const noexcept;
 
   /**
-   * @brief 获取 DataChannel 标签
+   * @brief Get DataChannel label
    */
   std::string getLabel() const;
 
   /**
-   * @brief 发送二进制数据
+   * @brief Send binary data
    */
   Result<void> send(const std::vector<uint8_t>& data);
 
   /**
-   * @brief 发送文本数据
+   * @brief Send text data
    */
   Result<void> send(const std::string& text);
 
   /**
-   * @brief 设置数据接收回调
+   * @brief Set data receive callback
    */
   void setDataCallback(DataCallback callback);
 
   /**
-   * @brief 设置状态变化回调
+   * @brief Set state change callback
    */
   void setStateCallback(StateCallback callback);
 

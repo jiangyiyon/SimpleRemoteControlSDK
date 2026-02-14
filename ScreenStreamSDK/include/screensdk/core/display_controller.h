@@ -2,6 +2,7 @@
 
 #include <atomic>
 #include <functional>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -12,116 +13,152 @@
 namespace screensdk {
 
 /**
- * @brief 显示器切换回调
+ * @brief Display switch callback
  */
 using DisplaySwitchCallback = std::function<void(const DisplaySource& old_display,
                                                    const DisplaySource& new_display)>;
 
 /**
- * @brief 显示器配置变化回调
+ * @brief Display configuration change callback
  */
 using DisplayChangeCallback = std::function<void()>;
 
 /**
- * @brief 显示器管理器接口
+ * @brief Display manager interface
  *
  * T059: Implement IDisplayManager interface
  *
- * 提供显示器枚举、选择和切换功能，支持多显示器场景下的无缝切换。
- * 与 SDP Renegotiation 集成实现≤100ms 切换时间。
+ * Provides display enumeration, selection, and switching functions, supporting seamless
+ * switching in multi-display scenarios. Integrates with SDP Renegotiation to achieve
+ * ≤100ms switch time.
  */
 struct SCREEN_STREAM_SDK_EXPORT IDisplayController {
-  virtual ~IDisplayController() = default;
+  /**
+ * @brief Virtual destructor to ensure derived class objects are properly destroyed
+ */
+virtual ~IDisplayController() = default;
 
   /**
-   * @brief 初始化显示器控制器
-   * @return 成功或失败
+   * @brief Initialize display controller
+   * @return Success or failure
    */
   virtual Result<void> initialize() = 0;
 
   /**
-   * @brief 关闭显示器控制器
+   * @brief Close display controller
    */
   virtual void close() = 0;
 
   /**
-   * @brief 获取所有可用显示器列表
-   * @return 显示器列表
+   * @brief Get list of all available displays
+   * @return Display list
    */
   virtual std::vector<DisplaySource> getDisplayList() = 0;
 
   /**
-   * @brief 获取主显示器
-   * @return 主显示器信息
+   * @brief Get primary display
+   * @return Primary display information
    */
   virtual DisplaySource getPrimaryDisplay() = 0;
 
   /**
-   * @brief 根据 ID 获取显示器
-   * @param id 显示器 ID
-   * @return 显示器信息，如果 ID 无效返回空显示器
+   * @brief Get display by ID
+   * @param id Display ID
+   * @return Display information, returns empty display if ID is invalid
    */
   virtual DisplaySource getDisplayById(int id) = 0;
 
   /**
-   * @brief 获取当前选中的显示器 ID
-   * @return 当前显示器 ID，未选择时返回 -1
+   * @brief Get current selected display ID
+   * @return Current display ID, returns -1 if not selected
    */
   virtual int getCurrentDisplayId() const noexcept = 0;
 
   /**
-   * @brief 获取当前选中的显示器
-   * @return 当前显示器信息
+   * @brief Get current selected display
+   * @return Current display information
    */
   virtual DisplaySource getCurrentDisplay() = 0;
 
   /**
-   * @brief 选择显示器 (不触发 SDP 重新协商)
-   * @param id 显示器 ID
-   * @return 成功或失败
+   * @brief Select display (does not trigger SDP renegotiation)
+   * @param id Display ID
+   * @return Success or failure
    */
   virtual Result<void> selectDisplay(int id) = 0;
 
   /**
-   * @brief 切换显示器 (触发 SDP 重新协商)
-   * @param id 目标显示器 ID
-   * @return 成功或失败
+   * @brief Switch display (triggers SDP renegotiation)
+   * @param id Target display ID
+   * @return Success or failure
    */
   virtual Result<void> switchDisplay(int id) = 0;
 
   /**
-   * @brief 检测显示器配置变化
-   * @return 是否有显示器配置变化
+   * @brief Detect display configuration changes
+   * @return Whether display configuration has changed
    */
   virtual bool detectDisplayChanges() = 0;
 
   /**
-   * @brief 刷新显示器列表
+   * @brief Refresh display list
    */
   virtual void refreshDisplayList() = 0;
 
   /**
-   * @brief 设置显示器切换回调
-   * @param callback 回调函数
+   * @brief Set display switch callback
+   * @param callback Callback function
    */
   virtual void onDisplaySwitch(DisplaySwitchCallback callback) = 0;
 
   /**
-   * @brief 设置显示器配置变化回调
-   * @param callback 回调函数
+   * @brief Set display configuration change callback
+   * @param callback Callback function
    */
   virtual void onDisplayChange(DisplayChangeCallback callback) = 0;
+
+  /**
+   * @brief Select display for specific session (does not trigger SDP renegotiation)
+   * @param session_id Session ID
+   * @param id Display ID
+   * @return Success or failure
+   *
+   * T061: Implement display selection per session
+   */
+  virtual Result<void> selectDisplayForSession(const std::string& session_id,
+                                               int id) = 0;
+
+  /**
+   * @brief Switch display for specific session (triggers SDP renegotiation)
+   * @param session_id Session ID
+   * @param id Target display ID
+   * @return Success or failure
+   *
+   * T061: Implement display selection per session
+   */
+  virtual Result<void> switchDisplayForSession(const std::string& session_id,
+                                                int id) = 0;
+
+  /**
+   * @brief Get current selected display for specific session
+   * @param session_id Session ID
+   * @return Session's current display information, returns empty if session doesn't exist or not selected
+   *
+   * T061: Implement display selection per session
+   */
+  virtual std::optional<DisplaySource> getDisplayForSession(
+      const std::string& session_id) = 0;
 };
 
 /**
- * @brief 创建 DisplayController 实例
- * @return DisplayController 指针
+ * @brief Create DisplayController instance
+ * @return DisplayController pointer
  */
 extern "C" SCREEN_STREAM_SDK_EXPORT IDisplayController* CreateDisplayController();
 
 /**
- * @brief 销毁 DisplayController 实例
- * @param controller DisplayController 指针
+ * @brief Destroy DisplayController instance
+ * @param controller DisplayController pointer
  */
 extern "C" SCREEN_STREAM_SDK_EXPORT void
 DestroyDisplayController(IDisplayController* controller);

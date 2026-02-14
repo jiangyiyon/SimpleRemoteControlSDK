@@ -13,16 +13,16 @@ protected:
 };
 
 /**
- * @brief 测试发送鼠标左键按下事件
- * 
- * 验证 WindowsInput 类正确处理鼠标左键按下事件的能力
- * 
- * @param event 鼠标事件参数，包含:
- *   - button: 鼠标按钮类型 (此处为左键)
- *   - pressed: 按钮状态 (true表示按下)
- *   - x: 鼠标X坐标
- *   - y: 鼠标Y坐标
- * @return 验证发送操作是否成功返回true
+ * @brief Test sending mouse left button down event
+ *
+ * Verifies WindowsInput class's ability to correctly handle mouse left button down event
+ *
+ * @param event Mouse event parameters, including:
+ *   - button: Mouse button type (left button here)
+ *   - pressed: Button state (true means pressed)
+ *   - x: Mouse X coordinate
+ *   - y: Mouse Y coordinate
+ * @return Verifies send operation returns true
  */
 TEST_F(WindowsInputTest, DISABLED_SendMouseButtonLeftDown) {
   MouseEvent event;

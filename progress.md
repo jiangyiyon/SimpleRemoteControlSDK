@@ -5,11 +5,91 @@
   WHEN: Update after completing each phase or encountering errors. More detailed than task_plan.md.
 -->
 
+## Session: 2026-02-14
+<!--
+  WHAT: The date of this work session.
+  WHY: Helps track when work happened, useful for resuming after time gaps.
+-->
+- **Status:** Phase 3 (User Story 1) in_progress
+- **Actions taken:**
+  - **Code quality improvement: Convert all Chinese comments to English** ✅
+    * ScreenStreamSDK/src/core/display_controller.cpp - Converted Chinese comments to English
+    * ScreenStreamSDK/include/screensdk/transport/sdp_renegotiation.h - Converted all function descriptions to English
+    * ScreenStreamSDK/include/screensdk/transport/data_channel.h - Converted all function descriptions to English
+    * ScreenStreamSDK/include/screensdk/core/display_controller.h - Converted all function descriptions to English
+    * tests/unit/input/windows_input_test.cpp - Converted test documentation to English
+    * Updated "control端" → "controller" / "controlled end"
+  - **Fixed T061 session validation issues** ✅
+    * Re-enabled session ID validation in selectDisplayForSession()
+    * Re-enabled session ID validation in switchDisplayForSession()
+    * Re-enabled session ID validation in getDisplayForSession()
+    * Fixed session_display_test.cpp to correctly test invalid session handling
+    * Removed duplicate display ID validation in getDisplayForSession()
+  - **Test Results:**
+    * InvalidSessionHandling test now correctly validates session ID format
+    * All session display tests passing ✅
+  - **Files modified:**
+    * ScreenStreamSDK/src/core/display_controller.cpp (Re-enabled validation, removed duplicate check)
+    * tests/unit/core/session_display_test.cpp (Fixed test expectations)
+- **Previous Actions:**
+  - **T033 - Implement Session class with state machine and latency tracking** ✅
+    * Created SessionState enum (DISCONNECTED, CONNECTING, CONNECTED, RECONNECTING, ERROR)
+    * Implemented Session class with connection lifecycle management
+    * Added session_id (UUID v4), state, client_ip, timestamps
+    * Added display_source_id, latency_ms (atomic), reconnection_attempts (atomic)
+    * Added video_track_id, data_channel_id for WebRTC integration
+    * Implemented state transition validation and history tracking
+    * Thread-safe operations: latency_ms and reconnection_attempts use atomic
+    * Added methods: connect(), setConnected(), disconnect(), reconnect(), setError()
+    * Added methods: setDisplaySourceId(), updateLatency(), incrementReconnectionAttempts()
+    * Added methods: setVideoTrackId(), setDataChannelId(), updateActivity()
+  - **T061 - Implement display selection per session** ✅
+    * Added session_display_map_ to DisplayControllerImpl for per-session display tracking
+    * Added selectDisplayForSession() method (no SDP renegotiation)
+    * Added switchDisplayForSession() method (triggers SDP renegotiation callback)
+    * Added getDisplayForSession() method with std::optional return type
+    * Thread-safe session display mapping with separate mutex
+  - **Unit tests created (TDD Red Phase)** ✅
+    * session_test.cpp - 12 unit tests for Session entity
+    * session_display_test.cpp - 8 unit tests for session display selection
+  - **Files created:**
+    * tests/unit/core/session_test.cpp (330 lines) - 12 unit tests
+    * tests/unit/core/session_display_test.cpp (260 lines) - 8 unit tests
+    * ScreenStreamSDK/include/screensdk/core/session.h (177 lines) - Session class definition
+    * ScreenStreamSDK/src/core/session.cpp (260 lines) - Session class implementation
+    * build_t033_t061.bat (44 lines) - Build and test script
+  - **Files modified:**
+    * ScreenStreamSDK/include/screensdk/core/display_controller.h (Added 3 session methods)
+    * ScreenStreamSDK/src/core/display_controller.cpp (Implemented session methods)
+    * ScreenStreamSDK/src/CMakeLists.txt (Added session.cpp to build)
+    * ScreenStreamSDK/src/CMakeLists.txt (Added session.h to headers)
+    * tests/CMakeLists.txt (Added session_test.cpp and session_display_test.cpp)
+
 ## Session: 2026-02-13
 <!--
   WHAT: The date of this work session.
   WHY: Helps track when work happened, useful for resuming after time gaps.
 -->
+- **Status:** Phase 4 (User Story 2) in_progress
+- **Actions taken:**
+  - **T060 - Implement display enumeration from DXGI** ✅
+    * Created 10 unit tests for DisplayDetector DXGI methods (TDD Red Phase)
+    * Added getDisplaySources(), getDisplaySource(), getDisplaySourceCount() to display_detector.h
+    * Implemented DXGI-based display enumeration in display_detector.cpp
+    * Used IDXGIFactory1, IDXGIAdapter1, IDXGIOutput APIs
+    * Generated DisplaySource with id, name, resolution, refresh rate, is_primary
+    * Integrated with Windows Display API for primary display detection
+    * Created simple test program (test_dxgi_display.cpp) for manual verification
+    * Updated CMakeLists.txt to link dxgi1_2 and add test target
+  - **Files created:**
+    * tests/unit/capture/display_detector_dxgi_test.cpp (133 lines) - 10 unit tests
+    * ScreenStreamSDK/tests/test_dxgi_display.cpp (131 lines) - Simple test program
+    * ScreenStreamSDK/build_t060.bat (58 lines) - Build and test script
+  - **Files modified:**
+    * ScreenStreamSDK/include/screensdk/capture/display_detector.h (Added 3 methods)
+    * ScreenStreamSDK/src/capture/display_detector.cpp (Implemented DXGI enumeration)
+    * ScreenStreamSDK/CMakeLists.txt (Added test_dxgi_display target, linked dxgi1_2)
+    * tests/CMakeLists.txt (Added display_detector_dxgi_test.cpp)
 
 ### Phase 6: DisplayController Integration Tests
 <!--
@@ -420,6 +500,66 @@
   - Include timestamps for errors to track when issues occurred
 -->
 
+## Session: 2026-02-14
+<!--
+  WHAT: The date of this work session.
+  WHY: Helps track when work happened, useful for resuming after time gaps.
+-->
+- **Status:** Phase 3 (User Story 1) in_progress
+- **Actions taken:**
+  - **Code quality improvement: Convert all Chinese comments to English** ✅
+    * ScreenStreamSDK/src/core/display_controller.cpp - Converted Chinese comments to English
+    * ScreenStreamSDK/include/screensdk/transport/sdp_renegotiation.h - Converted all function descriptions to English
+    * ScreenStreamSDK/include/screensdk/transport/data_channel.h - Converted all function descriptions to English
+    * ScreenStreamSDK/include/screensdk/core/display_controller.h - Converted all function descriptions to English
+    * tests/unit/input/windows_input_test.cpp - Converted test documentation to English
+    * Updated "control端" → "controller" / "controlled end"
+  - **Fixed T061 session validation issues** ✅
+    * Re-enabled session ID validation in selectDisplayForSession()
+    * Re-enabled session ID validation in switchDisplayForSession()
+    * Re-enabled session ID validation in getDisplayForSession()
+    * Fixed session_display_test.cpp to correctly test invalid session handling
+    * Removed duplicate display ID validation in getDisplayForSession()
+  - **Test Results:**
+    * InvalidSessionHandling test now correctly validates session ID format
+    * All session display tests passing ✅
+  - **Files modified:**
+    * ScreenStreamSDK/src/core/display_controller.cpp (Re-enabled validation, removed duplicate check)
+    * tests/unit/core/session_display_test.cpp (Fixed test expectations)
+- **Previous Actions:**
+  - **T033 - Implement Session class with state machine and latency tracking** ✅
+    * Created SessionState enum (DISCONNECTED, CONNECTING, CONNECTED, RECONNECTING, ERROR)
+    * Implemented Session class with connection lifecycle management
+    * Added session_id (UUID v4), state, client_ip, timestamps
+    * Added display_source_id, latency_ms (atomic), reconnection_attempts (atomic)
+    * Added video_track_id, data_channel_id for WebRTC integration
+    * Implemented state transition validation and history tracking
+    * Thread-safe operations: latency_ms and reconnection_attempts use atomic
+    * Added methods: connect(), setConnected(), disconnect(), reconnect(), setError()
+    * Added methods: setDisplaySourceId(), updateLatency(), incrementReconnectionAttempts()
+    * Added methods: setVideoTrackId(), setDataChannelId(), updateActivity()
+  - **T061 - Implement display selection per session** ✅
+    * Added session_display_map_ to DisplayControllerImpl for per-session display tracking
+    * Added selectDisplayForSession() method (no SDP renegotiation)
+    * Added switchDisplayForSession() method (triggers SDP renegotiation callback)
+    * Added getDisplayForSession() method with std::optional return type
+    * Thread-safe session display mapping with separate mutex
+  - **Unit tests created (TDD Red Phase)** ✅
+    * session_test.cpp - 12 unit tests for Session entity
+    * session_display_test.cpp - 8 unit tests for session display selection
+  - **Files created:**
+    * tests/unit/core/session_test.cpp (330 lines) - 12 unit tests
+    * tests/unit/core/session_display_test.cpp (260 lines) - 8 unit tests
+    * ScreenStreamSDK/include/screensdk/core/session.h (177 lines) - Session class definition
+    * ScreenStreamSDK/src/core/session.cpp (260 lines) - Session class implementation
+    * build_t033_t061.bat (44 lines) - Build and test script
+  - **Files modified:**
+    * ScreenStreamSDK/include/screensdk/core/display_controller.h (Added 3 session methods)
+    * ScreenStreamSDK/src/core/display_controller.cpp (Implemented session methods)
+    * ScreenStreamSDK/src/CMakeLists.txt (Added session.cpp to build)
+    * ScreenStreamSDK/src/CMakeLists.txt (Added session.h to headers)
+    * tests/CMakeLists.txt (Added session_test.cpp and session_display_test.cpp)
+
 ## Session: 2026-02-13 (DataChannel Complete Implementation)
 - **Status:** Phase 4 complete
 - **Actions taken:**
@@ -439,6 +579,66 @@
     * 33 DataChannel tests all passing
 - **Files modified:**
   - ScreenStreamSDK/src/transport/data_channel.cpp
+
+## Session: 2026-02-14
+<!--
+  WHAT: The date of this work session.
+  WHY: Helps track when work happened, useful for resuming after time gaps.
+-->
+- **Status:** Phase 3 (User Story 1) in_progress
+- **Actions taken:**
+  - **Code quality improvement: Convert all Chinese comments to English** ✅
+    * ScreenStreamSDK/src/core/display_controller.cpp - Converted Chinese comments to English
+    * ScreenStreamSDK/include/screensdk/transport/sdp_renegotiation.h - Converted all function descriptions to English
+    * ScreenStreamSDK/include/screensdk/transport/data_channel.h - Converted all function descriptions to English
+    * ScreenStreamSDK/include/screensdk/core/display_controller.h - Converted all function descriptions to English
+    * tests/unit/input/windows_input_test.cpp - Converted test documentation to English
+    * Updated "control端" → "controller" / "controlled end"
+  - **Fixed T061 session validation issues** ✅
+    * Re-enabled session ID validation in selectDisplayForSession()
+    * Re-enabled session ID validation in switchDisplayForSession()
+    * Re-enabled session ID validation in getDisplayForSession()
+    * Fixed session_display_test.cpp to correctly test invalid session handling
+    * Removed duplicate display ID validation in getDisplayForSession()
+  - **Test Results:**
+    * InvalidSessionHandling test now correctly validates session ID format
+    * All session display tests passing ✅
+  - **Files modified:**
+    * ScreenStreamSDK/src/core/display_controller.cpp (Re-enabled validation, removed duplicate check)
+    * tests/unit/core/session_display_test.cpp (Fixed test expectations)
+- **Previous Actions:**
+  - **T033 - Implement Session class with state machine and latency tracking** ✅
+    * Created SessionState enum (DISCONNECTED, CONNECTING, CONNECTED, RECONNECTING, ERROR)
+    * Implemented Session class with connection lifecycle management
+    * Added session_id (UUID v4), state, client_ip, timestamps
+    * Added display_source_id, latency_ms (atomic), reconnection_attempts (atomic)
+    * Added video_track_id, data_channel_id for WebRTC integration
+    * Implemented state transition validation and history tracking
+    * Thread-safe operations: latency_ms and reconnection_attempts use atomic
+    * Added methods: connect(), setConnected(), disconnect(), reconnect(), setError()
+    * Added methods: setDisplaySourceId(), updateLatency(), incrementReconnectionAttempts()
+    * Added methods: setVideoTrackId(), setDataChannelId(), updateActivity()
+  - **T061 - Implement display selection per session** ✅
+    * Added session_display_map_ to DisplayControllerImpl for per-session display tracking
+    * Added selectDisplayForSession() method (no SDP renegotiation)
+    * Added switchDisplayForSession() method (triggers SDP renegotiation callback)
+    * Added getDisplayForSession() method with std::optional return type
+    * Thread-safe session display mapping with separate mutex
+  - **Unit tests created (TDD Red Phase)** ✅
+    * session_test.cpp - 12 unit tests for Session entity
+    * session_display_test.cpp - 8 unit tests for session display selection
+  - **Files created:**
+    * tests/unit/core/session_test.cpp (330 lines) - 12 unit tests
+    * tests/unit/core/session_display_test.cpp (260 lines) - 8 unit tests
+    * ScreenStreamSDK/include/screensdk/core/session.h (177 lines) - Session class definition
+    * ScreenStreamSDK/src/core/session.cpp (260 lines) - Session class implementation
+    * build_t033_t061.bat (44 lines) - Build and test script
+  - **Files modified:**
+    * ScreenStreamSDK/include/screensdk/core/display_controller.h (Added 3 session methods)
+    * ScreenStreamSDK/src/core/display_controller.cpp (Implemented session methods)
+    * ScreenStreamSDK/src/CMakeLists.txt (Added session.cpp to build)
+    * ScreenStreamSDK/src/CMakeLists.txt (Added session.h to headers)
+    * tests/CMakeLists.txt (Added session_test.cpp and session_display_test.cpp)
 
 ## Session: 2026-02-13 (End-to-End Integration Tests)
 - **Status:** Phase 5 complete ✅
@@ -537,6 +737,66 @@
 
 ---
 
+## Session: 2026-02-14
+<!--
+  WHAT: The date of this work session.
+  WHY: Helps track when work happened, useful for resuming after time gaps.
+-->
+- **Status:** Phase 3 (User Story 1) in_progress
+- **Actions taken:**
+  - **Code quality improvement: Convert all Chinese comments to English** ✅
+    * ScreenStreamSDK/src/core/display_controller.cpp - Converted Chinese comments to English
+    * ScreenStreamSDK/include/screensdk/transport/sdp_renegotiation.h - Converted all function descriptions to English
+    * ScreenStreamSDK/include/screensdk/transport/data_channel.h - Converted all function descriptions to English
+    * ScreenStreamSDK/include/screensdk/core/display_controller.h - Converted all function descriptions to English
+    * tests/unit/input/windows_input_test.cpp - Converted test documentation to English
+    * Updated "control端" → "controller" / "controlled end"
+  - **Fixed T061 session validation issues** ✅
+    * Re-enabled session ID validation in selectDisplayForSession()
+    * Re-enabled session ID validation in switchDisplayForSession()
+    * Re-enabled session ID validation in getDisplayForSession()
+    * Fixed session_display_test.cpp to correctly test invalid session handling
+    * Removed duplicate display ID validation in getDisplayForSession()
+  - **Test Results:**
+    * InvalidSessionHandling test now correctly validates session ID format
+    * All session display tests passing ✅
+  - **Files modified:**
+    * ScreenStreamSDK/src/core/display_controller.cpp (Re-enabled validation, removed duplicate check)
+    * tests/unit/core/session_display_test.cpp (Fixed test expectations)
+- **Previous Actions:**
+  - **T033 - Implement Session class with state machine and latency tracking** ✅
+    * Created SessionState enum (DISCONNECTED, CONNECTING, CONNECTED, RECONNECTING, ERROR)
+    * Implemented Session class with connection lifecycle management
+    * Added session_id (UUID v4), state, client_ip, timestamps
+    * Added display_source_id, latency_ms (atomic), reconnection_attempts (atomic)
+    * Added video_track_id, data_channel_id for WebRTC integration
+    * Implemented state transition validation and history tracking
+    * Thread-safe operations: latency_ms and reconnection_attempts use atomic
+    * Added methods: connect(), setConnected(), disconnect(), reconnect(), setError()
+    * Added methods: setDisplaySourceId(), updateLatency(), incrementReconnectionAttempts()
+    * Added methods: setVideoTrackId(), setDataChannelId(), updateActivity()
+  - **T061 - Implement display selection per session** ✅
+    * Added session_display_map_ to DisplayControllerImpl for per-session display tracking
+    * Added selectDisplayForSession() method (no SDP renegotiation)
+    * Added switchDisplayForSession() method (triggers SDP renegotiation callback)
+    * Added getDisplayForSession() method with std::optional return type
+    * Thread-safe session display mapping with separate mutex
+  - **Unit tests created (TDD Red Phase)** ✅
+    * session_test.cpp - 12 unit tests for Session entity
+    * session_display_test.cpp - 8 unit tests for session display selection
+  - **Files created:**
+    * tests/unit/core/session_test.cpp (330 lines) - 12 unit tests
+    * tests/unit/core/session_display_test.cpp (260 lines) - 8 unit tests
+    * ScreenStreamSDK/include/screensdk/core/session.h (177 lines) - Session class definition
+    * ScreenStreamSDK/src/core/session.cpp (260 lines) - Session class implementation
+    * build_t033_t061.bat (44 lines) - Build and test script
+  - **Files modified:**
+    * ScreenStreamSDK/include/screensdk/core/display_controller.h (Added 3 session methods)
+    * ScreenStreamSDK/src/core/display_controller.cpp (Implemented session methods)
+    * ScreenStreamSDK/src/CMakeLists.txt (Added session.cpp to build)
+    * ScreenStreamSDK/src/CMakeLists.txt (Added session.h to headers)
+    * tests/CMakeLists.txt (Added session_test.cpp and session_display_test.cpp)
+
 ## Session: 2026-02-13 (集成测试完善)
 - **Status:** 完成 ✅
 - **Actions taken:**
@@ -574,6 +834,66 @@
   - 捕获编码管道测试: 完整管道初始化、单帧编码、持续捕获、性能延迟测试
 
 ---
+
+## Session: 2026-02-14
+<!--
+  WHAT: The date of this work session.
+  WHY: Helps track when work happened, useful for resuming after time gaps.
+-->
+- **Status:** Phase 3 (User Story 1) in_progress
+- **Actions taken:**
+  - **Code quality improvement: Convert all Chinese comments to English** ✅
+    * ScreenStreamSDK/src/core/display_controller.cpp - Converted Chinese comments to English
+    * ScreenStreamSDK/include/screensdk/transport/sdp_renegotiation.h - Converted all function descriptions to English
+    * ScreenStreamSDK/include/screensdk/transport/data_channel.h - Converted all function descriptions to English
+    * ScreenStreamSDK/include/screensdk/core/display_controller.h - Converted all function descriptions to English
+    * tests/unit/input/windows_input_test.cpp - Converted test documentation to English
+    * Updated "control端" → "controller" / "controlled end"
+  - **Fixed T061 session validation issues** ✅
+    * Re-enabled session ID validation in selectDisplayForSession()
+    * Re-enabled session ID validation in switchDisplayForSession()
+    * Re-enabled session ID validation in getDisplayForSession()
+    * Fixed session_display_test.cpp to correctly test invalid session handling
+    * Removed duplicate display ID validation in getDisplayForSession()
+  - **Test Results:**
+    * InvalidSessionHandling test now correctly validates session ID format
+    * All session display tests passing ✅
+  - **Files modified:**
+    * ScreenStreamSDK/src/core/display_controller.cpp (Re-enabled validation, removed duplicate check)
+    * tests/unit/core/session_display_test.cpp (Fixed test expectations)
+- **Previous Actions:**
+  - **T033 - Implement Session class with state machine and latency tracking** ✅
+    * Created SessionState enum (DISCONNECTED, CONNECTING, CONNECTED, RECONNECTING, ERROR)
+    * Implemented Session class with connection lifecycle management
+    * Added session_id (UUID v4), state, client_ip, timestamps
+    * Added display_source_id, latency_ms (atomic), reconnection_attempts (atomic)
+    * Added video_track_id, data_channel_id for WebRTC integration
+    * Implemented state transition validation and history tracking
+    * Thread-safe operations: latency_ms and reconnection_attempts use atomic
+    * Added methods: connect(), setConnected(), disconnect(), reconnect(), setError()
+    * Added methods: setDisplaySourceId(), updateLatency(), incrementReconnectionAttempts()
+    * Added methods: setVideoTrackId(), setDataChannelId(), updateActivity()
+  - **T061 - Implement display selection per session** ✅
+    * Added session_display_map_ to DisplayControllerImpl for per-session display tracking
+    * Added selectDisplayForSession() method (no SDP renegotiation)
+    * Added switchDisplayForSession() method (triggers SDP renegotiation callback)
+    * Added getDisplayForSession() method with std::optional return type
+    * Thread-safe session display mapping with separate mutex
+  - **Unit tests created (TDD Red Phase)** ✅
+    * session_test.cpp - 12 unit tests for Session entity
+    * session_display_test.cpp - 8 unit tests for session display selection
+  - **Files created:**
+    * tests/unit/core/session_test.cpp (330 lines) - 12 unit tests
+    * tests/unit/core/session_display_test.cpp (260 lines) - 8 unit tests
+    * ScreenStreamSDK/include/screensdk/core/session.h (177 lines) - Session class definition
+    * ScreenStreamSDK/src/core/session.cpp (260 lines) - Session class implementation
+    * build_t033_t061.bat (44 lines) - Build and test script
+  - **Files modified:**
+    * ScreenStreamSDK/include/screensdk/core/display_controller.h (Added 3 session methods)
+    * ScreenStreamSDK/src/core/display_controller.cpp (Implemented session methods)
+    * ScreenStreamSDK/src/CMakeLists.txt (Added session.cpp to build)
+    * ScreenStreamSDK/src/CMakeLists.txt (Added session.h to headers)
+    * tests/CMakeLists.txt (Added session_test.cpp and session_display_test.cpp)
 
 ## Session: 2026-02-13 (U2 - SDP Renegotiation Handler Unit Test)
 - **Status:** 完成 ✅
@@ -620,6 +940,66 @@
 
 ---
 
+## Session: 2026-02-14
+<!--
+  WHAT: The date of this work session.
+  WHY: Helps track when work happened, useful for resuming after time gaps.
+-->
+- **Status:** Phase 3 (User Story 1) in_progress
+- **Actions taken:**
+  - **Code quality improvement: Convert all Chinese comments to English** ✅
+    * ScreenStreamSDK/src/core/display_controller.cpp - Converted Chinese comments to English
+    * ScreenStreamSDK/include/screensdk/transport/sdp_renegotiation.h - Converted all function descriptions to English
+    * ScreenStreamSDK/include/screensdk/transport/data_channel.h - Converted all function descriptions to English
+    * ScreenStreamSDK/include/screensdk/core/display_controller.h - Converted all function descriptions to English
+    * tests/unit/input/windows_input_test.cpp - Converted test documentation to English
+    * Updated "control端" → "controller" / "controlled end"
+  - **Fixed T061 session validation issues** ✅
+    * Re-enabled session ID validation in selectDisplayForSession()
+    * Re-enabled session ID validation in switchDisplayForSession()
+    * Re-enabled session ID validation in getDisplayForSession()
+    * Fixed session_display_test.cpp to correctly test invalid session handling
+    * Removed duplicate display ID validation in getDisplayForSession()
+  - **Test Results:**
+    * InvalidSessionHandling test now correctly validates session ID format
+    * All session display tests passing ✅
+  - **Files modified:**
+    * ScreenStreamSDK/src/core/display_controller.cpp (Re-enabled validation, removed duplicate check)
+    * tests/unit/core/session_display_test.cpp (Fixed test expectations)
+- **Previous Actions:**
+  - **T033 - Implement Session class with state machine and latency tracking** ✅
+    * Created SessionState enum (DISCONNECTED, CONNECTING, CONNECTED, RECONNECTING, ERROR)
+    * Implemented Session class with connection lifecycle management
+    * Added session_id (UUID v4), state, client_ip, timestamps
+    * Added display_source_id, latency_ms (atomic), reconnection_attempts (atomic)
+    * Added video_track_id, data_channel_id for WebRTC integration
+    * Implemented state transition validation and history tracking
+    * Thread-safe operations: latency_ms and reconnection_attempts use atomic
+    * Added methods: connect(), setConnected(), disconnect(), reconnect(), setError()
+    * Added methods: setDisplaySourceId(), updateLatency(), incrementReconnectionAttempts()
+    * Added methods: setVideoTrackId(), setDataChannelId(), updateActivity()
+  - **T061 - Implement display selection per session** ✅
+    * Added session_display_map_ to DisplayControllerImpl for per-session display tracking
+    * Added selectDisplayForSession() method (no SDP renegotiation)
+    * Added switchDisplayForSession() method (triggers SDP renegotiation callback)
+    * Added getDisplayForSession() method with std::optional return type
+    * Thread-safe session display mapping with separate mutex
+  - **Unit tests created (TDD Red Phase)** ✅
+    * session_test.cpp - 12 unit tests for Session entity
+    * session_display_test.cpp - 8 unit tests for session display selection
+  - **Files created:**
+    * tests/unit/core/session_test.cpp (330 lines) - 12 unit tests
+    * tests/unit/core/session_display_test.cpp (260 lines) - 8 unit tests
+    * ScreenStreamSDK/include/screensdk/core/session.h (177 lines) - Session class definition
+    * ScreenStreamSDK/src/core/session.cpp (260 lines) - Session class implementation
+    * build_t033_t061.bat (44 lines) - Build and test script
+  - **Files modified:**
+    * ScreenStreamSDK/include/screensdk/core/display_controller.h (Added 3 session methods)
+    * ScreenStreamSDK/src/core/display_controller.cpp (Implemented session methods)
+    * ScreenStreamSDK/src/CMakeLists.txt (Added session.cpp to build)
+    * ScreenStreamSDK/src/CMakeLists.txt (Added session.h to headers)
+    * tests/CMakeLists.txt (Added session_test.cpp and session_display_test.cpp)
+
 ## Session: 2026-02-13 (T055 - DisplaySource Entity Unit Test)
 - **Status:** 完成 ✅
 - **Actions taken:**
@@ -654,6 +1034,66 @@
 
 ---
 
+## Session: 2026-02-14
+<!--
+  WHAT: The date of this work session.
+  WHY: Helps track when work happened, useful for resuming after time gaps.
+-->
+- **Status:** Phase 3 (User Story 1) in_progress
+- **Actions taken:**
+  - **Code quality improvement: Convert all Chinese comments to English** ✅
+    * ScreenStreamSDK/src/core/display_controller.cpp - Converted Chinese comments to English
+    * ScreenStreamSDK/include/screensdk/transport/sdp_renegotiation.h - Converted all function descriptions to English
+    * ScreenStreamSDK/include/screensdk/transport/data_channel.h - Converted all function descriptions to English
+    * ScreenStreamSDK/include/screensdk/core/display_controller.h - Converted all function descriptions to English
+    * tests/unit/input/windows_input_test.cpp - Converted test documentation to English
+    * Updated "control端" → "controller" / "controlled end"
+  - **Fixed T061 session validation issues** ✅
+    * Re-enabled session ID validation in selectDisplayForSession()
+    * Re-enabled session ID validation in switchDisplayForSession()
+    * Re-enabled session ID validation in getDisplayForSession()
+    * Fixed session_display_test.cpp to correctly test invalid session handling
+    * Removed duplicate display ID validation in getDisplayForSession()
+  - **Test Results:**
+    * InvalidSessionHandling test now correctly validates session ID format
+    * All session display tests passing ✅
+  - **Files modified:**
+    * ScreenStreamSDK/src/core/display_controller.cpp (Re-enabled validation, removed duplicate check)
+    * tests/unit/core/session_display_test.cpp (Fixed test expectations)
+- **Previous Actions:**
+  - **T033 - Implement Session class with state machine and latency tracking** ✅
+    * Created SessionState enum (DISCONNECTED, CONNECTING, CONNECTED, RECONNECTING, ERROR)
+    * Implemented Session class with connection lifecycle management
+    * Added session_id (UUID v4), state, client_ip, timestamps
+    * Added display_source_id, latency_ms (atomic), reconnection_attempts (atomic)
+    * Added video_track_id, data_channel_id for WebRTC integration
+    * Implemented state transition validation and history tracking
+    * Thread-safe operations: latency_ms and reconnection_attempts use atomic
+    * Added methods: connect(), setConnected(), disconnect(), reconnect(), setError()
+    * Added methods: setDisplaySourceId(), updateLatency(), incrementReconnectionAttempts()
+    * Added methods: setVideoTrackId(), setDataChannelId(), updateActivity()
+  - **T061 - Implement display selection per session** ✅
+    * Added session_display_map_ to DisplayControllerImpl for per-session display tracking
+    * Added selectDisplayForSession() method (no SDP renegotiation)
+    * Added switchDisplayForSession() method (triggers SDP renegotiation callback)
+    * Added getDisplayForSession() method with std::optional return type
+    * Thread-safe session display mapping with separate mutex
+  - **Unit tests created (TDD Red Phase)** ✅
+    * session_test.cpp - 12 unit tests for Session entity
+    * session_display_test.cpp - 8 unit tests for session display selection
+  - **Files created:**
+    * tests/unit/core/session_test.cpp (330 lines) - 12 unit tests
+    * tests/unit/core/session_display_test.cpp (260 lines) - 8 unit tests
+    * ScreenStreamSDK/include/screensdk/core/session.h (177 lines) - Session class definition
+    * ScreenStreamSDK/src/core/session.cpp (260 lines) - Session class implementation
+    * build_t033_t061.bat (44 lines) - Build and test script
+  - **Files modified:**
+    * ScreenStreamSDK/include/screensdk/core/display_controller.h (Added 3 session methods)
+    * ScreenStreamSDK/src/core/display_controller.cpp (Implemented session methods)
+    * ScreenStreamSDK/src/CMakeLists.txt (Added session.cpp to build)
+    * ScreenStreamSDK/src/CMakeLists.txt (Added session.h to headers)
+    * tests/CMakeLists.txt (Added session_test.cpp and session_display_test.cpp)
+
 ## Session: 2026-02-13 (集成测试期望值调整)
 - **Status:** 完成 ✅
 - **Actions taken:**
@@ -680,6 +1120,34 @@
 - **Test Coverage:**
   - 集成测试全部通过
   - 测试覆盖: 捕获编码管道、编码器性能、回调机制、内存稳定性
+
+---
+## Session: 2026-02-14 (Code Quality and Test Fixes)
+- **Status:** Phase 3 (User Story 1) in_progress
+- **Actions taken:**
+  - **Code quality improvement: Convert all Chinese comments to English** ✅
+    * ScreenStreamSDK/src/core/display_controller.cpp - Converted Chinese comments to English
+    * ScreenStreamSDK/include/screensdk/transport/sdp_renegotiation.h - Converted all function descriptions to English
+    * ScreenStreamSDK/include/screensdk/transport/data_channel.h - Converted all function descriptions to English
+    * ScreenStreamSDK/include/screensdk/core/display_controller.h - Converted all function descriptions to English
+    * tests/unit/input/windows_input_test.cpp - Converted test documentation to English
+    * Updated "control端" → "controller" / "controlled end"
+  - **Fixed T061 session validation issues** ✅
+    * Re-enabled session ID validation in selectDisplayForSession()
+    * Re-enabled session ID validation in switchDisplayForSession()
+    * Re-enabled session ID validation in getDisplayForSession()
+    * Fixed session_display_test.cpp to correctly test invalid session handling
+    * Removed duplicate display ID validation in getDisplayForSession()
+  - **Test Results:**
+    * InvalidSessionHandling test now correctly validates session ID format
+    * All session display tests passing ✅
+  - **Files modified:**
+    * ScreenStreamSDK/src/core/display_controller.cpp (Re-enabled validation, removed duplicate check)
+    * tests/unit/core/session_display_test.cpp (Fixed test expectations)
+- **Previous Actions:**
+  - **T033 - Implement Session class with state machine and latency tracking** ✅
+  - **T061 - Implement display selection per session** ✅
+  - **Unit tests created (TDD Red Phase)** ✅
 
 ---
 *Update after completing each phase or encountering errors*

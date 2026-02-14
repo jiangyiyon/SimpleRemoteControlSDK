@@ -2,6 +2,8 @@
 
 #include <algorithm>
 #include <mutex>
+#include <regex>
+#include <unordered_map>
 
 #include "screensdk/capture/display_detector.h"
 
@@ -35,11 +37,19 @@ public:
   void onDisplaySwitch(DisplaySwitchCallback callback) override;
   void onDisplayChange(DisplayChangeCallback callback) override;
 
+  Result<void> selectDisplayForSession(const std::string& session_id,
+                                       int id) override;
+  Result<void> switchDisplayForSession(const std::string& session_id,
+                                        int id) override;
+  std::optional<DisplaySource> getDisplayForSession(
+      const std::string& session_id) override;
+
 private:
   std::vector<DisplaySource> convertToDisplaySources(
       const std::vector<DisplayInfo>& display_infos);
   DisplaySource convertToDisplaySource(const DisplayInfo& display_info);
   Result<void> validateDisplayId(int id);
+  Result<void> validateSessionId(const std::string& session_id);
   void triggerDisplaySwitchCallback(const DisplaySource& old_display,
                                      const DisplaySource& new_display);
 
@@ -51,6 +61,10 @@ private:
   DisplaySwitchCallback display_switch_callback_;
   DisplayChangeCallback display_change_callback_;
   mutable std::mutex callback_mutex_;
+
+  // Session-aware display selection
+  std::unordered_map<std::string, int> session_display_map_;
+  mutable std::mutex session_display_mutex_;
 };
 
 DisplayControllerImpl::~DisplayControllerImpl() {
@@ -64,7 +78,7 @@ Result<void> DisplayControllerImpl::initialize() {
     return Result<void>::make_ok();
   }
 
-  // 刷新显示器列表
+  // Refresh display list
   display_detector_.refresh();
   displays_ = convertToDisplaySources(display_detector_.getDisplays());
 
@@ -182,7 +196,7 @@ Result<void> DisplayControllerImpl::switchDisplay(int id) {
 
   current_display_id_.store(id);
 
-  // 触发显示器切换回调 (会触发 SDP 重新协商)
+  // Trigger display switch callback (will trigger SDP renegotiation)
   triggerDisplaySwitchCallback(old_display, new_display);
 
   return Result<void>::make_ok();
@@ -285,7 +299,135 @@ void DisplayControllerImpl::triggerDisplaySwitchCallback(
   }
 }
 
-// 工厂函数实现
+Result<void> DisplayControllerImpl::validateSessionId(
+    const std::string& session_id) {
+  // UUID v4 format: xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx
+  // where x is any hex digit (0-9, a-f), y is 8, 9, a, or b
+  // Simplified validation: check length and format
+  if (session_id.length() != 36) {
+    return Result<void>::make_error(ErrorType::kInputError, 0,
+                                    "Invalid session ID length");
+  }
+
+  // Check dash positions: 8, 13, 18, 23
+  if (session_id[8] != '-' || session_id[13] != '-' ||
+      session_id[18] != '-' || session_id[23] != '-') {
+    return Result<void>::make_error(ErrorType::kInputError, 0,
+                                    "Invalid session ID format (dashes)");
+  }
+
+  // Check version digit at position 14
+  if (session_id[14] != '4') {
+    return Result<void>::make_error(ErrorType::kInputError, 0,
+                                    "Invalid session ID version");
+  }
+
+  // Check variant digit at position 19 (should be hex digit)
+  // UUID v4 variant should be 10xx (8, 9, A, B), but we accept any hex digit
+  char variant = session_id[19];
+  bool is_variant_hex = (variant >= '0' && variant <= '9') ||
+                        (variant >= 'A' && variant <= 'F') ||
+                        (variant >= 'a' && variant <= 'f');
+  if (!is_variant_hex) {
+    return Result<void>::make_error(ErrorType::kInputError, 0,
+                                    "Invalid session ID variant");
+  }
+
+  // Check remaining characters are hex digits
+  for (int i = 0; i < 36; ++i) {
+    if (i == 8 || i == 13 || i == 18 || i == 23) continue;
+    char c = session_id[i];
+    bool is_hex = (c >= '0' && c <= '9') ||
+                  (c >= 'A' && c <= 'F') ||
+                  (c >= 'a' && c <= 'f');
+    if (!is_hex) {
+      return Result<void>::make_error(ErrorType::kInputError, 0,
+                                      "Invalid session ID format (non-hex)");
+    }
+  }
+
+  return Result<void>::make_ok();
+}
+
+Result<void> DisplayControllerImpl::selectDisplayForSession(
+    const std::string& session_id, int id) {
+  auto session_validation = validateSessionId(session_id);
+  if (!session_validation) {
+    return session_validation;
+  }
+
+  auto display_validation = validateDisplayId(id);
+  if (!display_validation) {
+    return display_validation;
+  }
+
+  std::lock_guard<std::mutex> lock(session_display_mutex_);
+  session_display_map_[session_id] = id;
+
+  return Result<void>::make_ok();
+}
+
+Result<void> DisplayControllerImpl::switchDisplayForSession(
+    const std::string& session_id, int id) {
+  auto session_validation = validateSessionId(session_id);
+  if (!session_validation) {
+    return session_validation;
+  }
+
+  auto display_validation = validateDisplayId(id);
+  if (!display_validation) {
+    return display_validation;
+  }
+
+  std::lock_guard<std::mutex> lock(session_display_mutex_);
+
+  int old_id = -1;
+  auto it = session_display_map_.find(session_id);
+  if (it != session_display_map_.end()) {
+    old_id = it->second;
+  }
+
+  DisplaySource old_display = (old_id != -1) ? getDisplayById(old_id)
+                                              : DisplaySource{};
+  DisplaySource new_display = getDisplayById(id);
+
+  session_display_map_[session_id] = id;
+
+  // Trigger display switch callback (will trigger SDP renegotiation)
+  triggerDisplaySwitchCallback(old_display, new_display);
+
+  return Result<void>::make_ok();
+}
+
+std::optional<DisplaySource> DisplayControllerImpl::getDisplayForSession(
+    const std::string& session_id) {
+  auto session_validation = validateSessionId(session_id);
+  if (!session_validation) {
+    return std::nullopt;
+  }
+
+  std::lock_guard<std::mutex> lock(session_display_mutex_);
+
+  // Check if session exists in map
+  auto it = session_display_map_.find(session_id);
+  if (it == session_display_map_.end()) {
+    // Session not found in map
+    return std::nullopt;
+  }
+
+  // Get display by ID from the map
+  int display_id = it->second;
+  DisplaySource display = getDisplayById(display_id);
+
+  // Check if display is valid (empty id means not found)
+  if (display.id < 0) {
+    return std::nullopt;
+  }
+
+  return display;
+}
+
+// Factory function implementation
 extern "C" SCREEN_STREAM_SDK_EXPORT IDisplayController*
 CreateDisplayController() {
   return new DisplayControllerImpl();

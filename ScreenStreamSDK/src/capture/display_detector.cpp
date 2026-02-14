@@ -1,8 +1,12 @@
 #include <windows.h>
 #include <wingdi.h>
+#include <dxgi1_2.h>
+#include <wrl/client.h>
 #include "screensdk/capture/display_detector.h"
 
 namespace screensdk {
+
+using Microsoft::WRL::ComPtr;
 
 namespace {
 
@@ -103,6 +107,100 @@ bool DisplayDetector::hasDisplayChanged() const {
 void DisplayDetector::refresh() {
   cached_displays_ = getDisplays();
   last_display_count_ = static_cast<int>(cached_displays_.size());
+}
+
+std::vector<DisplaySource> DisplayDetector::getDisplaySources() const {
+  std::vector<DisplaySource> sources;
+
+  // Get display info from Windows Display API for primary display detection
+  DISPLAY_DEVICEA device;
+  device.cb = sizeof(device);
+  int primary_adapter_index = -1;
+
+  DWORD device_index = 0;
+  while (EnumDisplayDevicesA(nullptr, device_index, &device, 0)) {
+    if (device.StateFlags & DISPLAY_DEVICE_PRIMARY_DEVICE) {
+      primary_adapter_index = device_index;
+      break;
+    }
+    device_index++;
+  }
+
+  // Create DXGI Factory to enumerate adapters and outputs
+  ComPtr<IDXGIFactory1> factory;
+  HRESULT hr = CreateDXGIFactory1(__uuidof(IDXGIFactory1), &factory);
+  if (FAILED(hr)) {
+    return sources;
+  }
+
+  // Enumerate adapters (up to 4 displays as per T058 constraint)
+  UINT adapter_index = 0;
+  ComPtr<IDXGIAdapter1> adapter;
+  while (factory->EnumAdapters1(adapter_index, &adapter) != DXGI_ERROR_NOT_FOUND &&
+         adapter_index < 4) {
+    DXGI_ADAPTER_DESC1 adapter_desc;
+    hr = adapter->GetDesc1(&adapter_desc);
+    if (SUCCEEDED(hr)) {
+      // Enumerate outputs (monitors) for this adapter
+      UINT output_index = 0;
+      ComPtr<IDXGIOutput> output;
+      while (adapter->EnumOutputs(output_index, &output) != DXGI_ERROR_NOT_FOUND) {
+        DXGI_OUTPUT_DESC output_desc;
+        hr = output->GetDesc(&output_desc);
+        if (SUCCEEDED(hr)) {
+          // Get display mode list to get resolution and refresh rate
+          UINT mode_count = 0;
+          hr = output->GetDisplayModeList(DXGI_FORMAT_B8G8R8A8_UNORM,
+                                           0, &mode_count, nullptr);
+          if (SUCCEEDED(hr) && mode_count > 0) {
+            std::vector<DXGI_MODE_DESC> modes(mode_count);
+            hr = output->GetDisplayModeList(DXGI_FORMAT_B8G8R8A8_UNORM,
+                                           0, &mode_count, modes.data());
+            if (SUCCEEDED(hr) && !modes.empty()) {
+              // Use the first mode (typically current mode)
+              const DXGI_MODE_DESC& mode = modes[0];
+
+              DisplaySource source;
+              source.id = static_cast<int>(adapter_index);
+              source.name = wstring_to_utf8(adapter_desc.Description);
+              source.resolution_width = static_cast<int>(mode.Width);
+              source.resolution_height = static_cast<int>(mode.Height);
+              source.refresh_rate = static_cast<int>(
+                  static_cast<float>(mode.RefreshRate.Numerator) /
+                  static_cast<float>(mode.RefreshRate.Denominator));
+              source.is_primary = (static_cast<int>(adapter_index) == primary_adapter_index);
+              source.is_active = true;
+              source.capture_handle = nullptr;
+
+              sources.push_back(source);
+
+              // Only process first output per adapter for now
+              // TODO: Support multiple outputs per adapter
+              break;
+            }
+          }
+        }
+        output_index++;
+      }
+    }
+    adapter_index++;
+  }
+
+  return sources;
+}
+
+DisplaySource DisplayDetector::getDisplaySource(int id) const {
+  auto sources = getDisplaySources();
+  for (const auto& source : sources) {
+    if (source.id == id) {
+      return source;
+    }
+  }
+  return DisplaySource{};
+}
+
+int DisplayDetector::getDisplaySourceCount() const {
+  return static_cast<int>(getDisplaySources().size());
 }
 
 } // namespace screensdk

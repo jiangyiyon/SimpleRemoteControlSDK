@@ -16,7 +16,7 @@ class PeerConnection;
 namespace screensdk {
 
 /**
- * @brief SDP 重新协商状态
+ * @brief SDP renegotiation state
  */
 enum class RenegotiationState {
   kIdle = 0,
@@ -30,22 +30,22 @@ enum class RenegotiationState {
 };
 
 /**
- * @brief 本地描述回调
+ * @brief Local description callback
  */
 using RenegotiationLocalDescriptionCallback = std::function<void(const std::string& sdp)>;
 
 /**
- * @brief 状态变化回调
+ * @brief State change callback
  */
 using RenegotiationStateCallback = std::function<void(RenegotiationState state)>;
 
 /**
- * @brief SDP 重新协商处理器
+ * @brief SDP renegotiation handler
  *
  * U2: Implement SDP renegotiation handler
  *
- * 管理 WebRTC Session Description Protocol 重新协商，用于显示器切换。
- * 支持≤100ms 的无缝过渡。
+ * Manages WebRTC Session Description Protocol renegotiation for display switching.
+ * Supports seamless transition within 100ms.
  */
 class SdpRenegotiation {
 public:
@@ -58,47 +58,47 @@ public:
   SdpRenegotiation& operator=(SdpRenegotiation&&) = delete;
 
   /**
-   * @brief 开始显示器切换（触发重新协商）
-   * @return Result 包含新 SDP offer 或错误
+   * @brief Start display switch (triggers renegotiation)
+   * @return Result containing new SDP offer or error
    */
   Result<std::string> initiateDisplaySwitch();
 
   /**
-   * @brief 处理远程 SDP offer（控制端响应显示器切换请求）
-   * @param sdp 远程 SDP offer
-   * @return Result 包含 SDP answer 或错误
+   * @brief Handle remote SDP offer (controller responds to display switch request)
+   * @param sdp Remote SDP offer
+   * @return Result containing SDP answer or error
    */
   Result<std::string> handleRemoteOffer(const std::string& sdp);
 
   /**
-   * @brief 处理远程 SDP answer（被控端完成重新协商）
-   * @param sdp 远程 SDP answer
-   * @return 成功或失败
+   * @brief Handle remote SDP answer (controller completes renegotiation)
+   * @param sdp Remote SDP answer
+   * @return Success or failure
    */
   Result<void> handleRemoteAnswer(const std::string& sdp);
 
   /**
-   * @brief 获取当前状态
+   * @brief Get current state
    */
   RenegotiationState getState() const noexcept;
 
   /**
-   * @brief 检查是否正在进行重新协商
+   * @brief Check if renegotiation is in progress
    */
   bool isRenegotiating() const noexcept;
 
   /**
-   * @brief 设置本地描述回调
+   * @brief Set local description callback
    */
   void onLocalDescription(RenegotiationLocalDescriptionCallback callback);
 
   /**
-   * @brief 设置状态变化回调
+   * @brief Set state change callback
    */
   void onStateChange(RenegotiationStateCallback callback);
 
   /**
-   * @brief 重置协商状态
+   * @brief Reset negotiation state
    */
   void reset();
 

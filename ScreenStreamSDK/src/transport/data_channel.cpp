@@ -100,7 +100,7 @@ Result<std::string> DataChannel::createOffer() {
       return Result<std::string>::make_error(ErrorType::kNetworkError, 1001,
                                                "DataChannel already created");
     }
-
+     
     // Create DataChannel before creating offer
     rtc::DataChannelInit init;
     init.protocol = config_.protocol;

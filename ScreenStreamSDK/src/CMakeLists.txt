@@ -23,6 +23,7 @@ set(SOURCE_FILES
     input/windows_input.cpp
 
     # Core
+    core/session.cpp
     core/display_controller.cpp
 
     # Platform
@@ -54,6 +55,7 @@ set(HEADER_FILES
     ${CMAKE_SOURCE_DIR}/include/screensdk/input/windows_input.h
 
     # Core
+    ${CMAKE_SOURCE_DIR}/include/screensdk/core/session.h
     ${CMAKE_SOURCE_DIR}/include/screensdk/core/display_controller.h
 
     # Platform
@@ -84,7 +86,7 @@ endif()
 
 # Windows libraries
 if(WIN32)
-    target_link_libraries(screensdk d3d11 dxgi user32 gdi32)
+    target_link_libraries(screensdk d3d11 dxgi d3d11.lib user32 gdi32)
 endif()
 
 # C++20

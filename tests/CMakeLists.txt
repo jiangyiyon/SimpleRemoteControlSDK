@@ -46,6 +46,7 @@ add_executable(unit_tests
     # Unit tests for capture
     unit/display_detector_test.cpp
     unit/capture/dxgi_capture_test.cpp
+    unit/capture/display_detector_dxgi_test.cpp
     unit/capture/display_switch_test.cpp
 
     # Unit tests for encoding
@@ -58,6 +59,7 @@ add_executable(unit_tests
     unit/core/session_test.cpp
     unit/core/session_manager_test.cpp
     unit/core/display_controller_test.cpp
+    unit/core/session_display_test.cpp
 
     # Unit tests for input handling
     unit/input/input_event_test.cpp

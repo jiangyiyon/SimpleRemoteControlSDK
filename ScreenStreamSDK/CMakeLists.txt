@@ -52,6 +52,10 @@ endif()
 
 # Subdirectories
 add_subdirectory(src)
+
+# Simple test programs
+add_executable(test_dxgi_display tests/test_dxgi_display.cpp)
+target_link_libraries(test_dxgi_display PRIVATE screensdk)
 if(EXISTS "${CMAKE_SOURCE_DIR}/../tests/CMakeLists.txt")
     # Explicitly specify binary directory for out-of-tree source
     add_subdirectory(${CMAKE_SOURCE_DIR}/../tests ${CMAKE_BINARY_DIR}/tests)
