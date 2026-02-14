@@ -22,6 +22,7 @@ set(SOURCE_FILES
     transport/video_source.cpp
     transport/data_channel.cpp
     transport/sdp_renegotiation.cpp
+    transport/webrtc_transport.cpp
 
     # Input
     input/windows_input.cpp
@@ -58,6 +59,7 @@ set(HEADER_FILES
     ${CMAKE_SOURCE_DIR}/include/screensdk/transport/video_source.h
     ${CMAKE_SOURCE_DIR}/include/screensdk/transport/data_channel.h
     ${CMAKE_SOURCE_DIR}/include/screensdk/transport/sdp_renegotiation.h
+    ${CMAKE_SOURCE_DIR}/include/screensdk/transport/i_webrtc_transport.h
 
     # Input
     ${CMAKE_SOURCE_DIR}/include/screensdk/input/windows_input.h

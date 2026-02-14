@@ -1,0 +1,64 @@
+Running main() from E:\TestWebRTC\RemoteControlSDK\third_party\googletest\googletest\src\gtest_main.cc
+Note: Google Test filter = CaptureEncodingPipelineIntegrationTest.*
+[==========] Running 13 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 13 tests from CaptureEncodingPipelineIntegrationTest
+[ RUN      ] CaptureEncodingPipelineIntegrationTest.InitializeCompletePipeline
+Testing on: \\.\DISPLAY1 (1920x1080) at 60Hz
+Pipeline initialized successfully
+[       OK ] CaptureEncodingPipelineIntegrationTest.InitializeCompletePipeline (101 ms)
+[ RUN      ] CaptureEncodingPipelineIntegrationTest.CaptureAndEncodeSingleFrame
+Testing on: \\.\DISPLAY1 (1920x1080) at 60Hz
+Captured frame: 8294400 bytes, Encoded: 105808 bytes (compression: 1.27566%)
+[       OK ] CaptureEncodingPipelineIntegrationTest.CaptureAndEncodeSingleFrame (141 ms)
+[ RUN      ] CaptureEncodingPipelineIntegrationTest.ContinuousCaptureAndEncode
+Testing on: \\.\DISPLAY1 (1920x1080) at 60Hz
+Captured: 30/30, Encoded: 30/30, Avg encoded: 14409.9 bytes
+[       OK ] CaptureEncodingPipelineIntegrationTest.ContinuousCaptureAndEncode (1266 ms)
+[ RUN      ] CaptureEncodingPipelineIntegrationTest.PipelinePerformanceTarget60Fps
+Testing on: \\.\DISPLAY1 (1920x1080) at 60Hz
+Performance: 60 frames in 1146ms (52.356 FPS)
+[       OK ] CaptureEncodingPipelineIntegrationTest.PipelinePerformanceTarget60Fps (1276 ms)
+[ RUN      ] CaptureEncodingPipelineIntegrationTest.EncoderFlushAfterPipelineRun
+Testing on: \\.\DISPLAY1 (1920x1080) at 60Hz
+[       OK ] CaptureEncodingPipelineIntegrationTest.EncoderFlushAfterPipelineRun (267 ms)
+[ RUN      ] CaptureEncodingPipelineIntegrationTest.DifferentEncoderConfigurations
+Testing on: \\.\DISPLAY1 (1920x1080) at 60Hz
+Successfully tested 2 encoder configurations
+[       OK ] CaptureEncodingPipelineIntegrationTest.DifferentEncoderConfigurations (169 ms)
+[ RUN      ] CaptureEncodingPipelineIntegrationTest.AutoSelectedEncoderPipeline
+Testing on: \\.\DISPLAY1 (1920x1080) at 60Hz
+Auto-selected encoder: x264 Software
+Pipeline with auto-selected encoder works correctly
+[       OK ] CaptureEncodingPipelineIntegrationTest.AutoSelectedEncoderPipeline (143 ms)
+[ RUN      ] CaptureEncodingPipelineIntegrationTest.PipelineWithCallbackAndEncode
+Testing on: \\.\DISPLAY1 (1920x1080) at 60Hz
+Callback pipeline: captured 16, encoded 16 frames
+[       OK ] CaptureEncodingPipelineIntegrationTest.PipelineWithCallbackAndEncode (619 ms)
+[ RUN      ] CaptureEncodingPipelineIntegrationTest.PipelineMemoryStability
+Testing on: \\.\DISPLAY1 (1920x1080) at 60Hz
+[       OK ] CaptureEncodingPipelineIntegrationTest.PipelineMemoryStability (6482 ms)
+[ RUN      ] CaptureEncodingPipelineIntegrationTest.PipelineHandlesStride
+Testing on: \\.\DISPLAY1 (1920x1080) at 60Hz
+Pipeline correctly handles stride: 7680
+[       OK ] CaptureEncodingPipelineIntegrationTest.PipelineHandlesStride (111 ms)
+[ RUN      ] CaptureEncodingPipelineIntegrationTest.PipelineWithMultipleResets
+Testing on: \\.\DISPLAY1 (1920x1080) at 60Hz
+Successfully reset pipeline 3 times
+[       OK ] CaptureEncodingPipelineIntegrationTest.PipelineWithMultipleResets (430 ms)
+[ RUN      ] CaptureEncodingPipelineIntegrationTest.PipelineCompressionRatio
+Testing on: \\.\DISPLAY1 (1920x1080) at 60Hz
+Raw frame: 8294400 bytes (8100KB)
+Encoded: 92789 bytes (90KB)
+Compression ratio: 1.11869%
+[       OK ] CaptureEncodingPipelineIntegrationTest.PipelineCompressionRatio (114 ms)
+[ RUN      ] CaptureEncodingPipelineIntegrationTest.PipelineLatencyMeasurement
+Testing on: \\.\DISPLAY1 (1920x1080) at 60Hz
+Average pipeline latency: 19.5108ms
+Max pipeline latency: 35.087ms
+[       OK ] CaptureEncodingPipelineIntegrationTest.PipelineLatencyMeasurement (294 ms)
+[----------] 13 tests from CaptureEncodingPipelineIntegrationTest (11423 ms total)
+
+[----------] Global test environment tear-down
+[==========] 13 tests from 1 test suite ran. (11423 ms total)
+[  PASSED  ] 13 tests.
