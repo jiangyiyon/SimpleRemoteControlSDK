@@ -38,6 +38,9 @@ else()
 endif()
 
 add_executable(unit_tests
+    # Unit tests for API
+    unit/screensdk_api_test.cpp
+
     # Unit tests for utils
     unit/error_test.cpp
     unit/metrics_collector_test.cpp
@@ -45,6 +48,7 @@ add_executable(unit_tests
 
     # Unit tests for capture
     unit/display_detector_test.cpp
+    unit/screen_capture_test.cpp
     unit/capture/dxgi_capture_test.cpp
     unit/capture/display_detector_dxgi_test.cpp
     unit/capture/display_switch_test.cpp

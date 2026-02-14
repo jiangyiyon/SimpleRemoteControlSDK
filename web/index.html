@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Remote Desktop Client</title>
+  <link rel="stylesheet" href="styles/client.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <h1 class="app-title">Remote Desktop</h1>
+      <div class="connection-status">
+        <span class="status-indicator" id="status-indicator"></span>
+        <span class="status-text" id="status-text">Disconnected</span>
+      </div>
+    </header>
+
+    <!-- Main content -->
+    <main class="app-main">
+      <!-- Video container -->
+      <div class="video-container" id="video-container">
+        <canvas id="remote-desktop-canvas"></canvas>
+      </div>
+
+      <!-- Connection form (shown when disconnected) -->
+      <div class="connection-form" id="connection-form">
+        <div class="form-group">
+          <label for="signaling-url">Signaling Server URL</label>
+          <input type="text" id="signaling-url" value="ws://localhost:8080"
+                 placeholder="ws://localhost:8080" />
+        </div>
+
+        <div class="form-group">
+          <label for="server-address">Server Address</label>
+          <input type="text" id="server-address" value="localhost"
+                 placeholder="localhost" />
+        </div>
+
+        <div class="form-actions">
+          <button id="connect-btn" class="btn btn-primary">Connect</button>
+          <button id="disconnect-btn" class="btn btn-secondary" disabled>Disconnect</button>
+        </div>
+
+        <div class="connection-info">
+          <p class="info-text">
+            Connect to a remote desktop server to view and control the screen.
+          </p>
+          <ul class="info-list">
+            <li>Use touch/click to interact</li>
+            <li>Keyboard input is supported</li>
+            <li>Press <code>Esc</code> to release keyboard capture</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Control panel (shown when connected) -->
+      <div class="control-panel" id="control-panel" style="display: none;">
+        <div class="panel-section">
+          <h3 class="panel-title">Connection Info</h3>
+          <div class="info-item">
+            <span class="info-label">Server:</span>
+            <span class="info-value" id="info-server">--</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Resolution:</span>
+            <span class="info-value" id="info-resolution">--</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Session ID:</span>
+            <span class="info-value" id="info-session">--</span>
+          </div>
+        </div>
+
+        <div class="panel-section">
+          <h3 class="panel-title">Display</h3>
+          <div id="display-selector-container" class="display-selector-container">
+            <!-- Display selector will be rendered here -->
+          </div>
+        </div>
+
+        <div class="panel-section">
+          <h3 class="panel-title">Options</h3>
+          <div class="option-item">
+            <label class="checkbox-label">
+              <input type="checkbox" id="show-metrics" checked />
+              <span>Show Metrics</span>
+            </label>
+          </div>
+          <div class="option-item">
+            <label class="checkbox-label">
+              <input type="checkbox" id="full-screen" />
+              <span>Full Screen</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <p class="footer-text">
+        Remote Desktop SDK v1.0.0 | WebRTC-based remote control
+      </p>
+    </footer>
+  </div>
+
+  <!-- Script tags for modules (in production, use bundler) -->
+  <script src="src/webrtc_connection.js"></script>
+  <script src="src/video_renderer.js"></script>
+  <script src="src/input_capture.js"></script>
+  <script src="src/metrics_display.js"></script>
+  <script src="src/display_selector.js"></script>
+  <script src="src/client.js"></script>
+
+  <script>
+    // Initialize client when DOM is ready
+    document.addEventListener('DOMContentLoaded', () => {
+      const app = new RemoteDesktopApp();
+      app.initialize();
+    });
+
+    /**
+     * @classdesc Main application class
+     * @class
+     */
+    class RemoteDesktopApp {
+      constructor() {
+        this.client = null;
+        this.fullScreen = false;
+
+        // DOM elements
+        this.statusIndicator = document.getElementById('status-indicator');
+        this.statusText = document.getElementById('status-text');
+        this.connectionForm = document.getElementById('connection-form');
+        this.controlPanel = document.getElementById('control-panel');
+        this.videoContainer = document.getElementById('video-container');
+        this.connectBtn = document.getElementById('connect-btn');
+        this.disconnectBtn = document.getElementById('disconnect-btn');
+        this.signalingUrlInput = document.getElementById('signaling-url');
+        this.serverAddressInput = document.getElementById('server-address');
+        this.showMetricsCheckbox = document.getElementById('show-metrics');
+        this.fullScreenCheckbox = document.getElementById('full-screen');
+        this.displaySelectorContainer = document.getElementById('display-selector-container');
+        this.infoServer = document.getElementById('info-server');
+        this.infoResolution = document.getElementById('info-resolution');
+        this.infoSession = document.getElementById('info-session');
+      }
+
+      async initialize() {
+        console.log('Initializing Remote Desktop App...');
+
+        // Setup event listeners
+        this._setupEventListeners();
+
+        // Initialize client
+        this.client = new RemoteDesktopClient({
+          signalingUrl: this.signalingUrlInput.value,
+          videoContainer: this.videoContainer,
+          inputTarget: document.body,
+          showMetrics: this.showMetricsCheckbox.checked,
+          displaySelectorContainer: this.displaySelectorContainer,
+          enableDisplaySwitch: true
+        });
+
+        this.client.onConnected = () => this._onConnected();
+        this.client.onDisconnected = () => this._onDisconnected();
+        this.client.onError = (error) => this._onError(error);
+
+        try {
+          await this.client.initialize();
+          console.log('App initialized successfully');
+        } catch (error) {
+          console.error('Failed to initialize app:', error);
+          this._showError('Failed to initialize: ' + error.message);
+        }
+      }
+
+      _setupEventListeners() {
+        this.connectBtn.addEventListener('click', () => this._connect());
+        this.disconnectBtn.addEventListener('click', () => this._disconnect());
+        this.showMetricsCheckbox.addEventListener('change', (e) => {
+          if (this.client) {
+            this.client.showMetricsDisplay(e.target.checked);
+          }
+        });
+        this.fullScreenCheckbox.addEventListener('change', (e) => {
+          this._toggleFullScreen(e.target.checked);
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && this.fullScreen) {
+            this._toggleFullScreen(false);
+            this.fullScreenCheckbox.checked = false;
+          }
+        });
+      }
+
+      async _connect() {
+        this._updateStatus('connecting');
+        this.connectBtn.disabled = true;
+
+        try {
+          await this.client.connect();
+          // Note: In real implementation, SDP/ICE exchange happens via signaling server
+          console.log('Connection initiated');
+        } catch (error) {
+          console.error('Connection failed:', error);
+          this._showError('Connection failed: ' + error.message);
+          this._updateStatus('disconnected');
+          this.connectBtn.disabled = false;
+        }
+      }
+
+      _disconnect() {
+        this.client.disconnect();
+      }
+
+      _onConnected() {
+        console.log('Connected to server');
+        this._updateStatus('connected');
+        this.connectionForm.style.display = 'none';
+        this.controlPanel.style.display = 'block';
+        this.connectBtn.disabled = true;
+        this.disconnectBtn.disabled = false;
+
+        // Update info
+        this.infoServer.textContent = this.serverAddressInput.value;
+        const dims = this.client.getMetrics().dimensions;
+        this.infoResolution.textContent = `${dims.width} x ${dims.height}`;
+        this.infoSession.textContent = 'Active';
+
+        // Request full screen on mobile devices
+        if (this._isMobile()) {
+          this._toggleFullScreen(true);
+          this.fullScreenCheckbox.checked = true;
+        }
+      }
+
+      _onDisconnected() {
+        console.log('Disconnected from server');
+        this._updateStatus('disconnected');
+        this.connectionForm.style.display = 'block';
+        this.controlPanel.style.display = 'none';
+        this.connectBtn.disabled = false;
+        this.disconnectBtn.disabled = true;
+
+        // Reset info
+        this.infoServer.textContent = '--';
+        this.infoResolution.textContent = '--';
+        this.infoSession.textContent = '--';
+      }
+
+      _onError(error) {
+        console.error('Error:', error);
+        this._showError(error.message);
+      }
+
+      _updateStatus(status) {
+        this.statusText.textContent = status.charAt(0).toUpperCase() + status.slice(1);
+        this.statusIndicator.className = 'status-indicator status-' + status;
+      }
+
+      _showError(message) {
+        alert(message);
+      }
+
+      _toggleFullScreen(enable) {
+        if (enable) {
+          document.documentElement.requestFullscreen().catch(err => {
+            console.warn('Failed to enter full screen:', err);
+          });
+        } else {
+          if (document.fullscreenElement) {
+            document.exitFullscreen();
+          }
+        }
+        this.fullScreen = enable;
+      }
+
+      _isMobile() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      }
+    }
+  </script>
+</body>
+</html>

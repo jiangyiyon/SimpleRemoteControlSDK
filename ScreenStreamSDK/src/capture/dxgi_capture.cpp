@@ -17,7 +17,8 @@ DxgiCapture::~DxgiCapture() {
 void DxgiCapture::start() {
   if (running_) return;
 
-  if (!initializeDxgi()) {
+  // Only initialize if not already initialized
+  if (!duplication_ && !initializeDxgi()) {
     return;
   }
 
@@ -129,13 +130,36 @@ bool DxgiCapture::captureFrame(VideoFrame& frame) {
 
 void DxgiCapture::captureLoop(std::stop_token stop_token) {
   const int frame_interval_ms = 1000 / target_fps_;
+  bool has_last_frame = false;
 
   while (!stop_token.stop_requested() && running_) {
     auto start = std::chrono::steady_clock::now();
 
     VideoFrame frame;
-    if (captureFrame(frame) && frame_callback_) {
+    bool captured = captureFrame(frame);
+
+    if (captured && frame_callback_) {
+      // Successfully captured new frame
       frame_callback_(frame);
+
+      // Store last frame for reuse when screen doesn't change
+      if (frame.size > 0 && frame.data) {
+        last_frame_buffer_.resize(frame.size);
+        std::memcpy(last_frame_buffer_.data(), frame.data, frame.size);
+
+        last_frame_.data = last_frame_buffer_.data();
+        last_frame_.size = last_frame_buffer_.size();
+        last_frame_.width = frame.width;
+        last_frame_.height = frame.height;
+        last_frame_.stride = frame.stride;
+        last_frame_.timestamp_ms = frame.timestamp_ms;
+        has_last_frame = true;
+      }
+    } else if (has_last_frame && frame_callback_) {
+      // Screen not changed, send last frame to maintain frame rate
+      last_frame_.timestamp_ms = std::chrono::duration_cast<std::chrono::milliseconds>(
+          std::chrono::steady_clock::now().time_since_epoch()).count();
+      frame_callback_(last_frame_);
     }
 
     auto elapsed = std::chrono::steady_clock::now() - start;

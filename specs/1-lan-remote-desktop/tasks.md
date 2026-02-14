@@ -50,7 +50,7 @@
 - [ ] T017 Implement WebRTC data channel wrapper for input transmission in ScreenStreamSDK/src/transport/data_channel.cpp and ScreenStreamSDK/include/screensdk/transport/data_channel.h
 - [ ] T018 Implement HTTP/WebSocket signaling server for WebRTC SDP exchange in ScreenStreamSDK/src/transport/signaling_server.cpp and ScreenStreamSDK/include/screensdk/transport/signaling_server.h
 - [ ] T019 [P] Implement DXGI screen capture initialization in ScreenStreamSDK/src/capture/dxgi_capture.cpp and ScreenStreamSDK/include/screensdk/capture/dxgi_capture.h
-- [ ] T020 [P] Implement display enumeration via Windows Display API in ScreenStreamSDK/src/capture/display_detector.cpp and ScreenStreamSDK/include/screensdk/capture/display_detector.h
+- [ ] T020 [P] Implement foundational display enumeration via Windows Display API in ScreenStreamSDK/src/capture/display_detector.cpp and ScreenStreamSDK/include/screensdk/capture/display_detector.h (Phase 2: Foundational infrastructure)
 - [ ] T021 [P] Implement encoder factory with hardware encoder/software encoder selection in ScreenStreamSDK/src/encoding/encoder_factory.cpp and ScreenStreamSDK/include/screensdk/encoding/encoder_factory.h
 - [ ] T022 [P] Implement low-latency encoder configuration (GOP=1, B-frames=0) in ScreenStreamSDK/src/encoding/encoder_config.cpp and ScreenStreamSDK/include/screensdk/encoding/encoder_config.h
 - [ ] U1 [US1] Implement Intel QuickSync hardware encoder (MFXVideoENCODE) as hardware encoder option in ScreenStreamSDK/src/encoding/qsv_encoder.cpp and ScreenStreamSDK/include/screensdk/encoding/qsv_encoder.h
@@ -104,14 +104,14 @@
 - [ ] T044 [US1] Implement IVideoEncoder interface in ScreenStreamSDK/src/encoding/encoder_factory.cpp
 - [ ] T045 [US1] Implement IWebrtcTransport interface in ScreenStreamSDK/src/transport/webrtc_manager.cpp
 - [ ] T046 [US1] Implement IInputProcessor interface in ScreenStreamSDK/src/input/input_processor.cpp
-- [ ] T047 [US1] Implement screensdk::createSession() public API in ScreenStreamSDK/src/api/screensdk.cpp and ScreenStreamSDK/include/screensdk/screensdk.h
-- [ ] T048 [US1] Implement WebRTC client JavaScript class in web/src/client.js
-- [ ] T049 [US1] Implement WebRTC connection establishment in web/src/webrtc_connection.js
-- [ ] T050 [US1] Implement Canvas 2D video renderer in web/src/video_renderer.js
-- [ ] T051 [US1] Implement touch/mouse input capture in web/src/input_capture.js
-- [ ] T052 [US1] Implement latency measurement and display in web/src/metrics_display.js
-- [ ] T053 [US1] Create main client HTML page in web/index.html
-- [ ] T054 [US1] Add client CSS styling in web/styles/client.css
+- [x] T047 [US1] Implement screensdk::createSession() public API in ScreenStreamSDK/src/api/screensdk.cpp and ScreenStreamSDK/include/screensdk/screensdk.h
+- [x] T048 [US1] Implement WebRTC client JavaScript class in web/src/client.js
+- [x] T049 [US1] Implement WebRTC connection establishment in web/src/webrtc_connection.js
+- [x] T050 [US1] Implement Canvas 2D video renderer in web/src/video_renderer.js
+- [x] T051 [US1] Implement touch/mouse input capture in web/src/input_capture.js
+- [x] T052 [US1] Implement latency measurement and display in web/src/metrics_display.js
+- [x] T053 [US1] Create main client HTML page in web/index.html
+- [x] T054 [US1] Add client CSS styling in web/styles/client.css
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently
 
@@ -129,22 +129,22 @@
 
 - [x] T055 [P] [US2] Unit test for DisplaySource entity in tests/unit/capture/display_detector_test.cpp
 - [x] U2 [P] [US2] Unit test for SDP renegotiation handler in tests/unit/transport/sdp_renegotiation_test.cpp
-- [ ] T056 [P] [US2] Integration test for display enumeration in tests/integration/display_switch_test.cpp
-- [ ] T057 [P] [US2] Integration test for display switch timing (≤100ms) in tests/integration/display_switch_test.cpp
-- [ ] T057a [P] [US2] Integration test for display hot-plug (add/remove display during active session) in tests/integration/display_switch_test.cpp
+- [x] T056 [P] [US2] Integration test for display enumeration in tests/integration/display_switch_integration_test.cpp
+- [x] T057 [P] [US2] Integration test for display switch timing (≤100ms) in tests/integration/display_controller_sdp_test.cpp (SwitchTimingUnder100ms test)
+- [x] T057a [P] [US2] Integration test for display hot-plug (add/remove display during active session) in tests/integration/display_controller_sdp_test_single_display.cpp (DetectDisplayChangesWorks test)
 
 ### Implementation for User Story 2
 
 - [x] T058 [P] [US2] Implement DisplaySource data structure in ScreenStreamSDK/src/capture/display_detector.cpp
-- [x] T059 [P] [US2] Implement IDisplayManager interface in ScreenStreamSDK/src/core/display_controller.cpp and ScreenStreamSDK/include/screensdk/core/display_controller.h
-- [ ] T060 [US2] Implement display enumeration from DXGI in ScreenStreamSDK/src/capture/display_detector.cpp
-- [ ] T061 [US2] Implement display selection per session in ScreenStreamSDK/src/core/display_controller.cpp
-- [ ] T062 [US2] Implement display switch with SDP renegotiation for seamless transition (≤100ms) in ScreenStreamSDK/src/core/display_controller.cpp
-- [ ] T063 [US2] Implement display configuration change detection in ScreenStreamSDK/src/core/display_controller.cpp
-- [ ] T064 [US2] Add display_source_id to Session entity in ScreenStreamSDK/src/core/session.cpp
-- [ ] T065 [US2] Implement display selector UI dropdown in web/src/display_selector.js
-- [ ] T066 [US2] Update client to handle display switch via Web renegotiation in web/src/client.js
-- [ ] T067 [US2] Add display information display to web UI in web/index.html
+- [x] T059 [P] [US2] Implement IDisplayController interface in ScreenStreamSDK/src/core/display_controller.cpp and ScreenStreamSDK/include/screensdk/core/display_controller.h
+- [x] T060 [US2] Extend display enumeration with DXGI integration for real-time display changes and hot-plug detection in ScreenStreamSDK/src/capture/display_detector.cpp (Phase 4: Builds upon T020 foundation)
+- [x] T061 [US2] Implement display selection per session in ScreenStreamSDK/src/core/display_controller.cpp
+- [x] T062 [US2] Implement display switch with SDP renegotiation for seamless transition (≤100ms) in ScreenStreamSDK/src/core/display_controller.cpp
+- [x] T063 [US2] Implement display configuration change detection in ScreenStreamSDK/src/core/display_controller.cpp
+- [x] T064 [US2] Add display_source_id to Session entity in ScreenStreamSDK/src/core/session.cpp
+- [x] T065 [US2] Implement display selector UI dropdown in web/src/display_selector.js
+- [x] T066 [US2] Update client to handle display switch via Web renegotiation in web/src/client.js
+- [x] T067 [US2] Add display information display to web UI in web/index.html
 - [ ] T102 [US2] Stability test (24-hour continuous operation) in tests/e2e/stability_test.cpp - Re-run after User Story 2 completion
 
 **Checkpoint**: At this point, User Stories 1 AND 2 should both work independently

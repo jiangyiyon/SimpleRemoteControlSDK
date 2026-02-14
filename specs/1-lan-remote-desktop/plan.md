@@ -15,7 +15,7 @@ This feature implements a Windows-based remote desktop SDK that enables mobile d
 **Testing**: Google Test (C++), Jest (JavaScript), manual E2E testing
 **Target Platform**: Windows 10/11 (server), Chrome Mobile (client)
 **Project Type**: Hybrid - Native application (C++) + Web client (JavaScript)
-**Performance Goals**: 60fps @ 1080p, ≤30ms end-to-end latency, ≤200MB idle memory, ≤10% idle CPU
+**Performance Goals**: 60fps @ any resolution (720p, 1080p, 1440p, 4K), ≤30ms end-to-end latency, ≤200MB idle memory, ≤10% idle CPU
 **Constraints**: Sub-100ms display switch, 5-second session setup, 24-hour stability without crashes, 4 simultaneous clients
 **Scale/Scope**: Single Windows host serving up to 4 mobile clients in local network
 

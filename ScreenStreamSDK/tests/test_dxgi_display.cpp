@@ -77,7 +77,7 @@ int main() {
   // Test 7: DisplaySourceAtomicActiveState
   bool atomic_active = true;
   for (const auto& source : sources) {
-    bool active = source.is_active.load();
+    bool active = source.is_active;
     if (!active) {
       atomic_active = false;
       std::cerr << "ERROR: Display source is not active!" << std::endl;

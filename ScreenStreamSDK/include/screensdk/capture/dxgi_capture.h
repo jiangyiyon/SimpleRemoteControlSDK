@@ -89,6 +89,10 @@ private:
   // Frame buffer for CPU readback
   std::vector<uint8_t> frame_buffer_;
 
+  // Last frame buffer for maintaining frame rate when screen doesn't change
+  std::vector<uint8_t> last_frame_buffer_;
+  VideoFrame last_frame_;
+
   // Capture thread
   std::jthread capture_thread_;
 };

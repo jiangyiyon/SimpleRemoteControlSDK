@@ -72,7 +72,7 @@ events:
       The output was:
       0
       閫傜敤浜?.NET Framework MSBuild 鐗堟湰 18.0.5+e22287bf1
-      鐢熸垚鍚姩鏃堕棿涓?2026/2/13 23:15:38銆?
+      鐢熸垚鍚姩鏃堕棿涓?2026/2/14 15:31:12銆?
       
       鑺傜偣 1 涓婄殑椤圭洰鈥淓:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\4.2.1\\CompilerIdCXX\\CompilerIdCXX.vcxproj鈥?榛樿鐩爣)銆?
       PrepareForBuild:
@@ -101,7 +101,7 @@ events:
           0 涓鍛?
           0 涓敊璇?
       
-      宸茬敤鏃堕棿 00:00:02.85
+      宸茬敤鏃堕棿 00:00:01.14
       
       
       Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CompilerIdCXX.exe"
@@ -780,8 +780,8 @@ events:
     checks:
       - "Detecting CXX compiler ABI info"
     directories:
-      source: "E:/TestWebRTC/RemoteControlSDK/ScreenStreamSDK/build/CMakeFiles/CMakeScratch/TryCompile-s4psr1"
-      binary: "E:/TestWebRTC/RemoteControlSDK/ScreenStreamSDK/build/CMakeFiles/CMakeScratch/TryCompile-s4psr1"
+      source: "E:/TestWebRTC/RemoteControlSDK/ScreenStreamSDK/build/CMakeFiles/CMakeScratch/TryCompile-rl2x3f"
+      binary: "E:/TestWebRTC/RemoteControlSDK/ScreenStreamSDK/build/CMakeFiles/CMakeScratch/TryCompile-rl2x3f"
     cmakeVariables:
       CMAKE_CXX_FLAGS: "/DWIN32 /D_WINDOWS /GR /EHsc"
       CMAKE_CXX_FLAGS_DEBUG: "/Zi /Ob0 /Od /RTC1"
@@ -791,39 +791,39 @@ events:
       variable: "CMAKE_CXX_ABI_COMPILED"
       cached: true
       stdout: |
-        Change Dir: 'E:/TestWebRTC/RemoteControlSDK/ScreenStreamSDK/build/CMakeFiles/CMakeScratch/TryCompile-s4psr1'
+        Change Dir: 'E:/TestWebRTC/RemoteControlSDK/ScreenStreamSDK/build/CMakeFiles/CMakeScratch/TryCompile-rl2x3f'
         
-        Run Build Command(s): "E:/Program Files/Microsoft Visual Studio/18/Professional/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_5ddec.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=18.0 /v:n
+        Run Build Command(s): "E:/Program Files/Microsoft Visual Studio/18/Professional/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_1d60a.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=18.0 /v:n
         閫傜敤浜?.NET Framework MSBuild 鐗堟湰 18.0.5+e22287bf1
-        鐢熸垚鍚姩鏃堕棿涓?2026/2/13 23:15:44銆?
+        鐢熸垚鍚姩鏃堕棿涓?2026/2/14 15:31:13銆?
         
-        鑺傜偣 1 涓婄殑椤圭洰鈥淓:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-s4psr1\\cmTC_5ddec.vcxproj鈥?榛樿鐩爣)銆?
+        鑺傜偣 1 涓婄殑椤圭洰鈥淓:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-rl2x3f\\cmTC_1d60a.vcxproj鈥?榛樿鐩爣)銆?
         PrepareForBuild:
           Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
-          姝ｅ湪鍒涘缓鐩綍鈥淓:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-s4psr1\\Debug\\鈥濄€?
-          姝ｅ湪鍒涘缓鐩綍鈥渃mTC_5ddec.dir\\Debug\\cmTC_5ddec.tlog\\鈥濄€?
+          姝ｅ湪鍒涘缓鐩綍鈥淓:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-rl2x3f\\Debug\\鈥濄€?
+          姝ｅ湪鍒涘缓鐩綍鈥渃mTC_1d60a.dir\\Debug\\cmTC_1d60a.tlog\\鈥濄€?
         InitializeBuildStatus:
-          姝ｅ湪鍒涘缓鈥渃mTC_5ddec.dir\\Debug\\cmTC_5ddec.tlog\\unsuccessfulbuild鈥濓紝鍥犱负宸叉寚瀹氣€淎lwaysCreate鈥濄€?
-          姝ｅ湪瀵光€渃mTC_5ddec.dir\\Debug\\cmTC_5ddec.tlog\\unsuccessfulbuild鈥濇墽琛?Touch 浠诲姟銆?
+          姝ｅ湪鍒涘缓鈥渃mTC_1d60a.dir\\Debug\\cmTC_1d60a.tlog\\unsuccessfulbuild鈥濓紝鍥犱负宸叉寚瀹氣€淎lwaysCreate鈥濄€?
+          姝ｅ湪瀵光€渃mTC_1d60a.dir\\Debug\\cmTC_1d60a.tlog\\unsuccessfulbuild鈥濇墽琛?Touch 浠诲姟銆?
         ClCompile:
-          E:\\Program Files\\Microsoft Visual Studio\\18\\Professional\\VC\\Tools\\MSVC\\14.50.35717\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D _MBCS /D "CMAKE_INTDIR=\\"Debug\\"" /EHsc /RTC1 /MDd /GR /Fo"cmTC_5ddec.dir\\Debug\\\\" /Fd"cmTC_5ddec.dir\\Debug\\vc145.pdb" /external:W1 /TP /errorReport:queue "C:\\Program Files\\CMake\\share\\cmake-4.2\\Modules\\CMakeCXXCompilerABI.cpp"
+          E:\\Program Files\\Microsoft Visual Studio\\18\\Professional\\VC\\Tools\\MSVC\\14.50.35717\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D _MBCS /D "CMAKE_INTDIR=\\"Debug\\"" /EHsc /RTC1 /MDd /GR /Fo"cmTC_1d60a.dir\\Debug\\\\" /Fd"cmTC_1d60a.dir\\Debug\\vc145.pdb" /external:W1 /TP /errorReport:queue "C:\\Program Files\\CMake\\share\\cmake-4.2\\Modules\\CMakeCXXCompilerABI.cpp"
           鐢ㄤ簬 x64 鐨?Microsoft (R) C/C++ 浼樺寲缂栬瘧鍣?19.50.35722 鐗?
           鐗堟潈鎵€鏈?C) Microsoft Corporation銆備繚鐣欐墍鏈夋潈鍒┿€?
-          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D _MBCS /D "CMAKE_INTDIR=\\"Debug\\"" /EHsc /RTC1 /MDd /GR /Fo"cmTC_5ddec.dir\\Debug\\\\" /Fd"cmTC_5ddec.dir\\Debug\\vc145.pdb" /external:W1 /TP /errorReport:queue "C:\\Program Files\\CMake\\share\\cmake-4.2\\Modules\\CMakeCXXCompilerABI.cpp"
+          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D _MBCS /D "CMAKE_INTDIR=\\"Debug\\"" /EHsc /RTC1 /MDd /GR /Fo"cmTC_1d60a.dir\\Debug\\\\" /Fd"cmTC_1d60a.dir\\Debug\\vc145.pdb" /external:W1 /TP /errorReport:queue "C:\\Program Files\\CMake\\share\\cmake-4.2\\Modules\\CMakeCXXCompilerABI.cpp"
           CMakeCXXCompilerABI.cpp
         Link:
-          E:\\Program Files\\Microsoft Visual Studio\\18\\Professional\\VC\\Tools\\MSVC\\14.50.35717\\bin\\HostX64\\x64\\link.exe /OUT:"E:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-s4psr1\\Debug\\cmTC_5ddec.exe" /INCREMENTAL /ILK:"cmTC_5ddec.dir\\Debug\\cmTC_5ddec.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"E:/TestWebRTC/RemoteControlSDK/ScreenStreamSDK/build/CMakeFiles/CMakeScratch/TryCompile-s4psr1/Debug/cmTC_5ddec.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /IMPLIB:"E:/TestWebRTC/RemoteControlSDK/ScreenStreamSDK/build/CMakeFiles/CMakeScratch/TryCompile-s4psr1/Debug/cmTC_5ddec.lib" /MACHINE:X64  /machine:x64 cmTC_5ddec.dir\\Debug\\CMakeCXXCompilerABI.obj
-          cmTC_5ddec.vcxproj -> E:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-s4psr1\\Debug\\cmTC_5ddec.exe
+          E:\\Program Files\\Microsoft Visual Studio\\18\\Professional\\VC\\Tools\\MSVC\\14.50.35717\\bin\\HostX64\\x64\\link.exe /OUT:"E:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-rl2x3f\\Debug\\cmTC_1d60a.exe" /INCREMENTAL /ILK:"cmTC_1d60a.dir\\Debug\\cmTC_1d60a.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"E:/TestWebRTC/RemoteControlSDK/ScreenStreamSDK/build/CMakeFiles/CMakeScratch/TryCompile-rl2x3f/Debug/cmTC_1d60a.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /IMPLIB:"E:/TestWebRTC/RemoteControlSDK/ScreenStreamSDK/build/CMakeFiles/CMakeScratch/TryCompile-rl2x3f/Debug/cmTC_1d60a.lib" /MACHINE:X64  /machine:x64 cmTC_1d60a.dir\\Debug\\CMakeCXXCompilerABI.obj
+          cmTC_1d60a.vcxproj -> E:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-rl2x3f\\Debug\\cmTC_1d60a.exe
         FinalizeBuildStatus:
-          姝ｅ湪鍒犻櫎鏂囦欢鈥渃mTC_5ddec.dir\\Debug\\cmTC_5ddec.tlog\\unsuccessfulbuild鈥濄€?
-          姝ｅ湪瀵光€渃mTC_5ddec.dir\\Debug\\cmTC_5ddec.tlog\\cmTC_5ddec.lastbuildstate鈥濇墽琛?Touch 浠诲姟銆?
-        宸插畬鎴愮敓鎴愰」鐩€淓:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-s4psr1\\cmTC_5ddec.vcxproj鈥?榛樿鐩爣)鐨勬搷浣溿€?
+          姝ｅ湪鍒犻櫎鏂囦欢鈥渃mTC_1d60a.dir\\Debug\\cmTC_1d60a.tlog\\unsuccessfulbuild鈥濄€?
+          姝ｅ湪瀵光€渃mTC_1d60a.dir\\Debug\\cmTC_1d60a.tlog\\cmTC_1d60a.lastbuildstate鈥濇墽琛?Touch 浠诲姟銆?
+        宸插畬鎴愮敓鎴愰」鐩€淓:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-rl2x3f\\cmTC_1d60a.vcxproj鈥?榛樿鐩爣)鐨勬搷浣溿€?
         
         宸叉垚鍔熺敓鎴愩€?
             0 涓鍛?
             0 涓敊璇?
         
-        宸茬敤鏃堕棿 00:00:02.39
+        宸茬敤鏃堕棿 00:00:00.97
         
       exitCode: 0
   -
@@ -924,7 +924,7 @@ events:
       The output was:
       0
       閫傜敤浜?.NET Framework MSBuild 鐗堟湰 18.0.5+e22287bf1
-      鐢熸垚鍚姩鏃堕棿涓?2026/2/13 23:15:47銆?
+      鐢熸垚鍚姩鏃堕棿涓?2026/2/14 15:31:15銆?
       
       鑺傜偣 1 涓婄殑椤圭洰鈥淓:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\4.2.1\\CompilerIdC\\CompilerIdC.vcxproj鈥?榛樿鐩爣)銆?
       PrepareForBuild:
@@ -953,7 +953,7 @@ events:
           0 涓鍛?
           0 涓敊璇?
       
-      宸茬敤鏃堕棿 00:00:01.95
+      宸茬敤鏃堕棿 00:00:01.00
       
       
       Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CompilerIdC.exe"
@@ -1161,8 +1161,8 @@ events:
     checks:
       - "Detecting C compiler ABI info"
     directories:
-      source: "E:/TestWebRTC/RemoteControlSDK/ScreenStreamSDK/build/CMakeFiles/CMakeScratch/TryCompile-xz1efd"
-      binary: "E:/TestWebRTC/RemoteControlSDK/ScreenStreamSDK/build/CMakeFiles/CMakeScratch/TryCompile-xz1efd"
+      source: "E:/TestWebRTC/RemoteControlSDK/ScreenStreamSDK/build/CMakeFiles/CMakeScratch/TryCompile-nafqup"
+      binary: "E:/TestWebRTC/RemoteControlSDK/ScreenStreamSDK/build/CMakeFiles/CMakeScratch/TryCompile-nafqup"
     cmakeVariables:
       CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS"
       CMAKE_C_FLAGS_DEBUG: "/Zi /Ob0 /Od /RTC1"
@@ -1171,39 +1171,39 @@ events:
       variable: "CMAKE_C_ABI_COMPILED"
       cached: true
       stdout: |
-        Change Dir: 'E:/TestWebRTC/RemoteControlSDK/ScreenStreamSDK/build/CMakeFiles/CMakeScratch/TryCompile-xz1efd'
+        Change Dir: 'E:/TestWebRTC/RemoteControlSDK/ScreenStreamSDK/build/CMakeFiles/CMakeScratch/TryCompile-nafqup'
         
-        Run Build Command(s): "E:/Program Files/Microsoft Visual Studio/18/Professional/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_7aa63.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=18.0 /v:n
+        Run Build Command(s): "E:/Program Files/Microsoft Visual Studio/18/Professional/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_4e050.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=18.0 /v:n
         閫傜敤浜?.NET Framework MSBuild 鐗堟湰 18.0.5+e22287bf1
-        鐢熸垚鍚姩鏃堕棿涓?2026/2/13 23:15:49銆?
+        鐢熸垚鍚姩鏃堕棿涓?2026/2/14 15:31:16銆?
         
-        鑺傜偣 1 涓婄殑椤圭洰鈥淓:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-xz1efd\\cmTC_7aa63.vcxproj鈥?榛樿鐩爣)銆?
+        鑺傜偣 1 涓婄殑椤圭洰鈥淓:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-nafqup\\cmTC_4e050.vcxproj鈥?榛樿鐩爣)銆?
         PrepareForBuild:
           Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
-          姝ｅ湪鍒涘缓鐩綍鈥淓:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-xz1efd\\Debug\\鈥濄€?
-          姝ｅ湪鍒涘缓鐩綍鈥渃mTC_7aa63.dir\\Debug\\cmTC_7aa63.tlog\\鈥濄€?
+          姝ｅ湪鍒涘缓鐩綍鈥淓:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-nafqup\\Debug\\鈥濄€?
+          姝ｅ湪鍒涘缓鐩綍鈥渃mTC_4e050.dir\\Debug\\cmTC_4e050.tlog\\鈥濄€?
         InitializeBuildStatus:
-          姝ｅ湪鍒涘缓鈥渃mTC_7aa63.dir\\Debug\\cmTC_7aa63.tlog\\unsuccessfulbuild鈥濓紝鍥犱负宸叉寚瀹氣€淎lwaysCreate鈥濄€?
-          姝ｅ湪瀵光€渃mTC_7aa63.dir\\Debug\\cmTC_7aa63.tlog\\unsuccessfulbuild鈥濇墽琛?Touch 浠诲姟銆?
+          姝ｅ湪鍒涘缓鈥渃mTC_4e050.dir\\Debug\\cmTC_4e050.tlog\\unsuccessfulbuild鈥濓紝鍥犱负宸叉寚瀹氣€淎lwaysCreate鈥濄€?
+          姝ｅ湪瀵光€渃mTC_4e050.dir\\Debug\\cmTC_4e050.tlog\\unsuccessfulbuild鈥濇墽琛?Touch 浠诲姟銆?
         ClCompile:
-          E:\\Program Files\\Microsoft Visual Studio\\18\\Professional\\VC\\Tools\\MSVC\\14.50.35717\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D _MBCS /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /Fo"cmTC_7aa63.dir\\Debug\\\\" /Fd"cmTC_7aa63.dir\\Debug\\vc145.pdb" /external:W1 /TC /errorReport:queue "C:\\Program Files\\CMake\\share\\cmake-4.2\\Modules\\CMakeCCompilerABI.c"
+          E:\\Program Files\\Microsoft Visual Studio\\18\\Professional\\VC\\Tools\\MSVC\\14.50.35717\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D _MBCS /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /Fo"cmTC_4e050.dir\\Debug\\\\" /Fd"cmTC_4e050.dir\\Debug\\vc145.pdb" /external:W1 /TC /errorReport:queue "C:\\Program Files\\CMake\\share\\cmake-4.2\\Modules\\CMakeCCompilerABI.c"
           鐢ㄤ簬 x64 鐨?Microsoft (R) C/C++ 浼樺寲缂栬瘧鍣?19.50.35722 鐗?
           鐗堟潈鎵€鏈?C) Microsoft Corporation銆備繚鐣欐墍鏈夋潈鍒┿€?
-          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D _MBCS /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /Fo"cmTC_7aa63.dir\\Debug\\\\" /Fd"cmTC_7aa63.dir\\Debug\\vc145.pdb" /external:W1 /TC /errorReport:queue "C:\\Program Files\\CMake\\share\\cmake-4.2\\Modules\\CMakeCCompilerABI.c"
+          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D _MBCS /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /Fo"cmTC_4e050.dir\\Debug\\\\" /Fd"cmTC_4e050.dir\\Debug\\vc145.pdb" /external:W1 /TC /errorReport:queue "C:\\Program Files\\CMake\\share\\cmake-4.2\\Modules\\CMakeCCompilerABI.c"
           CMakeCCompilerABI.c
         Link:
-          E:\\Program Files\\Microsoft Visual Studio\\18\\Professional\\VC\\Tools\\MSVC\\14.50.35717\\bin\\HostX64\\x64\\link.exe /OUT:"E:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-xz1efd\\Debug\\cmTC_7aa63.exe" /INCREMENTAL /ILK:"cmTC_7aa63.dir\\Debug\\cmTC_7aa63.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"E:/TestWebRTC/RemoteControlSDK/ScreenStreamSDK/build/CMakeFiles/CMakeScratch/TryCompile-xz1efd/Debug/cmTC_7aa63.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /IMPLIB:"E:/TestWebRTC/RemoteControlSDK/ScreenStreamSDK/build/CMakeFiles/CMakeScratch/TryCompile-xz1efd/Debug/cmTC_7aa63.lib" /MACHINE:X64  /machine:x64 cmTC_7aa63.dir\\Debug\\CMakeCCompilerABI.obj
-          cmTC_7aa63.vcxproj -> E:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-xz1efd\\Debug\\cmTC_7aa63.exe
+          E:\\Program Files\\Microsoft Visual Studio\\18\\Professional\\VC\\Tools\\MSVC\\14.50.35717\\bin\\HostX64\\x64\\link.exe /OUT:"E:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-nafqup\\Debug\\cmTC_4e050.exe" /INCREMENTAL /ILK:"cmTC_4e050.dir\\Debug\\cmTC_4e050.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"E:/TestWebRTC/RemoteControlSDK/ScreenStreamSDK/build/CMakeFiles/CMakeScratch/TryCompile-nafqup/Debug/cmTC_4e050.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /IMPLIB:"E:/TestWebRTC/RemoteControlSDK/ScreenStreamSDK/build/CMakeFiles/CMakeScratch/TryCompile-nafqup/Debug/cmTC_4e050.lib" /MACHINE:X64  /machine:x64 cmTC_4e050.dir\\Debug\\CMakeCCompilerABI.obj
+          cmTC_4e050.vcxproj -> E:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-nafqup\\Debug\\cmTC_4e050.exe
         FinalizeBuildStatus:
-          姝ｅ湪鍒犻櫎鏂囦欢鈥渃mTC_7aa63.dir\\Debug\\cmTC_7aa63.tlog\\unsuccessfulbuild鈥濄€?
-          姝ｅ湪瀵光€渃mTC_7aa63.dir\\Debug\\cmTC_7aa63.tlog\\cmTC_7aa63.lastbuildstate鈥濇墽琛?Touch 浠诲姟銆?
-        宸插畬鎴愮敓鎴愰」鐩€淓:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-xz1efd\\cmTC_7aa63.vcxproj鈥?榛樿鐩爣)鐨勬搷浣溿€?
+          姝ｅ湪鍒犻櫎鏂囦欢鈥渃mTC_4e050.dir\\Debug\\cmTC_4e050.tlog\\unsuccessfulbuild鈥濄€?
+          姝ｅ湪瀵光€渃mTC_4e050.dir\\Debug\\cmTC_4e050.tlog\\cmTC_4e050.lastbuildstate鈥濇墽琛?Touch 浠诲姟銆?
+        宸插畬鎴愮敓鎴愰」鐩€淓:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-nafqup\\cmTC_4e050.vcxproj鈥?榛樿鐩爣)鐨勬搷浣溿€?
         
         宸叉垚鍔熺敓鎴愩€?
             0 涓鍛?
             0 涓敊璇?
         
-        宸茬敤鏃堕棿 00:00:02.32
+        宸茬敤鏃堕棿 00:00:00.96
         
       exitCode: 0
   -
@@ -1468,8 +1468,8 @@ events:
     checks:
       - "Performing Test CMAKE_HAVE_LIBC_PTHREAD"
     directories:
-      source: "E:/TestWebRTC/RemoteControlSDK/ScreenStreamSDK/build/CMakeFiles/CMakeScratch/TryCompile-9i6q0g"
-      binary: "E:/TestWebRTC/RemoteControlSDK/ScreenStreamSDK/build/CMakeFiles/CMakeScratch/TryCompile-9i6q0g"
+      source: "E:/TestWebRTC/RemoteControlSDK/ScreenStreamSDK/build/CMakeFiles/CMakeScratch/TryCompile-nqaqwo"
+      binary: "E:/TestWebRTC/RemoteControlSDK/ScreenStreamSDK/build/CMakeFiles/CMakeScratch/TryCompile-nqaqwo"
     cmakeVariables:
       CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS"
       CMAKE_C_FLAGS_DEBUG: "/Zi /Ob0 /Od /RTC1"
@@ -1478,39 +1478,39 @@ events:
       variable: "CMAKE_HAVE_LIBC_PTHREAD"
       cached: true
       stdout: |
-        Change Dir: 'E:/TestWebRTC/RemoteControlSDK/ScreenStreamSDK/build/CMakeFiles/CMakeScratch/TryCompile-9i6q0g'
+        Change Dir: 'E:/TestWebRTC/RemoteControlSDK/ScreenStreamSDK/build/CMakeFiles/CMakeScratch/TryCompile-nqaqwo'
         
-        Run Build Command(s): "E:/Program Files/Microsoft Visual Studio/18/Professional/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_aeb9b.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=18.0 /v:n
+        Run Build Command(s): "E:/Program Files/Microsoft Visual Studio/18/Professional/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_4a435.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=18.0 /v:n
         閫傜敤浜?.NET Framework MSBuild 鐗堟湰 18.0.5+e22287bf1
-        鐢熸垚鍚姩鏃堕棿涓?2026/2/13 23:16:03銆?
+        鐢熸垚鍚姩鏃堕棿涓?2026/2/14 15:31:24銆?
         
-        鑺傜偣 1 涓婄殑椤圭洰鈥淓:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9i6q0g\\cmTC_aeb9b.vcxproj鈥?榛樿鐩爣)銆?
+        鑺傜偣 1 涓婄殑椤圭洰鈥淓:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-nqaqwo\\cmTC_4a435.vcxproj鈥?榛樿鐩爣)銆?
         PrepareForBuild:
           Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
-          姝ｅ湪鍒涘缓鐩綍鈥淓:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9i6q0g\\Debug\\鈥濄€?
-          姝ｅ湪鍒涘缓鐩綍鈥渃mTC_aeb9b.dir\\Debug\\cmTC_aeb9b.tlog\\鈥濄€?
+          姝ｅ湪鍒涘缓鐩綍鈥淓:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-nqaqwo\\Debug\\鈥濄€?
+          姝ｅ湪鍒涘缓鐩綍鈥渃mTC_4a435.dir\\Debug\\cmTC_4a435.tlog\\鈥濄€?
         InitializeBuildStatus:
-          姝ｅ湪鍒涘缓鈥渃mTC_aeb9b.dir\\Debug\\cmTC_aeb9b.tlog\\unsuccessfulbuild鈥濓紝鍥犱负宸叉寚瀹氣€淎lwaysCreate鈥濄€?
-          姝ｅ湪瀵光€渃mTC_aeb9b.dir\\Debug\\cmTC_aeb9b.tlog\\unsuccessfulbuild鈥濇墽琛?Touch 浠诲姟銆?
+          姝ｅ湪鍒涘缓鈥渃mTC_4a435.dir\\Debug\\cmTC_4a435.tlog\\unsuccessfulbuild鈥濓紝鍥犱负宸叉寚瀹氣€淎lwaysCreate鈥濄€?
+          姝ｅ湪瀵光€渃mTC_4a435.dir\\Debug\\cmTC_4a435.tlog\\unsuccessfulbuild鈥濇墽琛?Touch 浠诲姟銆?
         ClCompile:
-          E:\\Program Files\\Microsoft Visual Studio\\18\\Professional\\VC\\Tools\\MSVC\\14.50.35717\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CMAKE_HAVE_LIBC_PTHREAD /D _MBCS /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /Fo"cmTC_aeb9b.dir\\Debug\\\\" /Fd"cmTC_aeb9b.dir\\Debug\\vc145.pdb" /external:W1 /TC /errorReport:queue "E:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9i6q0g\\src.c"
+          E:\\Program Files\\Microsoft Visual Studio\\18\\Professional\\VC\\Tools\\MSVC\\14.50.35717\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CMAKE_HAVE_LIBC_PTHREAD /D _MBCS /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /Fo"cmTC_4a435.dir\\Debug\\\\" /Fd"cmTC_4a435.dir\\Debug\\vc145.pdb" /external:W1 /TC /errorReport:queue "E:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-nqaqwo\\src.c"
           鐢ㄤ簬 x64 鐨?Microsoft (R) C/C++ 浼樺寲缂栬瘧鍣?19.50.35722 鐗?
           鐗堟潈鎵€鏈?C) Microsoft Corporation銆備繚鐣欐墍鏈夋潈鍒┿€?
-          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CMAKE_HAVE_LIBC_PTHREAD /D _MBCS /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /Fo"cmTC_aeb9b.dir\\Debug\\\\" /Fd"cmTC_aeb9b.dir\\Debug\\vc145.pdb" /external:W1 /TC /errorReport:queue "E:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9i6q0g\\src.c"
+          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CMAKE_HAVE_LIBC_PTHREAD /D _MBCS /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /Fo"cmTC_4a435.dir\\Debug\\\\" /Fd"cmTC_4a435.dir\\Debug\\vc145.pdb" /external:W1 /TC /errorReport:queue "E:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-nqaqwo\\src.c"
           src.c
-        E:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9i6q0g\\src.c(1,10): error C1083: 鏃犳硶鎵撳紑鍖呮嫭鏂囦欢: 鈥減thread.h鈥? No such file or directory [E:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9i6q0g\\cmTC_aeb9b.vcxproj]
-        宸插畬鎴愮敓鎴愰」鐩€淓:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9i6q0g\\cmTC_aeb9b.vcxproj鈥?榛樿鐩爣)鐨勬搷浣?- 澶辫触銆?
+        E:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-nqaqwo\\src.c(1,10): error C1083: 鏃犳硶鎵撳紑鍖呮嫭鏂囦欢: 鈥減thread.h鈥? No such file or directory [E:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-nqaqwo\\cmTC_4a435.vcxproj]
+        宸插畬鎴愮敓鎴愰」鐩€淓:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-nqaqwo\\cmTC_4a435.vcxproj鈥?榛樿鐩爣)鐨勬搷浣?- 澶辫触銆?
         
         鐢熸垚澶辫触銆?
         
-        鈥淓:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9i6q0g\\cmTC_aeb9b.vcxproj鈥?榛樿鐩爣) (1) ->
+        鈥淓:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-nqaqwo\\cmTC_4a435.vcxproj鈥?榛樿鐩爣) (1) ->
         (ClCompile 鐩爣) -> 
-          E:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9i6q0g\\src.c(1,10): error C1083: 鏃犳硶鎵撳紑鍖呮嫭鏂囦欢: 鈥減thread.h鈥? No such file or directory [E:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9i6q0g\\cmTC_aeb9b.vcxproj]
+          E:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-nqaqwo\\src.c(1,10): error C1083: 鏃犳硶鎵撳紑鍖呮嫭鏂囦欢: 鈥減thread.h鈥? No such file or directory [E:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-nqaqwo\\cmTC_4a435.vcxproj]
         
             0 涓鍛?
             1 涓敊璇?
         
-        宸茬敤鏃堕棿 00:00:00.92
+        宸茬敤鏃堕棿 00:00:00.80
         
       exitCode: 1
   -
@@ -1524,8 +1524,8 @@ events:
     checks:
       - "Looking for pthread_create in pthreads"
     directories:
-      source: "E:/TestWebRTC/RemoteControlSDK/ScreenStreamSDK/build/CMakeFiles/CMakeScratch/TryCompile-8alyqk"
-      binary: "E:/TestWebRTC/RemoteControlSDK/ScreenStreamSDK/build/CMakeFiles/CMakeScratch/TryCompile-8alyqk"
+      source: "E:/TestWebRTC/RemoteControlSDK/ScreenStreamSDK/build/CMakeFiles/CMakeScratch/TryCompile-jm138s"
+      binary: "E:/TestWebRTC/RemoteControlSDK/ScreenStreamSDK/build/CMakeFiles/CMakeScratch/TryCompile-jm138s"
     cmakeVariables:
       CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS"
       CMAKE_C_FLAGS_DEBUG: "/Zi /Ob0 /Od /RTC1"
@@ -1534,41 +1534,41 @@ events:
       variable: "CMAKE_HAVE_PTHREADS_CREATE"
       cached: true
       stdout: |
-        Change Dir: 'E:/TestWebRTC/RemoteControlSDK/ScreenStreamSDK/build/CMakeFiles/CMakeScratch/TryCompile-8alyqk'
+        Change Dir: 'E:/TestWebRTC/RemoteControlSDK/ScreenStreamSDK/build/CMakeFiles/CMakeScratch/TryCompile-jm138s'
         
-        Run Build Command(s): "E:/Program Files/Microsoft Visual Studio/18/Professional/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_cd841.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=18.0 /v:n
+        Run Build Command(s): "E:/Program Files/Microsoft Visual Studio/18/Professional/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_fe710.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=18.0 /v:n
         閫傜敤浜?.NET Framework MSBuild 鐗堟湰 18.0.5+e22287bf1
-        鐢熸垚鍚姩鏃堕棿涓?2026/2/13 23:16:04銆?
+        鐢熸垚鍚姩鏃堕棿涓?2026/2/14 15:31:25銆?
         
-        鑺傜偣 1 涓婄殑椤圭洰鈥淓:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-8alyqk\\cmTC_cd841.vcxproj鈥?榛樿鐩爣)銆?
+        鑺傜偣 1 涓婄殑椤圭洰鈥淓:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-jm138s\\cmTC_fe710.vcxproj鈥?榛樿鐩爣)銆?
         PrepareForBuild:
           Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
-          姝ｅ湪鍒涘缓鐩綍鈥淓:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-8alyqk\\Debug\\鈥濄€?
-          姝ｅ湪鍒涘缓鐩綍鈥渃mTC_cd841.dir\\Debug\\cmTC_cd841.tlog\\鈥濄€?
+          姝ｅ湪鍒涘缓鐩綍鈥淓:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-jm138s\\Debug\\鈥濄€?
+          姝ｅ湪鍒涘缓鐩綍鈥渃mTC_fe710.dir\\Debug\\cmTC_fe710.tlog\\鈥濄€?
         InitializeBuildStatus:
-          姝ｅ湪鍒涘缓鈥渃mTC_cd841.dir\\Debug\\cmTC_cd841.tlog\\unsuccessfulbuild鈥濓紝鍥犱负宸叉寚瀹氣€淎lwaysCreate鈥濄€?
-          姝ｅ湪瀵光€渃mTC_cd841.dir\\Debug\\cmTC_cd841.tlog\\unsuccessfulbuild鈥濇墽琛?Touch 浠诲姟銆?
+          姝ｅ湪鍒涘缓鈥渃mTC_fe710.dir\\Debug\\cmTC_fe710.tlog\\unsuccessfulbuild鈥濓紝鍥犱负宸叉寚瀹氣€淎lwaysCreate鈥濄€?
+          姝ｅ湪瀵光€渃mTC_fe710.dir\\Debug\\cmTC_fe710.tlog\\unsuccessfulbuild鈥濇墽琛?Touch 浠诲姟銆?
         ClCompile:
-          E:\\Program Files\\Microsoft Visual Studio\\18\\Professional\\VC\\Tools\\MSVC\\14.50.35717\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=pthread_create /D _MBCS /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /Fo"cmTC_cd841.dir\\Debug\\\\" /Fd"cmTC_cd841.dir\\Debug\\vc145.pdb" /external:W1 /TC /errorReport:queue "E:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-8alyqk\\CheckFunctionExists.c"
+          E:\\Program Files\\Microsoft Visual Studio\\18\\Professional\\VC\\Tools\\MSVC\\14.50.35717\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=pthread_create /D _MBCS /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /Fo"cmTC_fe710.dir\\Debug\\\\" /Fd"cmTC_fe710.dir\\Debug\\vc145.pdb" /external:W1 /TC /errorReport:queue "E:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-jm138s\\CheckFunctionExists.c"
           鐢ㄤ簬 x64 鐨?Microsoft (R) C/C++ 浼樺寲缂栬瘧鍣?19.50.35722 鐗?
           鐗堟潈鎵€鏈?C) Microsoft Corporation銆備繚鐣欐墍鏈夋潈鍒┿€?
-          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=pthread_create /D _MBCS /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /Fo"cmTC_cd841.dir\\Debug\\\\" /Fd"cmTC_cd841.dir\\Debug\\vc145.pdb" /external:W1 /TC /errorReport:queue "E:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-8alyqk\\CheckFunctionExists.c"
+          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=pthread_create /D _MBCS /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /Fo"cmTC_fe710.dir\\Debug\\\\" /Fd"cmTC_fe710.dir\\Debug\\vc145.pdb" /external:W1 /TC /errorReport:queue "E:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-jm138s\\CheckFunctionExists.c"
           CheckFunctionExists.c
         Link:
-          E:\\Program Files\\Microsoft Visual Studio\\18\\Professional\\VC\\Tools\\MSVC\\14.50.35717\\bin\\HostX64\\x64\\link.exe /OUT:"E:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-8alyqk\\Debug\\cmTC_cd841.exe" /INCREMENTAL /ILK:"cmTC_cd841.dir\\Debug\\cmTC_cd841.ilk" /NOLOGO pthreads.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"E:/TestWebRTC/RemoteControlSDK/ScreenStreamSDK/build/CMakeFiles/CMakeScratch/TryCompile-8alyqk/Debug/cmTC_cd841.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /IMPLIB:"E:/TestWebRTC/RemoteControlSDK/ScreenStreamSDK/build/CMakeFiles/CMakeScratch/TryCompile-8alyqk/Debug/cmTC_cd841.lib" /MACHINE:X64  /machine:x64 cmTC_cd841.dir\\Debug\\CheckFunctionExists.obj
-        LINK : fatal error LNK1104: 鏃犳硶鎵撳紑鏂囦欢鈥減threads.lib鈥?[E:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-8alyqk\\cmTC_cd841.vcxproj]
-        宸插畬鎴愮敓鎴愰」鐩€淓:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-8alyqk\\cmTC_cd841.vcxproj鈥?榛樿鐩爣)鐨勬搷浣?- 澶辫触銆?
+          E:\\Program Files\\Microsoft Visual Studio\\18\\Professional\\VC\\Tools\\MSVC\\14.50.35717\\bin\\HostX64\\x64\\link.exe /OUT:"E:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-jm138s\\Debug\\cmTC_fe710.exe" /INCREMENTAL /ILK:"cmTC_fe710.dir\\Debug\\cmTC_fe710.ilk" /NOLOGO pthreads.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"E:/TestWebRTC/RemoteControlSDK/ScreenStreamSDK/build/CMakeFiles/CMakeScratch/TryCompile-jm138s/Debug/cmTC_fe710.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /IMPLIB:"E:/TestWebRTC/RemoteControlSDK/ScreenStreamSDK/build/CMakeFiles/CMakeScratch/TryCompile-jm138s/Debug/cmTC_fe710.lib" /MACHINE:X64  /machine:x64 cmTC_fe710.dir\\Debug\\CheckFunctionExists.obj
+        LINK : fatal error LNK1104: 鏃犳硶鎵撳紑鏂囦欢鈥減threads.lib鈥?[E:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-jm138s\\cmTC_fe710.vcxproj]
+        宸插畬鎴愮敓鎴愰」鐩€淓:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-jm138s\\cmTC_fe710.vcxproj鈥?榛樿鐩爣)鐨勬搷浣?- 澶辫触銆?
         
         鐢熸垚澶辫触銆?
         
-        鈥淓:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-8alyqk\\cmTC_cd841.vcxproj鈥?榛樿鐩爣) (1) ->
+        鈥淓:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-jm138s\\cmTC_fe710.vcxproj鈥?榛樿鐩爣) (1) ->
         (Link 鐩爣) -> 
-          LINK : fatal error LNK1104: 鏃犳硶鎵撳紑鏂囦欢鈥減threads.lib鈥?[E:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-8alyqk\\cmTC_cd841.vcxproj]
+          LINK : fatal error LNK1104: 鏃犳硶鎵撳紑鏂囦欢鈥減threads.lib鈥?[E:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-jm138s\\cmTC_fe710.vcxproj]
         
             0 涓鍛?
             1 涓敊璇?
         
-        宸茬敤鏃堕棿 00:00:02.36
+        宸茬敤鏃堕棿 00:00:00.73
         
       exitCode: 1
   -
@@ -1582,8 +1582,8 @@ events:
     checks:
       - "Looking for pthread_create in pthread"
     directories:
-      source: "E:/TestWebRTC/RemoteControlSDK/ScreenStreamSDK/build/CMakeFiles/CMakeScratch/TryCompile-oartjm"
-      binary: "E:/TestWebRTC/RemoteControlSDK/ScreenStreamSDK/build/CMakeFiles/CMakeScratch/TryCompile-oartjm"
+      source: "E:/TestWebRTC/RemoteControlSDK/ScreenStreamSDK/build/CMakeFiles/CMakeScratch/TryCompile-wshsig"
+      binary: "E:/TestWebRTC/RemoteControlSDK/ScreenStreamSDK/build/CMakeFiles/CMakeScratch/TryCompile-wshsig"
     cmakeVariables:
       CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS"
       CMAKE_C_FLAGS_DEBUG: "/Zi /Ob0 /Od /RTC1"
@@ -1592,493 +1592,41 @@ events:
       variable: "CMAKE_HAVE_PTHREAD_CREATE"
       cached: true
       stdout: |
-        Change Dir: 'E:/TestWebRTC/RemoteControlSDK/ScreenStreamSDK/build/CMakeFiles/CMakeScratch/TryCompile-oartjm'
+        Change Dir: 'E:/TestWebRTC/RemoteControlSDK/ScreenStreamSDK/build/CMakeFiles/CMakeScratch/TryCompile-wshsig'
         
-        Run Build Command(s): "E:/Program Files/Microsoft Visual Studio/18/Professional/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_59fcb.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=18.0 /v:n
+        Run Build Command(s): "E:/Program Files/Microsoft Visual Studio/18/Professional/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_2c579.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=18.0 /v:n
         閫傜敤浜?.NET Framework MSBuild 鐗堟湰 18.0.5+e22287bf1
-        鐢熸垚鍚姩鏃堕棿涓?2026/2/13 23:16:08銆?
+        鐢熸垚鍚姩鏃堕棿涓?2026/2/14 15:31:26銆?
         
-        鑺傜偣 1 涓婄殑椤圭洰鈥淓:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-oartjm\\cmTC_59fcb.vcxproj鈥?榛樿鐩爣)銆?
+        鑺傜偣 1 涓婄殑椤圭洰鈥淓:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-wshsig\\cmTC_2c579.vcxproj鈥?榛樿鐩爣)銆?
         PrepareForBuild:
           Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
-          姝ｅ湪鍒涘缓鐩綍鈥淓:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-oartjm\\Debug\\鈥濄€?
-          姝ｅ湪鍒涘缓鐩綍鈥渃mTC_59fcb.dir\\Debug\\cmTC_59fcb.tlog\\鈥濄€?
+          姝ｅ湪鍒涘缓鐩綍鈥淓:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-wshsig\\Debug\\鈥濄€?
+          姝ｅ湪鍒涘缓鐩綍鈥渃mTC_2c579.dir\\Debug\\cmTC_2c579.tlog\\鈥濄€?
         InitializeBuildStatus:
-          姝ｅ湪鍒涘缓鈥渃mTC_59fcb.dir\\Debug\\cmTC_59fcb.tlog\\unsuccessfulbuild鈥濓紝鍥犱负宸叉寚瀹氣€淎lwaysCreate鈥濄€?
-          姝ｅ湪瀵光€渃mTC_59fcb.dir\\Debug\\cmTC_59fcb.tlog\\unsuccessfulbuild鈥濇墽琛?Touch 浠诲姟銆?
+          姝ｅ湪鍒涘缓鈥渃mTC_2c579.dir\\Debug\\cmTC_2c579.tlog\\unsuccessfulbuild鈥濓紝鍥犱负宸叉寚瀹氣€淎lwaysCreate鈥濄€?
+          姝ｅ湪瀵光€渃mTC_2c579.dir\\Debug\\cmTC_2c579.tlog\\unsuccessfulbuild鈥濇墽琛?Touch 浠诲姟銆?
         ClCompile:
-          E:\\Program Files\\Microsoft Visual Studio\\18\\Professional\\VC\\Tools\\MSVC\\14.50.35717\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=pthread_create /D _MBCS /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /Fo"cmTC_59fcb.dir\\Debug\\\\" /Fd"cmTC_59fcb.dir\\Debug\\vc145.pdb" /external:W1 /TC /errorReport:queue "E:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-oartjm\\CheckFunctionExists.c"
+          E:\\Program Files\\Microsoft Visual Studio\\18\\Professional\\VC\\Tools\\MSVC\\14.50.35717\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=pthread_create /D _MBCS /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /Fo"cmTC_2c579.dir\\Debug\\\\" /Fd"cmTC_2c579.dir\\Debug\\vc145.pdb" /external:W1 /TC /errorReport:queue "E:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-wshsig\\CheckFunctionExists.c"
           鐢ㄤ簬 x64 鐨?Microsoft (R) C/C++ 浼樺寲缂栬瘧鍣?19.50.35722 鐗?
           鐗堟潈鎵€鏈?C) Microsoft Corporation銆備繚鐣欐墍鏈夋潈鍒┿€?
-          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=pthread_create /D _MBCS /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /Fo"cmTC_59fcb.dir\\Debug\\\\" /Fd"cmTC_59fcb.dir\\Debug\\vc145.pdb" /external:W1 /TC /errorReport:queue "E:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-oartjm\\CheckFunctionExists.c"
+          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=pthread_create /D _MBCS /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /Fo"cmTC_2c579.dir\\Debug\\\\" /Fd"cmTC_2c579.dir\\Debug\\vc145.pdb" /external:W1 /TC /errorReport:queue "E:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-wshsig\\CheckFunctionExists.c"
           CheckFunctionExists.c
         Link:
-          E:\\Program Files\\Microsoft Visual Studio\\18\\Professional\\VC\\Tools\\MSVC\\14.50.35717\\bin\\HostX64\\x64\\link.exe /OUT:"E:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-oartjm\\Debug\\cmTC_59fcb.exe" /INCREMENTAL /ILK:"cmTC_59fcb.dir\\Debug\\cmTC_59fcb.ilk" /NOLOGO pthread.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"E:/TestWebRTC/RemoteControlSDK/ScreenStreamSDK/build/CMakeFiles/CMakeScratch/TryCompile-oartjm/Debug/cmTC_59fcb.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /IMPLIB:"E:/TestWebRTC/RemoteControlSDK/ScreenStreamSDK/build/CMakeFiles/CMakeScratch/TryCompile-oartjm/Debug/cmTC_59fcb.lib" /MACHINE:X64  /machine:x64 cmTC_59fcb.dir\\Debug\\CheckFunctionExists.obj
-        LINK : fatal error LNK1104: 鏃犳硶鎵撳紑鏂囦欢鈥減thread.lib鈥?[E:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-oartjm\\cmTC_59fcb.vcxproj]
-        宸插畬鎴愮敓鎴愰」鐩€淓:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-oartjm\\cmTC_59fcb.vcxproj鈥?榛樿鐩爣)鐨勬搷浣?- 澶辫触銆?
+          E:\\Program Files\\Microsoft Visual Studio\\18\\Professional\\VC\\Tools\\MSVC\\14.50.35717\\bin\\HostX64\\x64\\link.exe /OUT:"E:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-wshsig\\Debug\\cmTC_2c579.exe" /INCREMENTAL /ILK:"cmTC_2c579.dir\\Debug\\cmTC_2c579.ilk" /NOLOGO pthread.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"E:/TestWebRTC/RemoteControlSDK/ScreenStreamSDK/build/CMakeFiles/CMakeScratch/TryCompile-wshsig/Debug/cmTC_2c579.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /IMPLIB:"E:/TestWebRTC/RemoteControlSDK/ScreenStreamSDK/build/CMakeFiles/CMakeScratch/TryCompile-wshsig/Debug/cmTC_2c579.lib" /MACHINE:X64  /machine:x64 cmTC_2c579.dir\\Debug\\CheckFunctionExists.obj
+        LINK : fatal error LNK1104: 鏃犳硶鎵撳紑鏂囦欢鈥減thread.lib鈥?[E:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-wshsig\\cmTC_2c579.vcxproj]
+        宸插畬鎴愮敓鎴愰」鐩€淓:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-wshsig\\cmTC_2c579.vcxproj鈥?榛樿鐩爣)鐨勬搷浣?- 澶辫触銆?
         
         鐢熸垚澶辫触銆?
         
-        鈥淓:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-oartjm\\cmTC_59fcb.vcxproj鈥?榛樿鐩爣) (1) ->
+        鈥淓:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-wshsig\\cmTC_2c579.vcxproj鈥?榛樿鐩爣) (1) ->
         (Link 鐩爣) -> 
-          LINK : fatal error LNK1104: 鏃犳硶鎵撳紑鏂囦欢鈥減thread.lib鈥?[E:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-oartjm\\cmTC_59fcb.vcxproj]
+          LINK : fatal error LNK1104: 鏃犳硶鎵撳紑鏂囦欢鈥減thread.lib鈥?[E:\\TestWebRTC\\RemoteControlSDK\\ScreenStreamSDK\\build\\CMakeFiles\\CMakeScratch\\TryCompile-wshsig\\cmTC_2c579.vcxproj]
         
             0 涓鍛?
             1 涓敊璇?
         
-        宸茬敤鏃堕棿 00:00:01.34
+        宸茬敤鏃堕棿 00:00:00.67
         
       exitCode: 1
-...
-
----
-events:
-  -
-    kind: "find-v1"
-    backtrace:
-      - "C:/Program Files/CMake/share/cmake-4.2/Modules/FindPython/Support.cmake:2180 (find_program)"
-      - "C:/Program Files/CMake/share/cmake-4.2/Modules/FindPython3.cmake:671 (include)"
-      - "E:/TestWebRTC/RemoteControlSDK/third_party/googletest/googletest/cmake/internal_utils.cmake:250 (find_package)"
-      - "E:/TestWebRTC/RemoteControlSDK/third_party/googletest/googletest/CMakeLists.txt:81 (include)"
-    mode: "program"
-    variable: "_Python3_EXECUTABLE"
-    description: "Path to a program."
-    settings:
-      SearchFramework: "NEVER"
-      SearchAppBundle: "NEVER"
-      CMAKE_FIND_USE_CMAKE_PATH: true
-      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
-      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: false
-      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: false
-      CMAKE_FIND_USE_INSTALL_PREFIX: true
-    names:
-      - "python3.15"
-      - "python3"
-      - "python"
-      - "ipy3.15"
-      - "ipy3"
-      - "ipy64"
-      - "ipy32"
-      - "ipy"
-      - "ipy.exe"
-    candidate_directories:
-      - "/REGISTRY-NOTFOUND/bin/"
-      - "/REGISTRY-NOTFOUND/Scripts/"
-      - "/REGISTRY-NOTFOUND/share/ironpython3.15/"
-      - "/REGISTRY-NOTFOUND/net45/"
-      - "/REGISTRY-NOTFOUND/net40/"
-      - "/REGISTRY-NOTFOUND/"
-    searched_directories:
-      - "/REGISTRY-NOTFOUND/bin/python3.15.com"
-      - "/REGISTRY-NOTFOUND/bin/python3.15.exe"
-      - "/REGISTRY-NOTFOUND/bin/python3.15"
-      - "/REGISTRY-NOTFOUND/bin/python3.com"
-      - "/REGISTRY-NOTFOUND/bin/python3.exe"
-      - "/REGISTRY-NOTFOUND/bin/python3"
-      - "/REGISTRY-NOTFOUND/bin/python.com"
-      - "/REGISTRY-NOTFOUND/bin/python.exe"
-      - "/REGISTRY-NOTFOUND/bin/python"
-      - "/REGISTRY-NOTFOUND/bin/ipy3.15.com"
-      - "/REGISTRY-NOTFOUND/bin/ipy3.15.exe"
-      - "/REGISTRY-NOTFOUND/bin/ipy3.15"
-      - "/REGISTRY-NOTFOUND/bin/ipy3.com"
-      - "/REGISTRY-NOTFOUND/bin/ipy3.exe"
-      - "/REGISTRY-NOTFOUND/bin/ipy3"
-      - "/REGISTRY-NOTFOUND/bin/ipy64.com"
-      - "/REGISTRY-NOTFOUND/bin/ipy64.exe"
-      - "/REGISTRY-NOTFOUND/bin/ipy64"
-      - "/REGISTRY-NOTFOUND/bin/ipy32.com"
-      - "/REGISTRY-NOTFOUND/bin/ipy32.exe"
-      - "/REGISTRY-NOTFOUND/bin/ipy32"
-      - "/REGISTRY-NOTFOUND/bin/ipy.com"
-      - "/REGISTRY-NOTFOUND/bin/ipy.exe"
-      - "/REGISTRY-NOTFOUND/bin/ipy"
-      - "/REGISTRY-NOTFOUND/bin/ipy.exe.com"
-      - "/REGISTRY-NOTFOUND/bin/ipy.exe"
-      - "/REGISTRY-NOTFOUND/Scripts/python3.15.com"
-      - "/REGISTRY-NOTFOUND/Scripts/python3.15.exe"
-      - "/REGISTRY-NOTFOUND/Scripts/python3.15"
-      - "/REGISTRY-NOTFOUND/Scripts/python3.com"
-      - "/REGISTRY-NOTFOUND/Scripts/python3.exe"
-      - "/REGISTRY-NOTFOUND/Scripts/python3"
-      - "/REGISTRY-NOTFOUND/Scripts/python.com"
-      - "/REGISTRY-NOTFOUND/Scripts/python.exe"
-      - "/REGISTRY-NOTFOUND/Scripts/python"
-      - "/REGISTRY-NOTFOUND/Scripts/ipy3.15.com"
-      - "/REGISTRY-NOTFOUND/Scripts/ipy3.15.exe"
-      - "/REGISTRY-NOTFOUND/Scripts/ipy3.15"
-      - "/REGISTRY-NOTFOUND/Scripts/ipy3.com"
-      - "/REGISTRY-NOTFOUND/Scripts/ipy3.exe"
-      - "/REGISTRY-NOTFOUND/Scripts/ipy3"
-      - "/REGISTRY-NOTFOUND/Scripts/ipy64.com"
-      - "/REGISTRY-NOTFOUND/Scripts/ipy64.exe"
-      - "/REGISTRY-NOTFOUND/Scripts/ipy64"
-      - "/REGISTRY-NOTFOUND/Scripts/ipy32.com"
-      - "/REGISTRY-NOTFOUND/Scripts/ipy32.exe"
-      - "/REGISTRY-NOTFOUND/Scripts/ipy32"
-      - "/REGISTRY-NOTFOUND/Scripts/ipy.com"
-      - "/REGISTRY-NOTFOUND/Scripts/ipy.exe"
-      - "/REGISTRY-NOTFOUND/Scripts/ipy"
-      - "/REGISTRY-NOTFOUND/Scripts/ipy.exe.com"
-      - "/REGISTRY-NOTFOUND/Scripts/ipy.exe"
-      - "/REGISTRY-NOTFOUND/share/ironpython3.15/python3.15.com"
-      - "/REGISTRY-NOTFOUND/share/ironpython3.15/python3.15.exe"
-      - "/REGISTRY-NOTFOUND/share/ironpython3.15/python3.15"
-      - "/REGISTRY-NOTFOUND/share/ironpython3.15/python3.com"
-      - "/REGISTRY-NOTFOUND/share/ironpython3.15/python3.exe"
-      - "/REGISTRY-NOTFOUND/share/ironpython3.15/python3"
-      - "/REGISTRY-NOTFOUND/share/ironpython3.15/python.com"
-      - "/REGISTRY-NOTFOUND/share/ironpython3.15/python.exe"
-      - "/REGISTRY-NOTFOUND/share/ironpython3.15/python"
-      - "/REGISTRY-NOTFOUND/share/ironpython3.15/ipy3.15.com"
-      - "/REGISTRY-NOTFOUND/share/ironpython3.15/ipy3.15.exe"
-      - "/REGISTRY-NOTFOUND/share/ironpython3.15/ipy3.15"
-      - "/REGISTRY-NOTFOUND/share/ironpython3.15/ipy3.com"
-      - "/REGISTRY-NOTFOUND/share/ironpython3.15/ipy3.exe"
-      - "/REGISTRY-NOTFOUND/share/ironpython3.15/ipy3"
-      - "/REGISTRY-NOTFOUND/share/ironpython3.15/ipy64.com"
-      - "/REGISTRY-NOTFOUND/share/ironpython3.15/ipy64.exe"
-      - "/REGISTRY-NOTFOUND/share/ironpython3.15/ipy64"
-      - "/REGISTRY-NOTFOUND/share/ironpython3.15/ipy32.com"
-      - "/REGISTRY-NOTFOUND/share/ironpython3.15/ipy32.exe"
-      - "/REGISTRY-NOTFOUND/share/ironpython3.15/ipy32"
-      - "/REGISTRY-NOTFOUND/share/ironpython3.15/ipy.com"
-      - "/REGISTRY-NOTFOUND/share/ironpython3.15/ipy.exe"
-      - "/REGISTRY-NOTFOUND/share/ironpython3.15/ipy"
-      - "/REGISTRY-NOTFOUND/share/ironpython3.15/ipy.exe.com"
-      - "/REGISTRY-NOTFOUND/share/ironpython3.15/ipy.exe"
-      - "/REGISTRY-NOTFOUND/net45/python3.15.com"
-      - "/REGISTRY-NOTFOUND/net45/python3.15.exe"
-      - "/REGISTRY-NOTFOUND/net45/python3.15"
-      - "/REGISTRY-NOTFOUND/net45/python3.com"
-      - "/REGISTRY-NOTFOUND/net45/python3.exe"
-      - "/REGISTRY-NOTFOUND/net45/python3"
-      - "/REGISTRY-NOTFOUND/net45/python.com"
-      - "/REGISTRY-NOTFOUND/net45/python.exe"
-      - "/REGISTRY-NOTFOUND/net45/python"
-      - "/REGISTRY-NOTFOUND/net45/ipy3.15.com"
-      - "/REGISTRY-NOTFOUND/net45/ipy3.15.exe"
-      - "/REGISTRY-NOTFOUND/net45/ipy3.15"
-      - "/REGISTRY-NOTFOUND/net45/ipy3.com"
-      - "/REGISTRY-NOTFOUND/net45/ipy3.exe"
-      - "/REGISTRY-NOTFOUND/net45/ipy3"
-      - "/REGISTRY-NOTFOUND/net45/ipy64.com"
-      - "/REGISTRY-NOTFOUND/net45/ipy64.exe"
-      - "/REGISTRY-NOTFOUND/net45/ipy64"
-      - "/REGISTRY-NOTFOUND/net45/ipy32.com"
-      - "/REGISTRY-NOTFOUND/net45/ipy32.exe"
-      - "/REGISTRY-NOTFOUND/net45/ipy32"
-      - "/REGISTRY-NOTFOUND/net45/ipy.com"
-      - "/REGISTRY-NOTFOUND/net45/ipy.exe"
-      - "/REGISTRY-NOTFOUND/net45/ipy"
-      - "/REGISTRY-NOTFOUND/net45/ipy.exe.com"
-      - "/REGISTRY-NOTFOUND/net45/ipy.exe"
-      - "/REGISTRY-NOTFOUND/net40/python3.15.com"
-      - "/REGISTRY-NOTFOUND/net40/python3.15.exe"
-      - "/REGISTRY-NOTFOUND/net40/python3.15"
-      - "/REGISTRY-NOTFOUND/net40/python3.com"
-      - "/REGISTRY-NOTFOUND/net40/python3.exe"
-      - "/REGISTRY-NOTFOUND/net40/python3"
-      - "/REGISTRY-NOTFOUND/net40/python.com"
-      - "/REGISTRY-NOTFOUND/net40/python.exe"
-      - "/REGISTRY-NOTFOUND/net40/python"
-      - "/REGISTRY-NOTFOUND/net40/ipy3.15.com"
-      - "/REGISTRY-NOTFOUND/net40/ipy3.15.exe"
-      - "/REGISTRY-NOTFOUND/net40/ipy3.15"
-      - "/REGISTRY-NOTFOUND/net40/ipy3.com"
-      - "/REGISTRY-NOTFOUND/net40/ipy3.exe"
-      - "/REGISTRY-NOTFOUND/net40/ipy3"
-      - "/REGISTRY-NOTFOUND/net40/ipy64.com"
-      - "/REGISTRY-NOTFOUND/net40/ipy64.exe"
-      - "/REGISTRY-NOTFOUND/net40/ipy64"
-      - "/REGISTRY-NOTFOUND/net40/ipy32.com"
-      - "/REGISTRY-NOTFOUND/net40/ipy32.exe"
-      - "/REGISTRY-NOTFOUND/net40/ipy32"
-      - "/REGISTRY-NOTFOUND/net40/ipy.com"
-      - "/REGISTRY-NOTFOUND/net40/ipy.exe"
-      - "/REGISTRY-NOTFOUND/net40/ipy"
-      - "/REGISTRY-NOTFOUND/net40/ipy.exe.com"
-      - "/REGISTRY-NOTFOUND/net40/ipy.exe"
-      - "/REGISTRY-NOTFOUND/python3.15.com"
-      - "/REGISTRY-NOTFOUND/python3.15.exe"
-      - "/REGISTRY-NOTFOUND/python3.15"
-      - "/REGISTRY-NOTFOUND/python3.com"
-      - "/REGISTRY-NOTFOUND/python3.exe"
-      - "/REGISTRY-NOTFOUND/python3"
-      - "/REGISTRY-NOTFOUND/python.com"
-      - "/REGISTRY-NOTFOUND/python.exe"
-      - "/REGISTRY-NOTFOUND/python"
-      - "/REGISTRY-NOTFOUND/ipy3.15.com"
-      - "/REGISTRY-NOTFOUND/ipy3.15.exe"
-      - "/REGISTRY-NOTFOUND/ipy3.15"
-      - "/REGISTRY-NOTFOUND/ipy3.com"
-      - "/REGISTRY-NOTFOUND/ipy3.exe"
-      - "/REGISTRY-NOTFOUND/ipy3"
-      - "/REGISTRY-NOTFOUND/ipy64.com"
-      - "/REGISTRY-NOTFOUND/ipy64.exe"
-      - "/REGISTRY-NOTFOUND/ipy64"
-      - "/REGISTRY-NOTFOUND/ipy32.com"
-      - "/REGISTRY-NOTFOUND/ipy32.exe"
-      - "/REGISTRY-NOTFOUND/ipy32"
-      - "/REGISTRY-NOTFOUND/ipy.com"
-      - "/REGISTRY-NOTFOUND/ipy.exe"
-      - "/REGISTRY-NOTFOUND/ipy"
-      - "/REGISTRY-NOTFOUND/ipy.exe.com"
-      - "/REGISTRY-NOTFOUND/ipy.exe"
-    found: false
-    search_context:
-      ENV{PATH}:
-        - "C:\\Program Files (x86)\\Common Files\\Oracle\\Java\\java8path"
-        - "C:\\Program Files (x86)\\Common Files\\Oracle\\Java\\javapath"
-        - "C:\\WINDOWS\\system32"
-        - "C:\\WINDOWS"
-        - "C:\\WINDOWS\\System32\\Wbem"
-        - "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\"
-        - "C:\\WINDOWS\\System32\\OpenSSH\\"
-        - "C:\\Program Files\\nodejs\\"
-        - "C:\\Program Files\\Git\\cmd"
-        - "C:\\ProgramData\\chocolatey\\bin"
-        - "C:\\Program Files\\CMake\\bin"
-        - "E:\\Windows Kits\\10\\Windows Performance Toolkit\\"
-        - "C:\\Program Files\\TortoiseGit\\bin"
-        - "C:\\Program Files\\Docker\\Docker\\resources\\bin"
-        - "C:\\Users\\jiangyiyong\\.cargo\\bin"
-        - "C:\\Users\\jiangyiyong\\.local\\bin"
-        - "c:\\Users\\jiangyiyong\\AppData\\Local\\Programs\\Trae CN\\bin"
-        - "C:\\Users\\jiangyiyong\\AppData\\Local\\Microsoft\\WindowsApps"
-        - "C:\\Users\\jiangyiyong\\AppData\\Local\\Programs\\Microsoft VS Code\\bin"
-        - "C:\\Users\\jiangyiyong\\AppData\\Roaming\\npm"
-        - "C:\\Program Files\\Java\\jre1.8.0_481\\bin"
-      CMAKE_INSTALL_PREFIX: "C:/Program Files/ScreenStreamSDK"
-      CMAKE_SYSTEM_PREFIX_PATH:
-        - "C:/Program Files"
-        - "C:/Program Files (x86)"
-        - "C:/Program Files/CMake"
-        - "C:/Program Files/ScreenStreamSDK"
-...
-
----
-events:
-  -
-    kind: "find-v1"
-    backtrace:
-      - "C:/Program Files/CMake/share/cmake-4.2/Modules/FindPython/Support.cmake:2180 (find_program)"
-      - "C:/Program Files/CMake/share/cmake-4.2/Modules/FindPython3.cmake:671 (include)"
-      - "E:/TestWebRTC/RemoteControlSDK/third_party/googletest/googletest/cmake/internal_utils.cmake:250 (find_package)"
-      - "E:/TestWebRTC/RemoteControlSDK/third_party/googletest/googletest/CMakeLists.txt:81 (include)"
-    mode: "program"
-    variable: "_Python3_EXECUTABLE"
-    description: "Path to a program."
-    settings:
-      SearchFramework: "NEVER"
-      SearchAppBundle: "NEVER"
-      CMAKE_FIND_USE_CMAKE_PATH: true
-      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
-      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: false
-      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: false
-      CMAKE_FIND_USE_INSTALL_PREFIX: true
-    names:
-      - "python3.15"
-      - "python3"
-      - "python"
-      - "ipy3.15"
-      - "ipy3"
-      - "ipy64"
-      - "ipy32"
-      - "ipy"
-      - "ipy.exe"
-    candidate_directories:
-      - "/REGISTRY-NOTFOUND/bin/"
-      - "/REGISTRY-NOTFOUND/Scripts/"
-      - "/REGISTRY-NOTFOUND/share/ironpython3.15/"
-      - "/REGISTRY-NOTFOUND/net45/"
-      - "/REGISTRY-NOTFOUND/net40/"
-      - "/REGISTRY-NOTFOUND/"
-    searched_directories:
-      - "/REGISTRY-NOTFOUND/bin/python3.15.com"
-      - "/REGISTRY-NOTFOUND/bin/python3.15.exe"
-      - "/REGISTRY-NOTFOUND/bin/python3.15"
-      - "/REGISTRY-NOTFOUND/bin/python3.com"
-      - "/REGISTRY-NOTFOUND/bin/python3.exe"
-      - "/REGISTRY-NOTFOUND/bin/python3"
-      - "/REGISTRY-NOTFOUND/bin/python.com"
-      - "/REGISTRY-NOTFOUND/bin/python.exe"
-      - "/REGISTRY-NOTFOUND/bin/python"
-      - "/REGISTRY-NOTFOUND/bin/ipy3.15.com"
-      - "/REGISTRY-NOTFOUND/bin/ipy3.15.exe"
-      - "/REGISTRY-NOTFOUND/bin/ipy3.15"
-      - "/REGISTRY-NOTFOUND/bin/ipy3.com"
-      - "/REGISTRY-NOTFOUND/bin/ipy3.exe"
-      - "/REGISTRY-NOTFOUND/bin/ipy3"
-      - "/REGISTRY-NOTFOUND/bin/ipy64.com"
-      - "/REGISTRY-NOTFOUND/bin/ipy64.exe"
-      - "/REGISTRY-NOTFOUND/bin/ipy64"
-      - "/REGISTRY-NOTFOUND/bin/ipy32.com"
-      - "/REGISTRY-NOTFOUND/bin/ipy32.exe"
-      - "/REGISTRY-NOTFOUND/bin/ipy32"
-      - "/REGISTRY-NOTFOUND/bin/ipy.com"
-      - "/REGISTRY-NOTFOUND/bin/ipy.exe"
-      - "/REGISTRY-NOTFOUND/bin/ipy"
-      - "/REGISTRY-NOTFOUND/bin/ipy.exe.com"
-      - "/REGISTRY-NOTFOUND/bin/ipy.exe"
-      - "/REGISTRY-NOTFOUND/Scripts/python3.15.com"
-      - "/REGISTRY-NOTFOUND/Scripts/python3.15.exe"
-      - "/REGISTRY-NOTFOUND/Scripts/python3.15"
-      - "/REGISTRY-NOTFOUND/Scripts/python3.com"
-      - "/REGISTRY-NOTFOUND/Scripts/python3.exe"
-      - "/REGISTRY-NOTFOUND/Scripts/python3"
-      - "/REGISTRY-NOTFOUND/Scripts/python.com"
-      - "/REGISTRY-NOTFOUND/Scripts/python.exe"
-      - "/REGISTRY-NOTFOUND/Scripts/python"
-      - "/REGISTRY-NOTFOUND/Scripts/ipy3.15.com"
-      - "/REGISTRY-NOTFOUND/Scripts/ipy3.15.exe"
-      - "/REGISTRY-NOTFOUND/Scripts/ipy3.15"
-      - "/REGISTRY-NOTFOUND/Scripts/ipy3.com"
-      - "/REGISTRY-NOTFOUND/Scripts/ipy3.exe"
-      - "/REGISTRY-NOTFOUND/Scripts/ipy3"
-      - "/REGISTRY-NOTFOUND/Scripts/ipy64.com"
-      - "/REGISTRY-NOTFOUND/Scripts/ipy64.exe"
-      - "/REGISTRY-NOTFOUND/Scripts/ipy64"
-      - "/REGISTRY-NOTFOUND/Scripts/ipy32.com"
-      - "/REGISTRY-NOTFOUND/Scripts/ipy32.exe"
-      - "/REGISTRY-NOTFOUND/Scripts/ipy32"
-      - "/REGISTRY-NOTFOUND/Scripts/ipy.com"
-      - "/REGISTRY-NOTFOUND/Scripts/ipy.exe"
-      - "/REGISTRY-NOTFOUND/Scripts/ipy"
-      - "/REGISTRY-NOTFOUND/Scripts/ipy.exe.com"
-      - "/REGISTRY-NOTFOUND/Scripts/ipy.exe"
-      - "/REGISTRY-NOTFOUND/share/ironpython3.15/python3.15.com"
-      - "/REGISTRY-NOTFOUND/share/ironpython3.15/python3.15.exe"
-      - "/REGISTRY-NOTFOUND/share/ironpython3.15/python3.15"
-      - "/REGISTRY-NOTFOUND/share/ironpython3.15/python3.com"
-      - "/REGISTRY-NOTFOUND/share/ironpython3.15/python3.exe"
-      - "/REGISTRY-NOTFOUND/share/ironpython3.15/python3"
-      - "/REGISTRY-NOTFOUND/share/ironpython3.15/python.com"
-      - "/REGISTRY-NOTFOUND/share/ironpython3.15/python.exe"
-      - "/REGISTRY-NOTFOUND/share/ironpython3.15/python"
-      - "/REGISTRY-NOTFOUND/share/ironpython3.15/ipy3.15.com"
-      - "/REGISTRY-NOTFOUND/share/ironpython3.15/ipy3.15.exe"
-      - "/REGISTRY-NOTFOUND/share/ironpython3.15/ipy3.15"
-      - "/REGISTRY-NOTFOUND/share/ironpython3.15/ipy3.com"
-      - "/REGISTRY-NOTFOUND/share/ironpython3.15/ipy3.exe"
-      - "/REGISTRY-NOTFOUND/share/ironpython3.15/ipy3"
-      - "/REGISTRY-NOTFOUND/share/ironpython3.15/ipy64.com"
-      - "/REGISTRY-NOTFOUND/share/ironpython3.15/ipy64.exe"
-      - "/REGISTRY-NOTFOUND/share/ironpython3.15/ipy64"
-      - "/REGISTRY-NOTFOUND/share/ironpython3.15/ipy32.com"
-      - "/REGISTRY-NOTFOUND/share/ironpython3.15/ipy32.exe"
-      - "/REGISTRY-NOTFOUND/share/ironpython3.15/ipy32"
-      - "/REGISTRY-NOTFOUND/share/ironpython3.15/ipy.com"
-      - "/REGISTRY-NOTFOUND/share/ironpython3.15/ipy.exe"
-      - "/REGISTRY-NOTFOUND/share/ironpython3.15/ipy"
-      - "/REGISTRY-NOTFOUND/share/ironpython3.15/ipy.exe.com"
-      - "/REGISTRY-NOTFOUND/share/ironpython3.15/ipy.exe"
-      - "/REGISTRY-NOTFOUND/net45/python3.15.com"
-      - "/REGISTRY-NOTFOUND/net45/python3.15.exe"
-      - "/REGISTRY-NOTFOUND/net45/python3.15"
-      - "/REGISTRY-NOTFOUND/net45/python3.com"
-      - "/REGISTRY-NOTFOUND/net45/python3.exe"
-      - "/REGISTRY-NOTFOUND/net45/python3"
-      - "/REGISTRY-NOTFOUND/net45/python.com"
-      - "/REGISTRY-NOTFOUND/net45/python.exe"
-      - "/REGISTRY-NOTFOUND/net45/python"
-      - "/REGISTRY-NOTFOUND/net45/ipy3.15.com"
-      - "/REGISTRY-NOTFOUND/net45/ipy3.15.exe"
-      - "/REGISTRY-NOTFOUND/net45/ipy3.15"
-      - "/REGISTRY-NOTFOUND/net45/ipy3.com"
-      - "/REGISTRY-NOTFOUND/net45/ipy3.exe"
-      - "/REGISTRY-NOTFOUND/net45/ipy3"
-      - "/REGISTRY-NOTFOUND/net45/ipy64.com"
-      - "/REGISTRY-NOTFOUND/net45/ipy64.exe"
-      - "/REGISTRY-NOTFOUND/net45/ipy64"
-      - "/REGISTRY-NOTFOUND/net45/ipy32.com"
-      - "/REGISTRY-NOTFOUND/net45/ipy32.exe"
-      - "/REGISTRY-NOTFOUND/net45/ipy32"
-      - "/REGISTRY-NOTFOUND/net45/ipy.com"
-      - "/REGISTRY-NOTFOUND/net45/ipy.exe"
-      - "/REGISTRY-NOTFOUND/net45/ipy"
-      - "/REGISTRY-NOTFOUND/net45/ipy.exe.com"
-      - "/REGISTRY-NOTFOUND/net45/ipy.exe"
-      - "/REGISTRY-NOTFOUND/net40/python3.15.com"
-      - "/REGISTRY-NOTFOUND/net40/python3.15.exe"
-      - "/REGISTRY-NOTFOUND/net40/python3.15"
-      - "/REGISTRY-NOTFOUND/net40/python3.com"
-      - "/REGISTRY-NOTFOUND/net40/python3.exe"
-      - "/REGISTRY-NOTFOUND/net40/python3"
-      - "/REGISTRY-NOTFOUND/net40/python.com"
-      - "/REGISTRY-NOTFOUND/net40/python.exe"
-      - "/REGISTRY-NOTFOUND/net40/python"
-      - "/REGISTRY-NOTFOUND/net40/ipy3.15.com"
-      - "/REGISTRY-NOTFOUND/net40/ipy3.15.exe"
-      - "/REGISTRY-NOTFOUND/net40/ipy3.15"
-      - "/REGISTRY-NOTFOUND/net40/ipy3.com"
-      - "/REGISTRY-NOTFOUND/net40/ipy3.exe"
-      - "/REGISTRY-NOTFOUND/net40/ipy3"
-      - "/REGISTRY-NOTFOUND/net40/ipy64.com"
-      - "/REGISTRY-NOTFOUND/net40/ipy64.exe"
-      - "/REGISTRY-NOTFOUND/net40/ipy64"
-      - "/REGISTRY-NOTFOUND/net40/ipy32.com"
-      - "/REGISTRY-NOTFOUND/net40/ipy32.exe"
-      - "/REGISTRY-NOTFOUND/net40/ipy32"
-      - "/REGISTRY-NOTFOUND/net40/ipy.com"
-      - "/REGISTRY-NOTFOUND/net40/ipy.exe"
-      - "/REGISTRY-NOTFOUND/net40/ipy"
-      - "/REGISTRY-NOTFOUND/net40/ipy.exe.com"
-      - "/REGISTRY-NOTFOUND/net40/ipy.exe"
-      - "/REGISTRY-NOTFOUND/python3.15.com"
-      - "/REGISTRY-NOTFOUND/python3.15.exe"
-      - "/REGISTRY-NOTFOUND/python3.15"
-      - "/REGISTRY-NOTFOUND/python3.com"
-      - "/REGISTRY-NOTFOUND/python3.exe"
-      - "/REGISTRY-NOTFOUND/python3"
-      - "/REGISTRY-NOTFOUND/python.com"
-      - "/REGISTRY-NOTFOUND/python.exe"
-      - "/REGISTRY-NOTFOUND/python"
-      - "/REGISTRY-NOTFOUND/ipy3.15.com"
-      - "/REGISTRY-NOTFOUND/ipy3.15.exe"
-      - "/REGISTRY-NOTFOUND/ipy3.15"
-      - "/REGISTRY-NOTFOUND/ipy3.com"
-      - "/REGISTRY-NOTFOUND/ipy3.exe"
-      - "/REGISTRY-NOTFOUND/ipy3"
-      - "/REGISTRY-NOTFOUND/ipy64.com"
-      - "/REGISTRY-NOTFOUND/ipy64.exe"
-      - "/REGISTRY-NOTFOUND/ipy64"
-      - "/REGISTRY-NOTFOUND/ipy32.com"
-      - "/REGISTRY-NOTFOUND/ipy32.exe"
-      - "/REGISTRY-NOTFOUND/ipy32"
-      - "/REGISTRY-NOTFOUND/ipy.com"
-      - "/REGISTRY-NOTFOUND/ipy.exe"
-      - "/REGISTRY-NOTFOUND/ipy"
-      - "/REGISTRY-NOTFOUND/ipy.exe.com"
-      - "/REGISTRY-NOTFOUND/ipy.exe"
-    found: false
-    search_context:
-      ENV{PATH}:
-        - "C:\\Program Files (x86)\\Common Files\\Oracle\\Java\\java8path"
-        - "C:\\Program Files (x86)\\Common Files\\Oracle\\Java\\javapath"
-        - "C:\\WINDOWS\\system32"
-        - "C:\\WINDOWS"
-        - "C:\\WINDOWS\\System32\\Wbem"
-        - "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\"
-        - "C:\\WINDOWS\\System32\\OpenSSH\\"
-        - "C:\\Program Files\\nodejs\\"
-        - "C:\\Program Files\\Git\\cmd"
-        - "C:\\ProgramData\\chocolatey\\bin"
-        - "C:\\Program Files\\CMake\\bin"
-        - "E:\\Windows Kits\\10\\Windows Performance Toolkit\\"
-        - "C:\\Program Files\\TortoiseGit\\bin"
-        - "C:\\Program Files\\Docker\\Docker\\resources\\bin"
-        - "C:\\Users\\jiangyiyong\\.cargo\\bin"
-        - "C:\\Users\\jiangyiyong\\.local\\bin"
-        - "c:\\Users\\jiangyiyong\\AppData\\Local\\Programs\\Trae CN\\bin"
-        - "C:\\Users\\jiangyiyong\\AppData\\Local\\Microsoft\\WindowsApps"
-        - "C:\\Users\\jiangyiyong\\AppData\\Local\\Programs\\Microsoft VS Code\\bin"
-        - "C:\\Users\\jiangyiyong\\AppData\\Roaming\\npm"
-        - "C:\\Program Files\\Java\\jre1.8.0_481\\bin"
-      CMAKE_INSTALL_PREFIX: "C:/Program Files/ScreenStreamSDK"
-      CMAKE_SYSTEM_PREFIX_PATH:
-        - "C:/Program Files"
-        - "C:/Program Files (x86)"
-        - "C:/Program Files/CMake"
-        - "C:/Program Files/ScreenStreamSDK"
 ...

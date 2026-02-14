@@ -1,5 +1,8 @@
 # Source files
 set(SOURCE_FILES
+    # API
+    api/screensdk.cpp
+
     # Utils
     utils/error.cpp
     utils/metrics_collector.cpp
@@ -7,6 +10,7 @@ set(SOURCE_FILES
 
     # Capture
     capture/dxgi_capture.cpp
+    capture/dxgi_capture_impl.cpp
     capture/display_detector.cpp
 
     # Encoding
@@ -32,6 +36,9 @@ set(SOURCE_FILES
 
 # Header files
 set(HEADER_FILES
+    # API
+    ${CMAKE_SOURCE_DIR}/include/screensdk/screensdk.h
+
     # Utils
     ${CMAKE_SOURCE_DIR}/include/screensdk/utils/error.h
     ${CMAKE_SOURCE_DIR}/include/screensdk/utils/metrics_collector.h
@@ -39,6 +46,7 @@ set(HEADER_FILES
 
     # Capture
     ${CMAKE_SOURCE_DIR}/include/screensdk/capture/dxgi_capture.h
+    ${CMAKE_SOURCE_DIR}/include/screensdk/capture/i_screen_capture.h
     ${CMAKE_SOURCE_DIR}/include/screensdk/capture/display_detector.h
 
     # Encoding

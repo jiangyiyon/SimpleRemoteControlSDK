@@ -110,7 +110,7 @@ Multiple users want to connect to the same Windows desktop simultaneously from t
 
 ### Functional Requirements
 
-- **FR-001**: System MUST capture screen content from Windows desktop at 60±5 frames per second
+- **FR-001**: System MUST capture screen content from Windows desktop at 60±5 frames per second (resolution-independent requirement applies to all supported resolutions: 720p, 1080p, 1440p, 4K)
 - **FR-002**: System MUST transmit captured screen content to mobile client using WebRTC protocol
 - **FR-003**: System MUST encode video stream using H.264 codec with hardware acceleration when available, and fall back to software encoding with performance warning when hardware encoding is unavailable
 - **FR-004**: System MUST decode video stream on mobile client using browser native H.264 decoder
@@ -145,7 +145,7 @@ Multiple users want to connect to the same Windows desktop simultaneously from t
 
 - **SC-001**: Users can establish remote desktop connection within 5 seconds of entering server IP address
 - **SC-002**: One-way input latency (action → display on mobile) is 30ms or less in local network environment
-- **SC-003**: System maintains 60±5 frames per second video stream for 1920x1080 resolution (minimum acceptable: 55fps for 99% of time under normal network conditions)
+- **SC-003**: System maintains 60±5 frames per second video stream at any supported resolution (720p, 1080p, 1440p, 4K) (minimum acceptable: 55fps for 99% of time under normal network conditions)
 - **SC-004**: Display switch operation completes within 100ms from user action to new display visible on mobile
 - **SC-005**: System can support 3 simultaneous client connections without performance degradation (performance degradation defined as >20% increase in latency or >10% decrease in frame rate)
 - **SC-006**: 90% of input actions result in correct response on Windows desktop within latency threshold
@@ -157,6 +157,146 @@ Multiple users want to connect to the same Windows desktop simultaneously from t
 - **SC-011**: When multiple clients send conflicting input simultaneously, system processes inputs using FIFO (first-in-first-out) policy based on arrival order
 
 ## Clarifications
+
+### Latency Measurement Methodology (U1)
+
+**Definition**: End-to-end one-way latency measures the time from user action (T1) to visual feedback display (T8).
+
+**Measurement Points**:
+```
+┌─────────────┐                    ┌──────────────┐
+│ Mobile      │                    │ Windows Host │
+│ Client      │                    │              │
+└──────┬──────┘                    └──────┬───────┘
+       │                                  │
+   T1: User action (touch/click)          │
+       │                                  │
+   T2: Send over WebRTC data channel      │
+       │                                  │
+   T3: Network transmission ──────────────►│
+       │                              T4: Windows processes input
+       │                                  │
+       ◄───────── Frame capture ──────────┤T5
+       │                                  │
+   T6: Network transmission (video)       │
+       │                                  │
+   T7: Render frame on mobile client      │
+       │                                  │
+   T8: Visual feedback on screen         │
+       │                                  │
+```
+
+**End-to-End Latency = T8 - T1**
+
+| Point | Description | Precision |
+|-------|-------------|-----------|
+| T1 | User action timestamp (touch/click event on mobile client) | ±1ms (performance.now()) |
+| T2 | Input transmission timestamp (WebRTC data channel send) | ±1ms |
+| T3 | Network transmission (client → host) | Implicit |
+| T4 | Input processing timestamp (Windows host receives input) | ±1ms |
+| T5 | Windows response (after SendInput() API call) | Implicit |
+| T6 | Frame capture timestamp (video frame encoding) | ±1ms |
+| T7 | Network transmission (host → client) | Implicit |
+| T8 | Display timestamp (frame rendered on mobile client) | ±1ms (requestAnimationFrame) |
+
+**Calculation**:
+- **One-way latency** = T8 - T1 (end-to-end)
+- **Network latency** = (T4 - T2 + T7 - T6) / 2 (average RTT/2)
+- **Capture+encode latency** = T6 - T5
+- **Decode+render latency** = T8 - T7
+
+**Verification Method**:
+1. Mobile client captures T1 (touch event) and includes in input message
+2. Windows host receives input at T4, processes, captures frame at T6
+3. Mobile client receives frame, renders at T8
+4. Client calculates end-to-end latency = T8 - T1
+5. Client displays latency metrics and logs for analysis
+
+**Test Scenarios**:
+- **Baseline test**: 100 consecutive clicks, measure average, P50, P95, P99
+- **Stress test**: Rapid clicks (10 clicks/second), verify no latency degradation
+- **Network test**: Simulate 10ms, 20ms, 50ms RTT, verify latency scales linearly
+- **Multi-client test**: 4 clients simultaneously, verify no latency degradation
+
+**Acceptance Criteria**:
+- Average one-way latency ≤ 30ms (P50)
+- 95th percentile latency ≤ 40ms (P95)
+- 99th percentile latency ≤ 50ms (P99)
+- Maximum latency spike < 100ms (except network interruption)
+
+### Zoom and Pan Specification (U2)
+
+**Purpose**: Allow mobile client users to zoom and pan the remote desktop view for better visibility of small UI elements. View manipulation is client-side only and does NOT affect the actual Windows desktop resolution or layout.
+
+**Zoom Behavior**:
+
+| Parameter | Value | Description |
+|-----------|-------|-------------|
+| Minimum Zoom | 0.5x | Cannot zoom out below 50% of original size |
+| Maximum Zoom | 3.0x | Cannot zoom in above 300% of original size |
+| Default Zoom | 1.0x | Original size (no zoom) |
+| Zoom Granularity | Continuous | Pinch gesture controls zoom smoothly |
+| Zoom Step (Buttons) | ±0.25x | +/- buttons adjust zoom in discrete steps |
+
+**Pan Behavior**:
+
+| Parameter | Value | Description |
+|-----------|-------|-------------|
+| Pan Bounds | Bounded | Cannot pan beyond desktop boundaries |
+| Pan Threshold | 10px | Minimum drag distance before pan starts |
+| Inertia | Enabled | Smooth deceleration after drag release |
+| Reset Gesture | Double-tap | Double-tap resets zoom to 1.0x and centers view |
+
+**Coordinate System**:
+- Original (1.0x zoom): Desktop coordinates directly mapped to mobile screen
+- Zoomed in (>1.0x): Mobile screen shows subset of desktop, centered on zoom point
+- Zoomed out (<1.0x): Entire desktop fits in mobile screen with letterboxing
+
+**Gesture Details**:
+
+**Pinch-to-Zoom**:
+- Two-finger pinch: Zoom in (fingers move apart)
+- Two-finger spread: Zoom out (fingers move together)
+- Zoom anchor point: Center of pinch gesture on desktop
+- Minimum pinch distance: 20px (to distinguish from tap)
+- Zoom factor calculation: `new_zoom = current_zoom * (current_distance / start_distance)`
+- Clamped to [0.5x, 3.0x] range
+
+**Pan (Drag)**:
+- Single-finger drag: Pan view in zoomed-in state
+- Inertia enabled: Continue panning with deceleration after drag release
+- Inertia decay: 10% per frame (stops after ~20 frames)
+- Pan only active when zoom > 1.0x
+
+**Edge Cases**:
+- At 1.0x zoom: Pan disabled (no effect)
+- At <1.0x zoom: Pan disabled (entire desktop visible)
+- At boundary: Clamp pan to prevent showing empty space outside desktop
+- During zoom: Adjust pan to keep anchor point stable
+
+**Reset Behavior**:
+- Double-tap anywhere: Instant reset to 1.0x zoom, centered view
+- Reset animation: 300ms smooth transition (linear easing)
+- Reset disabled if already at 1.0x zoom and centered
+
+**Performance Requirements**:
+- Zoom gesture: Update at 60fps during pinch
+- Pan gesture: Update at 60fps during drag
+- Animation: 60fps smooth transitions
+- Memory: < 10MB for zoomed frame buffers
+
+**Error Handling**:
+- Invalid zoom input: Clamp to [0.5x, 3.0x] range silently
+- Pan outside bounds: Clamp to desktop boundary silently
+- Gesture conflict: Prefer zoom over tap if pinch detected (>20px movement)
+
+**Testing Scenarios**:
+1. Zoom in from 1.0x to 3.0x, verify smooth scaling
+2. Zoom out from 1.0x to 0.5x, verify letterboxing
+3. Pan at 2.0x zoom, verify boundaries respected
+4. Rapid pinch gestures, verify no jitter
+5. Double-tap reset, verify instant reset to 1.0x
+6. Pan inertia, verify smooth deceleration
 
 ### Session 2025-02-11
 

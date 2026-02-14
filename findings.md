@@ -102,15 +102,28 @@
 
 **Underspecification Issues (5)**
 
-**U1: Latency Measurement Methodology**
+**U1: Latency Measurement Methodology** ✅ RESOLVED
 - Location: spec.md:L99
 - Issue: FR-005 requires 30ms latency but no measurement methodology
 - Recommendation: Add latency measurement methodology definition
+- **Resolution**: Added comprehensive latency measurement methodology to spec.md:
+  - Defined 8 measurement points (T1: user action → T8: display)
+  - End-to-end one-way latency = T8 - T1
+  - Verification method with timestamped payloads
+  - Test scenarios: baseline, stress, network, multi-client
+  - Acceptance criteria: avg ≤ 30ms (P50), P95 ≤ 40ms, P99 ≤ 50ms
 
-**U2: Zoom/Pan Bounds Undefined**
+**U2: Zoom/Pan Bounds Undefined** ✅ RESOLVED
 - Location: spec.md:L104
 - Issue: FR-012 mentions "view manipulation only" but doesn't define zoom/pan bounds
 - Recommendation: Define zoom limits (min/max) and pan boundaries
+- **Resolution**: Added detailed zoom/pan specification to spec.md:
+  - Zoom limits: 0.5x minimum, 3.0x maximum, 1.0x default
+  - Pan bounds: Bounded (cannot pan beyond desktop boundaries)
+  - Zoom granularity: Continuous (pinch gesture) or ±0.25x (buttons)
+  - Reset gesture: Double-tap to reset to 1.0x
+  - Performance: 60fps updates, < 10MB memory
+  - Edge cases: Pan disabled at ≤1.0x zoom, boundary clamping, inertia
 
 **U3: Backoff Parameters Undefined** ✅ RESOLVED
 - Location: spec.md:L107
@@ -144,29 +157,57 @@
   - Updated constitution.md: "< 100ms for input-to-display (one-way)"
   - Now FR-005 (30ms one-way) is within constitutional requirement (100ms one-way)
 
-**I2: Contract File Implementation Mismatch** ⏸️ PENDING
+**I2: Contract File Implementation Mismatch** ✅ RESOLVED
 - Location: plan.md:L143 vs tasks.md:T043
 - Issue: plan.md references contracts/screen_capture.h but tasks.md implements IScreenCapture in dxgi_capture.cpp
 - Impact: Planned architecture doesn't match actual task implementation
-- Recommendation: Create contract files as planned or update tasks to implement in separate headers
+- Recommendation: Create IScreenCapture interface adapter to align with contract
+- **Decision**: User approved Option A - Update implementation to match contract
+- **Resolution**: Successfully implemented IScreenCapture interface and adapter:
+  - Created IScreenCapture interface in ScreenStreamSDK/include/screensdk/capture/i_screen_capture.h
+  - Created DxgiCaptureImpl class in ScreenStreamSDK/src/capture/dxgi_capture_impl.cpp
+  - Wrapped existing DxgiCapture functionality within DxgiCaptureImpl
+  - Added factory functions CreateScreenCapture()/DestroyScreenCapture()
+  - Created comprehensive unit tests (15 tests) in tests/unit/screen_capture_test.cpp
+  - Updated CMakeLists.txt to include new files
+  - All code compiles successfully with no errors
+- **Files Created**:
+  - ScreenStreamSDK/include/screensdk/capture/i_screen_capture.h (133 lines)
+  - ScreenStreamSDK/src/capture/dxgi_capture_impl.cpp (185 lines)
+  - tests/unit/screen_capture_test.cpp (312 lines)
+- **Files Modified**:
+  - ScreenStreamSDK/src/CMakeLists.txt (added dxgi_capture_impl.cpp and i_screen_capture.h)
+  - tests/CMakeLists.txt (added screen_capture_test.cpp)
 
-**I3: SendInput Integration Unclear** ⏸️ PENDING
+**I3: SendInput Integration Unclear** ✅ RESOLVED
 - Location: spec.md:L100 vs tasks.md:T023
 - Issue: spec.md requires keyboard input but tasks.md only mentions keyboard_handler.cpp
 - Impact: Unclear if SendInput wrapper is implemented
 - Recommendation: Verify T024 implements SendInput wrapper or update description
+- **Resolution**: SendInput is correctly implemented in two separate files:
+  - T023: windows_input.cpp (mouse events)
+  - T024: keyboard_handler.cpp (keyboard events)
+  - Both tasks fulfill keyboard and mouse input requirements
 
-**I4: FPS Resolution Scope Unclear** ⏸️ PENDING
+**I4: FPS Resolution Scope Unclear** ✅ RESOLVED
 - Location: spec.md:L94 vs plan.md:L18
 - Issue: spec.md requires 60fps @ any resolution but plan.md only specifies 1080p
 - Impact: Unclear if 60fps applies to all resolutions or only 1080p
 - Recommendation: Clarify if 60fps requirement is resolution-independent
+- **Resolution**: FPS requirement is resolution-independent (per user decision):
+  - System MUST maintain 60±5 fps at ANY resolution (720p, 1080p, 1440p, 4K)
+  - Minimum acceptable: 55fps for 99% of time across all resolutions
+  - Added clarification to spec.md and plan.md
 
-**I5: Display Enumeration Potential Duplication** ⏸️ PENDING
+**I5: Display Enumeration Potential Duplication** ✅ RESOLVED
 - Location: tasks.md:T020 vs T060
 - Issue: Both T020 and T060 mention display enumeration
 - Impact: Unclear separation of responsibilities
 - Recommendation: Clarify T020 as initialization/API wrapper, T060 as DXGI integration
+- **Resolution**: Tasks have distinct responsibilities (updated descriptions):
+  - T020 (Phase 2): Foundational display enumeration via Windows Display API
+  - T060 (Phase 4, US2): DXGI integration for real-time display changes and hot-plug detection
+  - Both target display_detector.cpp but represent incremental development phases
 
 ### MEDIUM Priority Issues (6)
 

@@ -161,7 +161,7 @@ std::vector<DisplaySource> DisplayDetector::getDisplaySources() const {
               const DXGI_MODE_DESC& mode = modes[0];
 
               DisplaySource source;
-              source.id = static_cast<int>(adapter_index);
+              source.id = static_cast<int>(adapter_index) + 1;
               source.name = wstring_to_utf8(adapter_desc.Description);
               source.resolution_width = static_cast<int>(mode.Width);
               source.resolution_height = static_cast<int>(mode.Height);
