@@ -54,9 +54,12 @@ bool DxgiCapture::captureFrame(VideoFrame& frame) {
     return false;
   }
 
+  // Use short timeout to maintain frame rate
+  const UINT kAcquireTimeoutMs = static_cast<UINT>(1000 / target_fps_ / 2);
+
   DXGI_OUTDUPL_FRAME_INFO frame_info;
   ComPtr<IDXGIResource> resource;
-  HRESULT hr = duplication_->AcquireNextFrame(100, &frame_info, &resource);
+  HRESULT hr = duplication_->AcquireNextFrame(kAcquireTimeoutMs, &frame_info, &resource);
 
   if (hr == DXGI_ERROR_WAIT_TIMEOUT) {
     return false;
@@ -129,11 +132,20 @@ bool DxgiCapture::captureFrame(VideoFrame& frame) {
 }
 
 void DxgiCapture::captureLoop(std::stop_token stop_token) {
-  const int frame_interval_ms = 1000 / target_fps_;
+  const auto frame_interval = std::chrono::milliseconds(1000 / target_fps_);
   bool has_last_frame = false;
+  auto next_frame_time = std::chrono::steady_clock::now();
 
   while (!stop_token.stop_requested() && running_) {
-    auto start = std::chrono::steady_clock::now();
+    // Calculate next frame time
+    next_frame_time += frame_interval;
+    auto now = std::chrono::steady_clock::now();
+
+    // If we're behind schedule, skip this frame
+    if (now > next_frame_time + std::chrono::milliseconds(10)) {
+      next_frame_time = now;
+      continue;
+    }
 
     VideoFrame frame;
     bool captured = captureFrame(frame);
@@ -162,11 +174,10 @@ void DxgiCapture::captureLoop(std::stop_token stop_token) {
       frame_callback_(last_frame_);
     }
 
-    auto elapsed = std::chrono::steady_clock::now() - start;
-    auto sleep_time = std::chrono::milliseconds(frame_interval_ms) -
-                     std::chrono::duration_cast<std::chrono::milliseconds>(elapsed);
-    if (sleep_time.count() > 0) {
-      std::this_thread::sleep_for(sleep_time);
+    // Sleep until next frame time
+    now = std::chrono::steady_clock::now();
+    if (now < next_frame_time) {
+      std::this_thread::sleep_until(next_frame_time);
     }
   }
 }

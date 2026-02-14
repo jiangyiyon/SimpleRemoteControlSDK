@@ -5,6 +5,33 @@
   WHEN: Update after completing each phase or encountering errors. More detailed than task_plan.md.
 -->
 
+## Session: 2026-02-14 (T037: DXGI Capture Simplified)
+- **Status:** Performance optimization deferred to final phase ✅
+- **Status:** Unit tests simplified to functional-only ✅
+
+### T037 Optimization Plan Restructuring
+- **Simplified test approach:** Removed performance tests, kept only functional tests
+- **Modified test file:** tests/unit/capture/dxgi_capture_test.cpp
+  - Removed: `CaptureAt60Fps` (performance test)
+  - Removed: `FrameRateStability` (performance test)
+  - Removed: `MemoryUsageLimit` (long-running test)
+  - Kept: 7 functional tests (initialization, callbacks, start/stop)
+- **Updated T037 plan:** t037_dxgi_60fps_optimization_plan.md
+  - Phase 1: Basic Functionality ✅ Completed
+  - Phase 2: Error Handling ⏳ Pending
+  - Phase 3: Performance Optimization ⏳ Deferred to end
+  - New strategy: Functional first, optimize later
+
+### Rationale for Simplification
+- User decision: "先不去管性能，后续再去做性能优化"
+- Focus on correctness before optimization
+- Avoid premature optimization
+- Performance tests can be added after all functional work completes
+
+### Next Steps for T037
+- Phase 2: Implement error handling (DXGI_ACCESS_DENIED recovery)
+- Defer: All performance optimization work until final phase
+
 ## Session: 2026-02-14 (Phase 3: I2 Code Refactoring + Integration Tests Complete)
 - **Status:** I2 (Contract File Implementation Mismatch) resolved ✅
 - **Status:** All integration tests completed ✅ (7/7, 100% coverage)
