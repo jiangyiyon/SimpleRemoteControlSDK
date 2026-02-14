@@ -40,3 +40,4 @@ download_webrtc*.bat
 
 # Documentation drafts
 tdd_coverage_report.md
+"# Excalidraw MCP build files\nexcalidraw-mcp*/\n"  

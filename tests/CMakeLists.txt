@@ -166,6 +166,7 @@ add_executable(integration_tests
     integration/encoding_fallback_test.cpp
     integration/display_controller_sdp_test.cpp
     integration/display_controller_sdp_test_single_display.cpp
+    integration/transport_test.cpp
 )
 
 # Link Google Test and project libraries

@@ -159,7 +159,9 @@ TEST_F(CaptureEncoderIntegrationTest, CaptureWithCallbackAndEncode) {
   capture_->setFrameCallback(callback);
   capture_->start();
 
-  std::this_thread::sleep_for(std::chrono::milliseconds(500));
+  // Wait longer to ensure enough frames are captured
+  // Desktop Duplication API may have initial delay and lower actual FPS
+  std::this_thread::sleep_for(std::chrono::milliseconds(1500));
 
   capture_->stop();
 
