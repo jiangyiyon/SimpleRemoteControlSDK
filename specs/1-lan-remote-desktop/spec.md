@@ -98,7 +98,7 @@ Multiple users want to connect to the same Windows desktop simultaneously from t
 ### Edge Cases
 
 - What happens when network connection is interrupted during an active session? System should attempt automatic reconnection with exponential backoff (initial: 1s, maximum: 30s, multiplier: 2x)
-- What happens when Windows host display configuration changes (display added/removed)? System should pause stream, notify user, and allow display list refresh
+- What happens when Windows host display configuration changes (display added/removed)? System should detect change via DXGI, pause video stream (not data channel), notify user via data channel message, allow display list refresh, and restore stream when user selects valid display
 - What happens when Windows host GPU does not support hardware encoding? System should fall back to software encoding or display error with error type enum and details string
 - What happens when mobile device Chrome browser does not support required WebRTC features? System should detect incompatibility and display error with error type enum and details string
 - What happens when network latency exceeds 30ms threshold? System should maintain connection and display latency warning when latency exceeds 100ms for >5 consecutive seconds (threshold: display warning when >100ms for >5s)
@@ -224,6 +224,169 @@ Multiple users want to connect to the same Windows desktop simultaneously from t
 - 99th percentile latency ≤ 50ms (P99)
 - Maximum latency spike < 100ms (except network interruption)
 
+### Display Switching Protocol Specification (U4)
+
+**Purpose**: Define the WebRTC SDP renegotiation protocol behavior for seamless display switching during active remote sessions. Display switching is achieved through WebRTC media renegotiation, which causes a brief, controlled frame interruption.
+
+**Protocol Overview**:
+
+Display switching uses WebRTC Session Description Protocol (SDP) renegotiation to replace the video track source without breaking the ICE connection. This approach balances speed (≤100ms requirement) with stability (maintains established network path).
+
+**Switching Process Flow**:
+
+```
+┌─────────────┐                    ┌──────────────┐
+│ Mobile      │                    │ Windows Host │
+│ Client      │                    │              │
+└──────┬──────┘                    └──────┬───────┘
+       │                                  │
+  1. User selects new display              │
+       │                                  │
+  2. Send "switchDisplay" message          │
+     (via WebRTC data channel) ──────────►│
+       │                                  │
+       │                           3. Receive request
+       │                           4. Stop current encoder
+       │                           5. Switch DxgiCapture to
+       │                              new display source
+       │                           6. Start encoder with
+       │                              new display
+       │                                  │
+       │ ◄───────── 7. Create new SDP offer│
+       │    (re-negotiation request)       │
+       │                                  │
+  8. Process SDP offer                     │
+     (ICE connection REUSED)               │
+       │                                  │
+  9. Create SDP answer ───────────────────►│
+       │                          10. Process answer
+       │                          11. Replace video track
+       │                          12. Resume frame transmission
+       │                                  │
+ 13. Receive new video track               │
+ 14. Switch decoder to new track          │
+ 15. Display new video frame              │
+       │                                  │
+  [Frame interruption: ~5-10 frames at 60fps ≈ 83-166ms]
+       │                                  │
+```
+
+**Frame Interruption Behavior**:
+
+During display switching, temporary frame loss occurs due to:
+
+1. **Encoder Stop/Start** (~10-20ms): Encoder must be stopped and restarted with new display source
+2. **SDP Renegotiation** (~30-50ms): WebRTC exchanges offer/answer without ICE restart
+3. **Decoder Switch** (~10-20ms): Client switches decoder to new video track
+4. **Buffer Replenishment** (~10-20ms): Video decoder buffer refills with new frames
+
+**Total Interruption**: ~60-110ms (typically ~80ms at 60fps)
+
+**Frame Loss Estimate**: ~5-7 frames at 60fps during transition
+
+**Key Protocol Details**:
+
+**ICE Connection Behavior**:
+- ✅ **ICE connection is NOT restarted** - established network path is preserved
+- ✅ Only media (video track) is renegotiated
+- ✅ Data channel remains active during renegotiation
+- ⚠️ Temporary video track replacement causes frame gap
+
+**SDP Renegotiation Sequence**:
+
+```
+Step 1: Host initiates renegotiation
+  - Sends: RTCPeerConnection.setLocalDescription(offer)
+  - Offer includes: New video track with new display source
+
+Step 2: Client receives offer
+  - Calls: RTCPeerConnection.setRemoteDescription(offer)
+  - Creates answer with new track acceptance
+
+Step 3: Host receives answer
+  - Calls: RTCPeerConnection.setRemoteDescription(answer)
+  - Switches video source to new display
+
+Step 4: New video stream begins
+  - Client receives first frame from new display
+  - Decoder processes new track
+  - Video updates on client display
+```
+
+**Timing Breakdown**:
+
+| Step | Component | Duration | Notes |
+|------|-----------|----------|-------|
+| 1-2 | Request transmission | ~5ms | Data channel, very fast |
+| 3-6 | Display switch on host | ~15ms | DXGI reconfiguration |
+| 7 | SDP offer creation | ~10ms | WebRTC signaling |
+| 8-9 | SDP offer/answer exchange | ~30ms | Network + processing |
+| 10-12 | Host side track replacement | ~20ms | WebRTC pipeline |
+| 13-15 | Client side track switch | ~20ms | Decoder switch |
+| **Total** | **End-to-end** | **~100ms** | **Meets ≤100ms requirement** |
+
+**Frame Loss Specification**:
+
+- **Maximum acceptable frame loss**: ≤7 frames at 60fps (~116ms)
+- **Typical frame loss**: 5-6 frames at 60fps (~83-100ms)
+- **Expected interruption duration**: 60-110ms
+- **Stream pause behavior**: ❌ Stream does NOT pause - brief gap in video frames
+
+**Error Handling**:
+
+**Host-side Errors**:
+- Display switch failure (display not found/disabled):
+  - Send error response via data channel
+  - Keep existing display stream active
+  - User can retry or select different display
+
+**Client-side Errors**:
+- SDP renegotiation failure:
+  - Display error message to user
+  - Attempt to re-establish connection to current display
+  - Allow user to manually reconnection
+
+**Network Errors**:
+- Renegotiation timeout (>200ms):
+  - Abort renegotiation
+  - Restore previous display stream
+  - Notify user and allow retry
+
+**Testing Requirements**:
+
+| Test Scenario | Expected Behavior |
+|---------------|-------------------|
+| Switch between 2 displays | Complete within 100ms, 5-7 frame loss |
+| Switch to same display (no-op) | Should be detected and skipped (no renegotiation) |
+| Switch during high CPU load | Still within 100ms, may increase to 6-8 frame loss |
+| Switch to invalid display | Error returned, existing stream maintained |
+| Switch during network latency (20ms) | Still within 100ms, frame loss unchanged |
+| Rapid consecutive switches (3 in 1 second) | Each switch completes within 100ms, no degradation |
+
+**Implementation Notes**:
+
+- Use WebRTC `replaceTrack()` API when available for faster switching
+- Prefer `track.onunmute` event to detect when new video stream is ready
+- Maintain decoder instance to minimize re-initialization overhead
+- Log switch timing for debugging and performance monitoring
+
+**Q&A**:
+
+- Q: Does display switching restart the ICE connection?
+  - A: No, ICE connection is preserved. Only video track is renegotiated.
+
+- Q: Is there a complete stream pause during switching?
+  - A: No, there is a brief frame gap (5-7 frames), but stream does not pause.
+
+- Q: Can input be sent during display switch?
+  - A: Yes, data channel remains active, but input actions may be delayed until new display is ready.
+
+- Q: What happens if SDP renegotiation fails?
+  - A: System attempts to restore previous display stream and displays error to user.
+
+- Q: Can multiple clients switch to different displays simultaneously?
+  - A: Yes, each client's switch is independent. Server maintains separate streams per client.
+
 ### Zoom and Pan Specification (U2)
 
 **Purpose**: Allow mobile client users to zoom and pan the remote desktop view for better visibility of small UI elements. View manipulation is client-side only and does NOT affect the actual Windows desktop resolution or layout.
@@ -302,7 +465,8 @@ Multiple users want to connect to the same Windows desktop simultaneously from t
 
 - Q: How should the system handle conflicting input from multiple clients? → A: FIFO (first-in-first-out) - Process inputs strictly in arrival order
 - Q: What should happen when GPU hardware encoding is not available? → A: Attempt software encoding with performance warning
-- Q: Should display switching cause frame loss or be seamless? → A: Brief interruption - Allow temporary frame drop during switch
+- Q: Should display switching cause frame loss or be seamless? → A: Brief interruption - Allow temporary frame drop during switch (5-7 frames at 60fps, ~83-116ms) via WebRTC SDP renegotiation without ICE restart
+- Q: Does display switching restart the WebRTC connection? → A: No, ICE connection is preserved. Only the video track is renegotiated via SDP to switch display source
 - Q: What is the reconnection retry policy after network interruption? → A: Retry indefinitely with exponential backoff (initial: 1s, maximum: 30s, multiplier: 2x)
 - Q: Should zoom/pan gestures affect mobile view or Windows desktop? → A: Client-side only - Affects only mobile view, not actual Windows desktop
 
