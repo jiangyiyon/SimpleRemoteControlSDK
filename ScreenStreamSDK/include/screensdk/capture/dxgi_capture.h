@@ -18,10 +18,10 @@ using Microsoft::WRL::ComPtr;
 
 /**
  * @brief DXGI screen capture implementation
- * 
+ *
  * T019: Implement DXGI screen capture initialization
  * T037: Implement DXGI screen capture loop at 60fps
- * 
+ *
  * Captures screen content using Desktop Duplication API (DXGI 1.2+).
  * Provides high-performance capture with minimal CPU overhead.
  */
@@ -31,6 +31,8 @@ public:
   ~DxgiCapture() override;
 
   // IVideoSource interface
+  bool init() override;
+  void uninit() override;
   void start() override;
   void stop() override;
   bool isRunning() const override { return running_; }
@@ -41,15 +43,17 @@ public:
   int getFps() const override { return target_fps_; }
 
   /**
-   * @brief Initialize for specific display
+   * @brief Select display index to capture
    * @param display_index Display index to capture (0 = primary)
+   *
+   * Must be called before init().
    */
-  bool initialize(int display_index = 0);
+  void selectDisplayIndex(int display_index);
 
   /**
    * @brief Capture single frame (blocking)
    */
-  bool captureFrame(VideoFrame& frame);
+  bool captureFrame(VideoFrameForTrans& frame);
 
   /**
    * @brief Set target FPS
@@ -91,7 +95,7 @@ private:
 
   // Last frame buffer for maintaining frame rate when screen doesn't change
   std::vector<uint8_t> last_frame_buffer_;
-  VideoFrame last_frame_;
+  VideoFrameForTrans last_frame_;
 
   // Capture thread
   std::jthread capture_thread_;

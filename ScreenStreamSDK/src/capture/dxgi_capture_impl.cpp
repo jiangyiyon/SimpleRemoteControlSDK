@@ -39,7 +39,8 @@ public:
       dxgi_capture_ = std::make_unique<DxgiCapture>();
     }
 
-    return dxgi_capture_->initialize(display_id - 1);
+    dxgi_capture_->selectDisplayIndex(display_id - 1);
+    return dxgi_capture_->init();
   }
 
   void shutdown() override {
@@ -70,7 +71,7 @@ public:
     }
 
     current_display_ = display;
-    dxgi_capture_->setFrameCallback([this](const VideoFrame& frame) {
+    dxgi_capture_->setFrameCallback([this](const VideoFrameForTrans& frame) {
       this->onFrameCaptured(frame);
     });
     dxgi_capture_->start();
@@ -87,7 +88,7 @@ public:
     return current_display_;
   }
 
-  std::shared_ptr<VideoFrame> getNextFrame(uint32_t timeout_ms) override {
+  std::shared_ptr<VideoFrameForTrans> getNextFrame(uint32_t timeout_ms) override {
     // Note: DxgiCapture uses callback-based model, not pull-based
     // This implementation returns the latest captured frame
     // For true non-blocking behavior, timeout_ms is ignored
@@ -121,10 +122,10 @@ private:
   /**
    * @brief Frame captured callback from DxgiCapture
    */
-  void onFrameCaptured(const VideoFrame& frame) {
+  void onFrameCaptured(const VideoFrameForTrans& frame) {
     std::lock_guard<std::mutex> lock(frame_mutex_);
     // Create a copy of the frame data
-    latest_frame_ = std::make_shared<VideoFrame>();
+    latest_frame_ = std::make_shared<VideoFrameForTrans>();
     latest_frame_->width = frame.width;
     latest_frame_->height = frame.height;
     latest_frame_->stride = frame.stride;
@@ -146,7 +147,7 @@ private:
 
   // Frame storage for getNextFrame()
   mutable std::mutex frame_mutex_;
-  std::shared_ptr<VideoFrame> latest_frame_;
+  std::shared_ptr<VideoFrameForTrans> latest_frame_;
   std::vector<uint8_t> frame_buffer_;
 };
 

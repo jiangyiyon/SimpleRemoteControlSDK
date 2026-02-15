@@ -10,6 +10,17 @@ namespace screensdk {
 DxgiCapture::DxgiCapture() = default;
 
 DxgiCapture::~DxgiCapture() {
+  uninit();
+}
+
+bool DxgiCapture::init() {
+  if (duplication_) {
+    return true;  // Already initialized
+  }
+  return initializeDxgi();
+}
+
+void DxgiCapture::uninit() {
   stop();
   releaseDxgi();
 }
@@ -17,15 +28,19 @@ DxgiCapture::~DxgiCapture() {
 void DxgiCapture::start() {
   if (running_) return;
 
-  // Only initialize if not already initialized
-  if (!duplication_ && !initializeDxgi()) {
-    return;
+  if (!duplication_) {
+    // Auto-init for backward compatibility
+    if (!init()) {
+      return;
+    }
   }
 
   running_ = true;
-  capture_thread_ = std::jthread([](std::stop_token stop_token, DxgiCapture* capture) {
-    capture->captureLoop(stop_token);
-  }, this);
+
+  // Create new capture thread
+  capture_thread_ = std::jthread([this](std::stop_token stop_token) {
+    captureLoop(stop_token);
+  });
 }
 
 void DxgiCapture::stop() {
@@ -44,12 +59,11 @@ void DxgiCapture::getFrameSize(int* width, int* height) const {
   if (height) *height = height_;
 }
 
-bool DxgiCapture::initialize(int display_index) {
+void DxgiCapture::selectDisplayIndex(int display_index) {
   display_index_ = display_index;
-  return initializeDxgi();
 }
 
-bool DxgiCapture::captureFrame(VideoFrame& frame) {
+bool DxgiCapture::captureFrame(VideoFrameForTrans& frame) {
   if (!duplication_ || !texture_copy_) {
     return false;
   }
@@ -147,7 +161,7 @@ void DxgiCapture::captureLoop(std::stop_token stop_token) {
       continue;
     }
 
-    VideoFrame frame;
+    VideoFrameForTrans frame;
     bool captured = captureFrame(frame);
 
     if (captured && frame_callback_) {

@@ -17,10 +17,22 @@ class MockVideoSource : public IVideoSource {
 public:
     bool started = false;
     bool stopped = false;
+    bool initialized = false;
     int current_width = 1920;
     int current_height = 1080;
     int current_fps = 60;
     FrameCallback callback;
+
+    bool init() override {
+        initialized = true;
+        return true;
+    }
+
+    void uninit() override {
+        initialized = false;
+        stopped = true;
+        started = false;
+    }
 
     void start() override { started = true; stopped = false; }
     void stop() override { stopped = true; started = false; }

@@ -9,6 +9,7 @@
 #include "screensdk/capture/display_detector.h"
 #include "screensdk/encoding/encoder_factory.h"
 #include "screensdk/encoding/encoder_config.h"
+#include "screensdk/transport/video_source.h"
 
 namespace screensdk {
 
@@ -88,7 +89,8 @@ protected:
    * @brief Initialize pipeline on specified display
    */
   void initializePipeline(int display_index) {
-    ASSERT_TRUE(capture_->initialize(display_index))
+    capture_->selectDisplayIndex(display_index);
+    ASSERT_TRUE(capture_->init())
       << "Capture should initialize on display " << display_index;
 
     DisplayInfo display = display_detector_->getDisplay(display_index);
@@ -108,7 +110,7 @@ protected:
    * @brief Capture and encode a frame
    */
   bool captureAndEncodeFrame(size_t* encoded_size = nullptr) {
-    VideoFrame frame;
+    VideoFrameForTrans frame;
     if (!capture_->captureFrame(frame)) {
       return false;
     }
@@ -201,7 +203,7 @@ TEST_F(DisplaySwitchIntegrationTest, SwitchDisplayAndReinitializePipeline) {
   initializePipeline(from_index);
 
   // Capture a frame
-  VideoFrame frame1;
+  VideoFrameForTrans frame1;
   ASSERT_TRUE(capture_->captureFrame(frame1));
   EXPECT_EQ(frame1.width, displays_[0].width);
   EXPECT_EQ(frame1.height, displays_[0].height);
@@ -223,7 +225,7 @@ TEST_F(DisplaySwitchIntegrationTest, SwitchDisplayAndReinitializePipeline) {
     end - start).count();
 
   // Capture frame from new display
-  VideoFrame frame2;
+  VideoFrameForTrans frame2;
   ASSERT_TRUE(capture_->captureFrame(frame2));
   EXPECT_EQ(frame2.width, displays_[1].width);
   EXPECT_EQ(frame2.height, displays_[1].height);
@@ -281,7 +283,7 @@ TEST_F(DisplaySwitchIntegrationTest, ContinuousCaptureAcrossDisplaySwitch) {
   std::atomic<int> frame_count2{0};
   std::atomic<bool> switched{false};
 
-  auto callback = [&](const VideoFrame& frame) {
+  auto callback = [&](const VideoFrameForTrans& frame) {
     if (!switched.load()) {
       frame_count1++;
       if (frame_count1 >= 5) {
@@ -504,7 +506,7 @@ TEST_F(DisplaySwitchIntegrationTest, DisplaySwitchLatencyMeasurement) {
     capture_ = new DxgiCapture();
     initializePipeline(from_index);
 
-    VideoFrame frame1;
+    VideoFrameForTrans frame1;
     ASSERT_TRUE(capture_->captureFrame(frame1));
 
     size_t size1;
@@ -522,7 +524,7 @@ TEST_F(DisplaySwitchIntegrationTest, DisplaySwitchLatencyMeasurement) {
 
     initializePipeline(to_index);
 
-    VideoFrame frame2;
+    VideoFrameForTrans frame2;
     ASSERT_TRUE(capture_->captureFrame(frame2));
 
     size_t size2;

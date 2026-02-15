@@ -12,7 +12,7 @@
 namespace screensdk {
 
 // Forward declarations (defined in video_source.h)
-struct VideoFrame;
+struct VideoFrameForTrans;
 
 /**
  * @brief Resolution structure
@@ -96,7 +96,7 @@ struct SCREEN_STREAM_SDK_EXPORT IScreenCapture {
    * @param timeout_ms Timeout in milliseconds (0 for immediate return)
    * @return Shared pointer to video frame, nullptr if timeout or stopped
    */
-  virtual std::shared_ptr<VideoFrame> getNextFrame(uint32_t timeout_ms) = 0;
+  virtual std::shared_ptr<VideoFrameForTrans> getNextFrame(uint32_t timeout_ms) = 0;
 
   // Capability queries
   /**

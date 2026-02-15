@@ -7,6 +7,7 @@
 #include "screensdk/capture/display_detector.h"
 #include "screensdk/encoding/encoder_factory.h"
 #include "screensdk/encoding/encoder_config.h"
+#include "screensdk/transport/video_source.h"
 
 namespace screensdk {
 
@@ -62,7 +63,8 @@ protected:
 };
 
 TEST_F(CaptureEncoderIntegrationTest, InitializeBoth) {
-  EXPECT_TRUE(capture_->initialize(primary_display_.index));
+  capture_->selectDisplayIndex(primary_display_.index);
+  EXPECT_TRUE(capture_->init());
 
   EncoderConfig config = EncoderConfig::getLowLatency();
   std::string config_json = config.toJson();
@@ -71,9 +73,9 @@ TEST_F(CaptureEncoderIntegrationTest, InitializeBoth) {
 }
 
 TEST_F(CaptureEncoderIntegrationTest, CaptureAndEncodeFrame) {
-  ASSERT_TRUE(capture_->initialize(primary_display_.index));
-
-  VideoFrame frame;
+  capture_->selectDisplayIndex(primary_display_.index);
+  ASSERT_TRUE(capture_->init());
+  VideoFrameForTrans frame;
   bool captured = capture_->captureFrame(frame);
   EXPECT_TRUE(captured);
   EXPECT_NE(frame.data, nullptr);
@@ -98,7 +100,8 @@ TEST_F(CaptureEncoderIntegrationTest, CaptureAndEncodeFrame) {
 }
 
 TEST_F(CaptureEncoderIntegrationTest, CaptureAndEncodeMultipleFrames) {
-  ASSERT_TRUE(capture_->initialize(primary_display_.index));
+  capture_->selectDisplayIndex(primary_display_.index);
+  ASSERT_TRUE(capture_->init());
 
   EncoderConfig config = EncoderConfig::getLowLatency();
   std::string config_json = config.toJson();
@@ -113,7 +116,7 @@ TEST_F(CaptureEncoderIntegrationTest, CaptureAndEncodeMultipleFrames) {
   int encoded_count = 0;
 
   for (int i = 0; i < 30; ++i) {
-    VideoFrame frame;
+  VideoFrameForTrans frame;
     if (capture_->captureFrame(frame)) {
       captured_count++;
 
@@ -133,7 +136,8 @@ TEST_F(CaptureEncoderIntegrationTest, CaptureAndEncodeMultipleFrames) {
 }
 
 TEST_F(CaptureEncoderIntegrationTest, CaptureWithCallbackAndEncode) {
-  ASSERT_TRUE(capture_->initialize(primary_display_.index));
+  capture_->selectDisplayIndex(primary_display_.index);
+  ASSERT_TRUE(capture_->init());
 
   EncoderConfig config = EncoderConfig::getLowLatency();
   std::string config_json = config.toJson();
@@ -147,7 +151,7 @@ TEST_F(CaptureEncoderIntegrationTest, CaptureWithCallbackAndEncode) {
   int frame_count = 0;
   int encoded_count = 0;
 
-  auto callback = [&](const VideoFrame& frame) {
+  auto callback = [&](const VideoFrameForTrans& frame) {
     frame_count++;
 
     output_size = kOutputBufferSize;
@@ -172,9 +176,9 @@ TEST_F(CaptureEncoderIntegrationTest, CaptureWithCallbackAndEncode) {
 }
 
 TEST_F(CaptureEncoderIntegrationTest, EncodeWithDifferentConfigurations) {
-  ASSERT_TRUE(capture_->initialize(primary_display_.index));
-
-  VideoFrame frame;
+  capture_->selectDisplayIndex(primary_display_.index);
+  ASSERT_TRUE(capture_->init());
+  VideoFrameForTrans frame;
   ASSERT_TRUE(capture_->captureFrame(frame));
 
   std::vector<EncoderConfig> configs = {
@@ -213,7 +217,8 @@ TEST_F(CaptureEncoderIntegrationTest, EncodeWithDifferentConfigurations) {
 }
 
 TEST_F(CaptureEncoderIntegrationTest, PerformanceCaptureAndEncode) {
-  ASSERT_TRUE(capture_->initialize(primary_display_.index));
+  capture_->selectDisplayIndex(primary_display_.index);
+  ASSERT_TRUE(capture_->init());
 
   EncoderConfig config = EncoderConfig::getLowLatency();
   std::string config_json = config.toJson();
@@ -230,7 +235,7 @@ TEST_F(CaptureEncoderIntegrationTest, PerformanceCaptureAndEncode) {
 
   int encoded_count = 0;
   for (int i = 0; i < kTargetFrames; ++i) {
-    VideoFrame frame;
+  VideoFrameForTrans frame;
     if (capture_->captureFrame(frame)) {
       output_size = kOutputBufferSize;
       if (encoder_->encode(frame, output, &output_size)) {
@@ -259,7 +264,8 @@ TEST_F(CaptureEncoderIntegrationTest, PerformanceCaptureAndEncode) {
 }
 
 TEST_F(CaptureEncoderIntegrationTest, MemoryStabilityLongRun) {
-  ASSERT_TRUE(capture_->initialize(primary_display_.index));
+  capture_->selectDisplayIndex(primary_display_.index);
+  ASSERT_TRUE(capture_->init());
 
   EncoderConfig config = EncoderConfig::getLowLatency();
   std::string config_json = config.toJson();
@@ -273,7 +279,7 @@ TEST_F(CaptureEncoderIntegrationTest, MemoryStabilityLongRun) {
   const int kLongRunFrames = 300;
 
   for (int i = 0; i < kLongRunFrames; ++i) {
-    VideoFrame frame;
+  VideoFrameForTrans frame;
     if (capture_->captureFrame(frame)) {
       output_size = kOutputBufferSize;
       encoder_->encode(frame, output, &output_size);
@@ -286,9 +292,9 @@ TEST_F(CaptureEncoderIntegrationTest, MemoryStabilityLongRun) {
 }
 
 TEST_F(CaptureEncoderIntegrationTest, EncoderFlushAfterCapture) {
-  ASSERT_TRUE(capture_->initialize(primary_display_.index));
-
-  VideoFrame frame;
+  capture_->selectDisplayIndex(primary_display_.index);
+  ASSERT_TRUE(capture_->init());
+  VideoFrameForTrans frame;
   ASSERT_TRUE(capture_->captureFrame(frame));
 
   EncoderConfig config = EncoderConfig::getLowLatency();
@@ -314,9 +320,9 @@ TEST_F(CaptureEncoderIntegrationTest, EncoderFlushAfterCapture) {
 }
 
 TEST_F(CaptureEncoderIntegrationTest, HandleStrideDifferences) {
-  ASSERT_TRUE(capture_->initialize(primary_display_.index));
-
-  VideoFrame frame;
+  capture_->selectDisplayIndex(primary_display_.index);
+  ASSERT_TRUE(capture_->init());
+  VideoFrameForTrans frame;
   ASSERT_TRUE(capture_->captureFrame(frame));
 
   EXPECT_GT(frame.stride, 0);

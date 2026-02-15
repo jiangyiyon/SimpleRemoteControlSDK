@@ -14,6 +14,7 @@
 #include <chrono>
 #include <thread>
 #include "screensdk/capture/dxgi_capture.h"
+#include "screensdk/transport/video_source.h"
 
 using namespace screensdk;
 
@@ -29,7 +30,7 @@ protected:
 
   void TearDown() override {
     if (capture_) {
-      capture_->stop();
+      capture_->uninit();
     }
   }
 
@@ -37,7 +38,8 @@ protected:
 };
 
 TEST_F(DxgiCaptureTest, InitializeWithDefaultDisplay) {
-  bool initialized = capture_->initialize(0);
+  capture_->selectDisplayIndex(0);
+  bool initialized = capture_->init();
 
   if (initialized) {
     int width, height;
@@ -48,7 +50,8 @@ TEST_F(DxgiCaptureTest, InitializeWithDefaultDisplay) {
 }
 
 TEST_F(DxgiCaptureTest, InitializeWithInvalidDisplay) {
-  bool initialized = capture_->initialize(999);
+  capture_->selectDisplayIndex(999);
+  bool initialized = capture_->init();
 
   EXPECT_FALSE(initialized);
 }
@@ -67,7 +70,8 @@ TEST_F(DxgiCaptureTest, SetAndGetTargetFps) {
 }
 
 TEST_F(DxgiCaptureTest, FrameCallback) {
-  bool initialized = capture_->initialize(0);
+  capture_->selectDisplayIndex(0);
+  bool initialized = capture_->init();
   if (!initialized) {
     GTEST_SKIP() << "Display initialization failed";
   }
@@ -75,7 +79,7 @@ TEST_F(DxgiCaptureTest, FrameCallback) {
   bool callback_called = false;
   int frame_count = 0;
 
-  capture_->setFrameCallback([&](const VideoFrame& frame) {
+  capture_->setFrameCallback([&](const VideoFrameForTrans& frame) {
     callback_called = true;
     frame_count++;
     EXPECT_NE(frame.data, nullptr);
@@ -95,7 +99,8 @@ TEST_F(DxgiCaptureTest, FrameCallback) {
 }
 
 TEST_F(DxgiCaptureTest, StopAndRestartCapture) {
-  bool initialized = capture_->initialize(0);
+  capture_->selectDisplayIndex(0);
+  bool initialized = capture_->init();
   if (!initialized) {
     GTEST_SKIP() << "Display initialization failed";
   }
@@ -103,7 +108,7 @@ TEST_F(DxgiCaptureTest, StopAndRestartCapture) {
   int start_count = 0;
   int restart_count = 0;
 
-  capture_->setFrameCallback([&](const VideoFrame& frame) {
+  capture_->setFrameCallback([&](const VideoFrameForTrans& frame) {
     if (start_count < 50) {
       start_count++;
     } else {
@@ -115,18 +120,22 @@ TEST_F(DxgiCaptureTest, StopAndRestartCapture) {
   std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
   capture_->stop();
+  capture_->uninit();
 
+  capture_->init();
   capture_->start();
   std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
   capture_->stop();
+  capture_->uninit();
 
   EXPECT_GT(start_count, 0);
   EXPECT_GT(restart_count, 0);
 }
 
 TEST_F(DxgiCaptureTest, MultipleStops) {
-  bool initialized = capture_->initialize(0);
+  capture_->selectDisplayIndex(0);
+  bool initialized = capture_->init();
   if (!initialized) {
     GTEST_SKIP() << "Display initialization failed";
   }

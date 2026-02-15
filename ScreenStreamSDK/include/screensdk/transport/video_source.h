@@ -10,9 +10,9 @@
 namespace screensdk {
 
 /**
- * @brief Video frame data
+ * @brief Video frame data for transport layer
  */
-struct VideoFrame {
+struct VideoFrameForTrans {
   uint8_t* data{nullptr};
   size_t size{0};
   int width{0};
@@ -24,7 +24,7 @@ struct VideoFrame {
 /**
  * @brief Frame callback for new video data
  */
-using FrameCallback = std::function<void(const VideoFrame&)>;
+using FrameCallback = std::function<void(const VideoFrameForTrans&)>;
 
 /**
  * @brief Custom video source adapter for WebRTC track
@@ -36,6 +36,17 @@ using FrameCallback = std::function<void(const VideoFrame&)>;
  */
 struct IVideoSource {
   virtual ~IVideoSource() = default;
+
+  /**
+   * @brief Initialize video source resources
+   * @return true if initialization succeeded
+   */
+  virtual bool init() = 0;
+
+  /**
+   * @brief Release video source resources
+   */
+  virtual void uninit() = 0;
 
   /**
    * @brief Start video capture
