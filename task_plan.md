@@ -114,17 +114,17 @@ Phase 5: User Story 1 Implementation (In Progress)
   - [x] Refactor: Remove wrapper class, simplify namespace to screensdk
   - [x] Fix root directory issue in setupRoutes()
   - [x] All 13 unit tests passing
-- [ ] T1002 [US1] Implement WebSocket signaling server
-  - [ ] Design ISignalingServer interface
-  - [ ] Implement SignalingServer class
-  - [ ] Write unit tests
-  - [ ] Integration test: SDP/ICE exchange
-- [ ] T1003 [US1] Implement RemoteDesktopServer integration
-  - [ ] Design IRemoteDesktopServer interface
-  - [ ] Implement RemoteDesktopServer class
-  - [ ] Integrate capture + encode + WebRTC + HTTP
-  - [ ] Write unit tests
-  - [ ] Integration test: End-to-end streaming
+- [x] T1002 [US1] Implement WebSocket signaling server ⬅️ Completed (2026-02-15)
+  - [x] Design ISignalingServer interface
+  - [x] Implement SignalingServer class (HTTP POST mode)
+  - [x] Write unit tests (9/9 tests passing)
+  - [x] Integration test: SDP/ICE exchange (HTTP POST endpoints)
+- [x] T1003 [US1] Implement RemoteDesktopServer integration ⬅️ Completed (2026-02-15)
+  - [x] Design IRemoteDesktopServer interface
+  - [x] Implement RemoteDesktopServer class
+  - [x] Integrate capture + encode + WebRTC + HTTP + Signaling
+  - [x] Write unit tests
+  - [x] Integration test: End-to-end streaming (8/8 tests passing)
 - [ ] T1004 [US1] Real device testing
   - [ ] Test on Android device
   - [ ] Test on iOS device

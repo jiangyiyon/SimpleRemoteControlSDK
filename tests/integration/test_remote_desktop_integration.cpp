@@ -10,11 +10,15 @@
  * - WebRTC Transport
  */
 
+// Define before including any Windows headers to avoid conflicts
+#define WIN32_LEAN_AND_MEAN
+#define NOMINMAX
+
 #include <gtest/gtest.h>
+#include <httplib.h>
 
 #include "screensdk/server/remote_desktop_server.h"
 #include "screensdk/core/session.h"
-#include <httplib.h>
 #include <thread>
 #include <chrono>
 
@@ -54,11 +58,11 @@ protected:
 TEST_F(RemoteDesktopIntegrationTest, EndToEndFlowTest) {
     // Initialize
     auto init_result = server_->initialize(config_);
-    ASSERT_TRUE(init_result) << "Initialization failed: " << init_result.errorMessage();
+    ASSERT_TRUE(init_result) << "Initialization failed: " << init_result.error().message;
     
     // Start
     auto start_result = server_->start();
-    ASSERT_TRUE(start_result) << "Start failed: " << start_result.errorMessage();
+    ASSERT_TRUE(start_result) << "Start failed: " << start_result.error().message;
     EXPECT_TRUE(server_->isRunning());
     
     // Wait for services to be ready
@@ -81,10 +85,10 @@ TEST_F(RemoteDesktopIntegrationTest, EndToEndFlowTest) {
  */
 TEST_F(RemoteDesktopIntegrationTest, HttpServerIntegrationTest) {
     auto init_result = server_->initialize(config_);
-    ASSERT_TRUE(init_result) << init_result.errorMessage();
+    ASSERT_TRUE(init_result) << init_result.error().message;
     
     auto start_result = server_->start();
-    ASSERT_TRUE(start_result) << start_result.errorMessage();
+    ASSERT_TRUE(start_result) << start_result.error().message;
     
     // Wait for server to start
     std::this_thread::sleep_for(std::chrono::milliseconds(500));
@@ -104,10 +108,10 @@ TEST_F(RemoteDesktopIntegrationTest, HttpServerIntegrationTest) {
  */
 TEST_F(RemoteDesktopIntegrationTest, SignalingServerIntegrationTest) {
     auto init_result = server_->initialize(config_);
-    ASSERT_TRUE(init_result) << init_result.errorMessage();
+    ASSERT_TRUE(init_result) << init_result.error().message;
     
     auto start_result = server_->start();
-    ASSERT_TRUE(start_result) << start_result.errorMessage();
+    ASSERT_TRUE(start_result) << start_result.error().message;
     
     // Wait for server to start
     std::this_thread::sleep_for(std::chrono::milliseconds(500));
@@ -127,10 +131,10 @@ TEST_F(RemoteDesktopIntegrationTest, SignalingServerIntegrationTest) {
  */
 TEST_F(RemoteDesktopIntegrationTest, ScreenCaptureIntegrationTest) {
     auto init_result = server_->initialize(config_);
-    ASSERT_TRUE(init_result) << init_result.errorMessage();
+    ASSERT_TRUE(init_result) << init_result.error().message;
     
     auto start_result = server_->start();
-    ASSERT_TRUE(start_result) << start_result.errorMessage();
+    ASSERT_TRUE(start_result) << start_result.error().message;
     
     // Let capture thread run briefly
     std::this_thread::sleep_for(std::chrono::milliseconds(1000));
@@ -147,11 +151,11 @@ TEST_F(RemoteDesktopIntegrationTest, ScreenCaptureIntegrationTest) {
 TEST_F(RemoteDesktopIntegrationTest, FullStackTest) {
     // Initialize
     auto init_result = server_->initialize(config_);
-    ASSERT_TRUE(init_result) << init_result.errorMessage();
+    ASSERT_TRUE(init_result) << init_result.error().message;
     
     // Start
     auto start_result = server_->start();
-    ASSERT_TRUE(start_result) << start_result.errorMessage();
+    ASSERT_TRUE(start_result) << start_result.error().message;
     
     // Wait for all services to be ready
     std::this_thread::sleep_for(std::chrono::milliseconds(500));
@@ -182,10 +186,10 @@ TEST_F(RemoteDesktopIntegrationTest, FullStackTest) {
  */
 TEST_F(RemoteDesktopIntegrationTest, ConcurrentAccessTest) {
     auto init_result = server_->initialize(config_);
-    ASSERT_TRUE(init_result) << init_result.errorMessage();
+    ASSERT_TRUE(init_result) << init_result.error().message;
     
     auto start_result = server_->start();
-    ASSERT_TRUE(start_result) << start_result.errorMessage();
+    ASSERT_TRUE(start_result) << start_result.error().message;
     
     // Wait for server to start
     std::this_thread::sleep_for(std::chrono::milliseconds(500));
@@ -221,11 +225,11 @@ TEST_F(RemoteDesktopIntegrationTest, ConcurrentAccessTest) {
  */
 TEST_F(RemoteDesktopIntegrationTest, RecoveryTest) {
     auto init_result = server_->initialize(config_);
-    ASSERT_TRUE(init_result) << init_result.errorMessage();
+    ASSERT_TRUE(init_result) << init_result.error().message;
     
     // Start
     auto start_result = server_->start();
-    ASSERT_TRUE(start_result) << start_result.errorMessage();
+    ASSERT_TRUE(start_result) << start_result.error().message;
     
     std::this_thread::sleep_for(std::chrono::milliseconds(500));
     
@@ -235,7 +239,7 @@ TEST_F(RemoteDesktopIntegrationTest, RecoveryTest) {
     
     // Restart
     start_result = server_->start();
-    ASSERT_TRUE(start_result) << start_result.errorMessage();
+    ASSERT_TRUE(start_result) << start_result.error().message;
     EXPECT_TRUE(server_->isRunning());
     
     std::this_thread::sleep_for(std::chrono::milliseconds(500));
@@ -254,10 +258,10 @@ TEST_F(RemoteDesktopIntegrationTest, RecoveryTest) {
  */
 TEST_F(RemoteDesktopIntegrationTest, PerformanceTest) {
     auto init_result = server_->initialize(config_);
-    ASSERT_TRUE(init_result) << init_result.errorMessage();
+    ASSERT_TRUE(init_result) << init_result.error().message;
     
     auto start_result = server_->start();
-    ASSERT_TRUE(start_result) << start_result.errorMessage();
+    ASSERT_TRUE(start_result) << start_result.error().message;
     
     // Run for 3 seconds
     const auto duration = std::chrono::seconds(3);
