@@ -16,6 +16,7 @@
 		<BuildDependency Project="googletest/googletest/gtest_main.vcxproj"/>
 		<BuildDependency Project="tests/integration_tests.vcxproj"/>
 		<BuildDependency Project="src/screensdk.vcxproj"/>
+		<BuildDependency Project="standalone_server.vcxproj"/>
 		<BuildDependency Project="tests/test_dc.vcxproj"/>
 		<BuildDependency Project="tests/test_dc_lib.vcxproj"/>
 		<BuildDependency Project="tests/test_dc_no_callback.vcxproj"/>
@@ -61,6 +62,10 @@
 	</Project>
 	<Project Path="src/screensdk.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="13a4696f-d127-39ef-97b1-df57e6c49941">
 		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+	</Project>
+	<Project Path="standalone_server.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="4b8d566a-4dc3-312e-b01a-eee2d451d3f5">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+		<BuildDependency Project="src/screensdk.vcxproj"/>
 	</Project>
 	<Project Path="tests/test_dc.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="363e4c8c-0633-3ae3-87f4-9b7aae29d33d">
 		<BuildDependency Project="ZERO_CHECK.vcxproj"/>

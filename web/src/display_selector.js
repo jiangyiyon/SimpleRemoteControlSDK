@@ -19,13 +19,14 @@ class DisplaySelector {
     this.onDisplaySelect = options.onDisplaySelect || (() => {});
     this.getDisplayList = options.getDisplayList || (() => Promise.resolve([]));
     this.getDisplayInfo = options.getDisplayInfo || (() => Promise.resolve(null));
-    
+
     this.displays = [];
     this.currentDisplayId = null;
     this.isRefreshing = false;
-    
+
     this._createUI();
-    this._loadDisplayList();
+    // Note: Display list loading is deferred until data channel is ready
+    // Call loadDisplayList() explicitly when connection is established
   }
 
   /**
@@ -285,5 +286,37 @@ class DisplaySelector {
     this.selectElement.removeEventListener('change', this._handleDisplaySelect);
     this.refreshButton.removeEventListener('click', this._refreshDisplayList);
     this.container.innerHTML = '';
+  }
+
+  /**
+   * Public API: Load display list (should be called after data channel is ready)
+   */
+  async loadDisplayList() {
+    if (this.isRefreshing) {
+      return;
+    }
+
+    this.isRefreshing = true;
+    this.selectElement.disabled = true;
+    this.selectElement.innerHTML = '<option value="">Loading displays...</option>';
+
+    try {
+      this.displays = await this.getDisplayList();
+      this._populateDropdown();
+
+      // Get current display info
+      const currentDisplay = await this.getDisplayInfo();
+      if (currentDisplay) {
+        this.currentDisplayId = currentDisplay.id;
+        this._updateDisplayInfo(currentDisplay);
+        this.selectElement.value = currentDisplay.id;
+      }
+    } catch (error) {
+      console.error('Failed to load display list:', error);
+      this._showError('Failed to load displays');
+    } finally {
+      this.isRefreshing = false;
+      this.selectElement.disabled = false;
+    }
   }
 }

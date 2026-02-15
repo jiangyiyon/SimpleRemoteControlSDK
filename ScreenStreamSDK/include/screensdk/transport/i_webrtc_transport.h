@@ -101,6 +101,12 @@ struct SCREEN_STREAM_SDK_EXPORT IWebrtcTransport {
   virtual Result<std::string> createOffer() = 0;
 
   /**
+   * @brief Create SDP answer for peer connection
+   * @return SDP answer string, empty on error
+   */
+  virtual Result<std::string> createAnswer() = 0;
+
+  /**
    * @brief Set remote SDP description
    * @param sdp SDP offer or answer from peer
    * @param type Type of SDP (offer or answer)

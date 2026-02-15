@@ -161,6 +161,14 @@ class RemoteDesktopClient {
     this.webrtcConnection.onDataChannelOpen = () => {
       this.logger.info('Data channel opened');
       this.inputCapture.enable();
+
+      // Load display list after data channel is ready
+      if (this.displaySelector) {
+        this.logger.info('Loading display list...');
+        this.displaySelector.loadDisplayList().catch(error => {
+          this.logger.warn('Failed to load display list:', error);
+        });
+      }
     };
 
     this.webrtcConnection.onDataChannelMessage = (message) => {

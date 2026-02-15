@@ -29,8 +29,10 @@
 #include "screensdk/capture/i_screen_capture.h"
 #include "screensdk/encoding/encoder_factory.h"
 #include "screensdk/transport/i_webrtc_transport.h"
+#include "screensdk/transport/video_source.h"
 #include "screensdk/utils/types.h"
 #include "screensdk/utils/error.h"
+#include "screensdk/server/signaling_server.h"
 
 namespace screensdk {
 
@@ -66,7 +68,7 @@ struct ServerConfig {
  * Coordinates HTTP server, signaling server, screen capture,
  * encoder, and WebRTC transport for remote desktop streaming.
  */
-class RemoteDesktopServer {
+class RemoteDesktopServer : public server::ISignalingCallback {
 public:
     /**
      * @brief Constructor
@@ -180,6 +182,13 @@ public:
      */
     void setErrorCallback(std::function<void(const std::string&)> callback);
 
+    // ISignalingCallback interface implementation
+    std::string onOfferReceived(const std::string& client_id,
+                                const std::string& sdp) override;
+    void onIceCandidateReceived(const std::string& client_id,
+                               const IceCandidate& candidate) override;
+    void onClientDisconnected(const std::string& client_id) override;
+
 private:
     // WebRTC callback handlers
     void onWebrtcStateChange(ConnectionState state);
@@ -199,6 +208,7 @@ private:
     IEncoderFactory* encoder_factory_{nullptr};
     IVideoEncoder* video_encoder_{nullptr};
     IWebrtcTransport* webrtc_transport_{nullptr};
+    IVideoSource* video_source_{nullptr};
 
     // Configuration
     ServerConfig config_;
@@ -214,6 +224,9 @@ private:
 
     // Mutex for thread safety
     mutable std::mutex mutex_;
+
+    // Current client ID for signaling
+    std::string current_client_id_;
 };
 
 } // namespace screensdk

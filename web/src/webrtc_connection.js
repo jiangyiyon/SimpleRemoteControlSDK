@@ -47,6 +47,10 @@ class WebrtcConnection {
     this.connected = false;
     this.iceCandidates = [];
 
+    // Signaling state
+    this.clientId = null;
+    this.signalingConnected = false;
+
     this.logger = this._createLogger();
   }
 
@@ -70,6 +74,9 @@ class WebrtcConnection {
     try {
       this.logger.info('Initializing WebRTC connection...');
 
+      // Connect to signaling server
+      await this._connectSignaling();
+
       // Create RTCPeerConnection
       this.pc = new RTCPeerConnection(this.rtcConfig);
 
@@ -84,6 +91,119 @@ class WebrtcConnection {
   }
 
   /**
+   * @brief Connect to WebSocket signaling server
+   * @private
+   * @returns {Promise<void>}
+   */
+  async _connectSignaling() {
+    return new Promise((resolve, reject) => {
+      this.logger.info('Connecting to signaling server:', this.signalingUrl);
+
+      this.signalingSocket = new WebSocket(this.signalingUrl);
+
+      this.signalingSocket.onopen = () => {
+        this.signalingConnected = true;
+        this.logger.info('Connected to signaling server');
+        resolve();
+      };
+
+      this.signalingSocket.onclose = () => {
+        this.signalingConnected = false;
+        this.logger.warn('Signaling server connection closed');
+        this._onError(new Error('Signaling connection closed'));
+      };
+
+      this.signalingSocket.onerror = (error) => {
+        this.logger.error('Signaling server error:', error);
+        reject(new Error('Failed to connect to signaling server'));
+      };
+
+      this.signalingSocket.onmessage = (event) => {
+        this._handleSignalingMessage(event.data);
+      };
+    });
+  }
+
+  /**
+   * @brief Handle signaling messages from server
+   * @private
+   */
+  _handleSignalingMessage(message) {
+    try {
+      const data = JSON.parse(message);
+      const type = data.type;
+
+      this.logger.info('Received signaling message:', type);
+
+      if (type === 'join') {
+        this.clientId = data.client_id;
+        this.logger.info('Joined signaling server, client ID:', this.clientId);
+      } else if (type === 'answer') {
+        this._handleAnswer(data.sdp);
+      } else if (type === 'ice-candidate') {
+        this._handleIceCandidate(data);
+      } else {
+        this.logger.warn('Unknown signaling message type:', type);
+      }
+    } catch (error) {
+      this.logger.error('Failed to parse signaling message:', error);
+    }
+  }
+
+  /**
+   * @brief Handle SDP answer from server
+   * @private
+   */
+  async _handleAnswer(sdp) {
+    try {
+      this.logger.info('Received answer from server');
+      await this.setRemoteDescription(sdp, 'answer');
+    } catch (error) {
+      this.logger.error('Failed to handle answer:', error);
+      this._onError(error);
+    }
+  }
+
+  /**
+   * @brief Handle ICE candidate from server
+   * @private
+   */
+  async _handleIceCandidate(data) {
+    try {
+      const candidate = new RTCIceCandidate({
+        candidate: data.candidate,
+        sdpMid: data.sdp_mid,
+        sdpMLineIndex: data.sdp_mline_index
+      });
+
+      this.logger.info('Adding ICE candidate from server');
+      await this.addIceCandidate(candidate);
+    } catch (error) {
+      this.logger.error('Failed to handle ICE candidate:', error);
+    }
+  }
+
+  /**
+   * @brief Send message to signaling server
+   * @private
+   */
+  _sendSignalingMessage(message) {
+    if (!this.signalingSocket || this.signalingSocket.readyState !== WebSocket.OPEN) {
+      this.logger.error('Cannot send signaling message: socket not connected');
+      return false;
+    }
+
+    const messageData = {
+      client_id: this.clientId,
+      ...message
+    };
+
+    this.signalingSocket.send(JSON.stringify(messageData));
+    this.logger.info('Sent signaling message:', message.type);
+    return true;
+  }
+
+  /**
    * @brief Setup peer connection event listeners
    * @private
    */
@@ -93,6 +213,14 @@ class WebrtcConnection {
       if (event.candidate) {
         this.iceCandidates.push(event.candidate);
         this.logger.info('ICE candidate generated:', event.candidate.candidate);
+
+        // Send ICE candidate to signaling server
+        this._sendSignalingMessage({
+          type: 'ice-candidate',
+          candidate: event.candidate.candidate,
+          sdp_mid: event.candidate.sdpMid,
+          sdp_mline_index: event.candidate.sdpMLineIndex
+        });
 
         if (this.onIceCandidate) {
           this.onIceCandidate(event.candidate);
@@ -188,6 +316,12 @@ class WebrtcConnection {
 
     this.logger.info('Creating offer...');
 
+    // Create data channel for control signaling
+    this.dataChannel = this.pc.createDataChannel('control', {
+      ordered: true
+    });
+    this._setupDataChannelListeners();
+
     const offer = await this.pc.createOffer({
       offerToReceiveAudio: false,
       offerToReceiveVideo: true
@@ -196,6 +330,12 @@ class WebrtcConnection {
     await this.pc.setLocalDescription(offer);
 
     this.logger.info('Offer created:', offer.type);
+
+    // Send offer to signaling server
+    this._sendSignalingMessage({
+      type: 'offer',
+      sdp: offer.sdp
+    });
 
     return offer.sdp;
   }
@@ -294,8 +434,15 @@ class WebrtcConnection {
       this.pc = null;
     }
 
+    if (this.signalingSocket) {
+      this.signalingSocket.close();
+      this.signalingSocket = null;
+      this.signalingConnected = false;
+    }
+
     this.videoTrack = null;
     this.iceCandidates = [];
+    this.clientId = null;
     this.connected = false;
 
     this.logger.info('Connection closed');

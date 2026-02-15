@@ -12,6 +12,7 @@ set(SOURCE_FILES
     capture/dxgi_capture.cpp
     capture/dxgi_capture_impl.cpp
     capture/display_detector.cpp
+    capture/screen_capture_video_source.cpp
 
     # Encoding
     encoding/encoder_factory.cpp
@@ -60,6 +61,7 @@ set(HEADER_FILES
     ${CMAKE_SOURCE_DIR}/include/screensdk/capture/dxgi_capture.h
     ${CMAKE_SOURCE_DIR}/include/screensdk/capture/i_screen_capture.h
     ${CMAKE_SOURCE_DIR}/include/screensdk/capture/display_detector.h
+    ${CMAKE_SOURCE_DIR}/include/screensdk/capture/screen_capture_video_source.h
 
     # Encoding
     ${CMAKE_SOURCE_DIR}/include/screensdk/encoding/encoder_factory.h

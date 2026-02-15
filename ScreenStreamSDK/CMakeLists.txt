@@ -75,6 +75,13 @@ target_include_directories(test_httplib PRIVATE
 )
 target_link_libraries(test_httplib PRIVATE screensdk)
 
+# Standalone server (not a test, runs indefinitely)
+add_executable(standalone_server ../standalone_server_main.cpp)
+target_include_directories(standalone_server PRIVATE
+    ${CMAKE_SOURCE_DIR}/third_party/nlohmann
+)
+target_link_libraries(standalone_server PRIVATE screensdk)
+
 if(EXISTS "${CMAKE_SOURCE_DIR}/../tests/CMakeLists.txt")
     # Explicitly specify binary directory for out-of-tree source
     add_subdirectory(${CMAKE_SOURCE_DIR}/../tests ${CMAKE_BINARY_DIR}/tests)

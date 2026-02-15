@@ -41,6 +41,7 @@ public:
   bool initialize(const TransportConfig& config) override;
   void shutdown() override;
   Result<std::string> createOffer() override;
+  Result<std::string> createAnswer() override;
   Result<void> setRemoteDescription(const std::string& sdp, SdpType type = SdpType::kAnswer) override;
   Result<void> addIceCandidate(const IceCandidate& candidate) override;
   void startVideoTrack(IVideoSource* source) override;
@@ -182,6 +183,53 @@ Result<std::string> WebrtcTransportImpl::createOffer() {
   }
 }
 
+Result<std::string> WebrtcTransportImpl::createAnswer() {
+  if (!pc_) {
+    return Result<std::string>::make_error(
+        ErrorType::kNetworkError, 1001, "PeerConnection not initialized");
+  }
+
+  auto current_state = state_.load(std::memory_order_acquire);
+  std::cout << "[WebrtcTransport] createAnswer called, current state: "
+            << static_cast<int>(current_state) << std::endl;
+
+  if (current_state == ConnectionState::kClosed ||
+      current_state == ConnectionState::kFailed) {
+    std::cerr << "[WebrtcTransport] PeerConnection is in invalid state: "
+              << static_cast<int>(current_state) << std::endl;
+    return Result<std::string>::make_error(
+        ErrorType::kNetworkError, 1002, "PeerConnection is closed or failed");
+  }
+
+  try {
+    // Create answer using libdatachannel
+    // Note: Do NOT create data channel here. As the answer side, we will receive
+    // the data channel via onDataChannel callback after setRemoteDescription is called
+    std::cout << "[WebrtcTransport] Calling pc_->createAnswer()..." << std::endl;
+    rtc::Description desc = pc_->createAnswer();
+    std::string sdp = desc.generateSdp();
+
+    if (sdp.empty()) {
+      std::cerr << "[WebrtcTransport] Generated empty SDP answer" << std::endl;
+      return Result<std::string>::make_error(
+          ErrorType::kNetworkError, 1003, "Failed to generate SDP answer");
+    }
+
+    std::cout << "[WebrtcTransport] Created answer successfully, SDP length: "
+              << sdp.length() << std::endl;
+    state_.store(ConnectionState::kChecking, std::memory_order_release);
+    return Result<std::string>::make_ok(sdp);
+
+  } catch (const std::exception& e) {
+    state_.store(ConnectionState::kFailed, std::memory_order_release);
+    std::cerr << "[WebrtcTransport] Exception in createAnswer: "
+              << e.what() << std::endl;
+    return Result<std::string>::make_error(
+        ErrorType::kNetworkError, 1006,
+        std::string("Failed to create answer: ") + e.what());
+  }
+}
+
 Result<void> WebrtcTransportImpl::setRemoteDescription(const std::string& sdp,
                                                         SdpType type) {
   if (!pc_) {
@@ -195,14 +243,30 @@ Result<void> WebrtcTransportImpl::setRemoteDescription(const std::string& sdp,
   }
 
   try {
+    // Log current state before setting remote description
+    auto current_state = state_.load(std::memory_order_acquire);
+    std::cout << "[WebrtcTransport] Current state before setRemoteDescription: "
+              << static_cast<int>(current_state) << std::endl;
+
     // Convert SdpType to string for libdatachannel
     std::string type_string = (type == SdpType::kOffer) ? "offer" : "answer";
+    std::cout << "[WebrtcTransport] Setting remote description, type: "
+              << type_string << ", SDP length: " << sdp.length() << std::endl;
+
     rtc::Description desc(sdp, type_string);
     pc_->setRemoteDescription(desc);
+
+    // Log state after setting remote description
+    current_state = state_.load(std::memory_order_acquire);
+    std::cout << "[WebrtcTransport] Current state after setRemoteDescription: "
+              << static_cast<int>(current_state) << std::endl;
+
     return Result<void>::make_ok();
 
   } catch (const std::exception& e) {
     state_.store(ConnectionState::kFailed, std::memory_order_release);
+    std::cerr << "[WebrtcTransport] Exception in setRemoteDescription: "
+              << e.what() << std::endl;
     return Result<void>::make_error(
         ErrorType::kNetworkError, 1005,
         std::string("Failed to set remote description: ") + e.what());
@@ -221,11 +285,19 @@ Result<void> WebrtcTransportImpl::addIceCandidate(const IceCandidate& candidate)
   }
 
   try {
+    auto current_state = state_.load(std::memory_order_acquire);
+    std::cout << "[WebrtcTransport] Adding ICE candidate, current state: "
+              << static_cast<int>(current_state) << std::endl;
+
     rtc::Candidate cand(candidate.candidate, candidate.sdp_mid);
     pc_->addRemoteCandidate(cand);
+
+    std::cout << "[WebrtcTransport] ICE candidate added successfully" << std::endl;
     return Result<void>::make_ok();
 
   } catch (const std::exception& e) {
+    std::cerr << "[WebrtcTransport] Exception in addIceCandidate: "
+              << e.what() << std::endl;
     return Result<void>::make_error(
         ErrorType::kNetworkError, 1006,
         std::string("Failed to add ICE candidate: ") + e.what());
@@ -372,7 +444,11 @@ void WebrtcTransportImpl::setupPeerConnectionCallbacks() {
 
   pc_->onStateChange([this](rtc::PeerConnection::State state) {
     ConnectionState new_state = mapConnectionState(state);
-    state_.store(new_state, std::memory_order_release);
+    ConnectionState old_state = state_.exchange(new_state, std::memory_order_release);
+    std::cout << "[WebrtcTransport] PeerConnection state changed: "
+              << static_cast<int>(old_state) << " -> "
+              << static_cast<int>(new_state) << " (libdatachannel: "
+              << static_cast<int>(state) << ")" << std::endl;
 
     std::lock_guard<std::mutex> lock(callback_mutex_);
     if (state_change_callback_) {
@@ -381,6 +457,8 @@ void WebrtcTransportImpl::setupPeerConnectionCallbacks() {
   });
 
   pc_->onDataChannel([this](std::shared_ptr<rtc::DataChannel> remote_dc) {
+    std::cout << "[WebrtcTransport] Received remote data channel: "
+              << remote_dc->label() << std::endl;
     dc_ = remote_dc;
     setupDataChannelCallbacks();
   });
@@ -392,6 +470,7 @@ void WebrtcTransportImpl::setupDataChannelCallbacks() {
   }
 
   dc_->onOpen([this]() {
+    std::cout << "[WebrtcTransport] Data channel opened" << std::endl;
     state_.store(ConnectionState::kConnected, std::memory_order_release);
   });
 

@@ -204,17 +204,23 @@ void SignalingServer::onClientConnected(std::shared_ptr<rtc::WebSocket> client) 
         client_count_.store(clients_.size());
     }
 
-    // Send join message
-    JoinMessage join_msg;
-    join_msg.type = "join";
-    join_msg.client_id = client_id;
+    // Set up onOpen callback to send join message when connection is ready
+    client->onOpen([this, client, client_id]() {
+        std::cout << "[SignalingServer] Client connection opened: " << client_id << std::endl;
 
-    json j;
-    j["type"] = join_msg.type;
-    j["client_id"] = join_msg.client_id;
+        // Send join message
+        JoinMessage join_msg;
+        join_msg.type = "join";
+        join_msg.client_id = client_id;
 
-    std::string message_str = j.dump();
-    client->send(message_str);
+        json j;
+        j["type"] = join_msg.type;
+        j["client_id"] = join_msg.client_id;
+
+        std::string message_str = j.dump();
+        client->send(message_str);
+        std::cout << "[SignalingServer] Sent join message to client: " << client_id << std::endl;
+    });
 
     // Set up message handler
     client->onMessage([this, client, client_id](const rtc::message_variant& data) {

@@ -7,7 +7,9 @@
 #include "screensdk/server/http_server.h"
 #include "screensdk/server/signaling_server.h"
 #include "screensdk/core/session.h"
+#include "screensdk/capture/screen_capture_video_source.h"
 
+#include <iostream>
 #include <sstream>
 
 namespace screensdk {
@@ -53,6 +55,7 @@ Result<void> RemoteDesktopServer::initialize(const ServerConfig& config) {
 
     // Create signaling server
     signaling_server_ = std::make_unique<screensdk::server::SignalingServer>();
+    signaling_server_->setSignalingCallback(this);
 
     // Create screen capture
     screen_capture_ = CreateScreenCapture();
@@ -139,6 +142,13 @@ void RemoteDesktopServer::shutdown() {
         webrtc_transport_->shutdown();
         DestroyWebrtcTransport(webrtc_transport_);
         webrtc_transport_ = nullptr;
+    }
+
+    // Destroy video source
+    if (video_source_) {
+        video_source_->stop();
+        DestroyVideoSource(video_source_);
+        video_source_ = nullptr;
     }
 
     // Destroy screen capture
@@ -309,6 +319,9 @@ void RemoteDesktopServer::setErrorCallback(
 }
 
 void RemoteDesktopServer::onWebrtcStateChange(ConnectionState state) {
+    std::cout << "[RemoteDesktopServer] WebRTC state changed to: "
+              << static_cast<int>(state) << std::endl;
+
     // No need to lock mutex_ here, only protect callback access
     screensdk::SessionState session_state;
     switch (state) {
@@ -319,6 +332,21 @@ void RemoteDesktopServer::onWebrtcStateChange(ConnectionState state) {
         case ConnectionState::kConnected:
         case ConnectionState::kCompleted:
             session_state = screensdk::SessionState::kConnected;
+
+            // Start video track when connection is established
+            std::cout << "[RemoteDesktopServer] Connection established, starting video track..." << std::endl;
+            if (webrtc_transport_ && screen_capture_) {
+                // Create video source adapter
+                video_source_ = CreateVideoSourceFromScreenCapture(screen_capture_);
+                if (video_source_) {
+                    video_source_->init();
+                    video_source_->start();
+                    webrtc_transport_->startVideoTrack(video_source_);
+                    std::cout << "[RemoteDesktopServer] Video track started successfully" << std::endl;
+                } else {
+                    std::cerr << "[RemoteDesktopServer] Failed to create video source" << std::endl;
+                }
+            }
             break;
         case ConnectionState::kFailed:
             session_state = screensdk::SessionState::kError;
@@ -326,6 +354,18 @@ void RemoteDesktopServer::onWebrtcStateChange(ConnectionState state) {
         case ConnectionState::kDisconnected:
         case ConnectionState::kClosed:
             session_state = screensdk::SessionState::kDisconnected;
+
+            // Stop video track when connection is closed
+            std::cout << "[RemoteDesktopServer] Connection closed, stopping video track..." << std::endl;
+            if (webrtc_transport_) {
+                webrtc_transport_->stopVideoTrack();
+            }
+            if (video_source_) {
+                video_source_->stop();
+                DestroyVideoSource(video_source_);
+                video_source_ = nullptr;
+            }
+            std::cout << "[RemoteDesktopServer] Video track stopped" << std::endl;
             break;
         default:
             session_state = screensdk::SessionState::kDisconnected;
@@ -339,8 +379,11 @@ void RemoteDesktopServer::onWebrtcStateChange(ConnectionState state) {
 }
 
 void RemoteDesktopServer::onIceCandidate(const IceCandidate& candidate) {
-    // TODO: Forward ICE candidates via signaling server
-    // This will be implemented in Phase 5
+    std::lock_guard<std::mutex> lock(mutex_);
+
+    if (!current_client_id_.empty() && signaling_server_) {
+        signaling_server_->sendIceCandidate(current_client_id_, candidate);
+    }
 }
 
 void RemoteDesktopServer::onWebrtcError(const std::string& error) {
@@ -364,6 +407,73 @@ void RemoteDesktopServer::captureLoop() {
         // This will be implemented in Phase 5
         // For now, just simulate processing
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    }
+}
+
+std::string RemoteDesktopServer::onOfferReceived(const std::string& client_id,
+                                                   const std::string& sdp) {
+    std::lock_guard<std::mutex> lock(mutex_);
+
+    std::cout << "[RemoteDesktopServer] Received offer from client: " << client_id
+              << ", SDP length: " << sdp.length() << std::endl;
+
+    current_client_id_ = client_id;
+
+    std::cout << "[RemoteDesktopServer] Setting remote description..." << std::endl;
+    auto set_result = webrtc_transport_->setRemoteDescription(sdp, SdpType::kOffer);
+    if (!set_result) {
+        std::cerr << "[RemoteDesktopServer] Failed to set remote description: "
+                  << set_result.error().message << std::endl;
+        return "";
+    }
+
+    std::cout << "[RemoteDesktopServer] Remote description set successfully" << std::endl;
+
+    // Check connection state before creating answer
+    auto conn_state = webrtc_transport_->getConnectionState();
+    std::cout << "[RemoteDesktopServer] Connection state before createAnswer: "
+              << static_cast<int>(conn_state) << std::endl;
+
+    // Create answer to respond to client's offer
+    std::cout << "[RemoteDesktopServer] Creating answer..." << std::endl;
+    auto answer_result = webrtc_transport_->createAnswer();
+    if (!answer_result) {
+        std::cerr << "[RemoteDesktopServer] Failed to create answer: "
+                  << answer_result.error().message << std::endl;
+        return "";
+    }
+
+    std::string answer = answer_result.value();
+    std::cout << "[RemoteDesktopServer] Created answer, length: " << answer.length() << std::endl;
+
+    return answer;
+}
+
+void RemoteDesktopServer::onIceCandidateReceived(const std::string& client_id,
+                                                  const IceCandidate& candidate) {
+    std::cout << "[RemoteDesktopServer] Received ICE candidate from client: " << client_id
+              << ", candidate: " << candidate.candidate.substr(0, 50) << "..." << std::endl;
+
+    auto conn_state = webrtc_transport_->getConnectionState();
+    std::cout << "[RemoteDesktopServer] Connection state before adding ICE candidate: "
+              << static_cast<int>(conn_state) << std::endl;
+
+    auto result = webrtc_transport_->addIceCandidate(candidate);
+    if (!result) {
+        std::cerr << "[RemoteDesktopServer] Failed to add ICE candidate: "
+                  << result.error().message << std::endl;
+    } else {
+        std::cout << "[RemoteDesktopServer] ICE candidate added successfully" << std::endl;
+    }
+}
+
+void RemoteDesktopServer::onClientDisconnected(const std::string& client_id) {
+    std::cout << "[RemoteDesktopServer] Client disconnected: " << client_id << std::endl;
+
+    std::lock_guard<std::mutex> lock(mutex_);
+
+    if (current_client_id_ == client_id) {
+        current_client_id_.clear();
     }
 }
 
