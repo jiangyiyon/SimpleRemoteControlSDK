@@ -78,6 +78,9 @@ add_executable(unit_tests
     # Unit tests for platform
     unit/platform/gpu_detector_test.cpp
 
+    # Unit tests for server
+    unit/server/test_http_server.cpp
+
     # Unit tests for transport
     unit/transport/webrtc_manager_test.cpp
     unit/transport/connection_handler_test.cpp

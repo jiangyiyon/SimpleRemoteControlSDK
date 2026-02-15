@@ -21,6 +21,7 @@
 		<BuildDependency Project="tests/test_dc_no_callback.vcxproj"/>
 		<BuildDependency Project="tests/test_dc_simple.vcxproj"/>
 		<BuildDependency Project="test_dxgi_display.vcxproj"/>
+		<BuildDependency Project="test_httplib.vcxproj"/>
 		<BuildDependency Project="tests/unit_tests.vcxproj"/>
 	</Project>
 	<Project Path="INSTALL.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="e361537f-a10e-31b7-9fed-3e242349f344">
@@ -76,6 +77,10 @@
 		<BuildDependency Project="src/screensdk.vcxproj"/>
 	</Project>
 	<Project Path="test_dxgi_display.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="444b60ee-ead7-345c-ba38-be0fc9df9608">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+		<BuildDependency Project="src/screensdk.vcxproj"/>
+	</Project>
+	<Project Path="test_httplib.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="e3fd67d6-9f6d-3aa1-a55b-28837c2aad03">
 		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
 		<BuildDependency Project="src/screensdk.vcxproj"/>
 	</Project>

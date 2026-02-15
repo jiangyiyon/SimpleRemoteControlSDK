@@ -39,6 +39,9 @@ set(SOURCE_FILES
 
     # Platform
     platform/gpu_detector.cpp
+
+    # Server
+    server/http_server.cpp
 )
 
 # Header files
