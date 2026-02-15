@@ -94,7 +94,13 @@ Phase 5: User Story 1 Implementation (In Progress)
   - [x] 13 unit tests all passing
   - [x] Encoder factory integration with fallback
   - [x] Conditional compilation (HAS_NVENC)
-- [ ] T039 [US1] Implement software H.264 encoder fallback
+- [x] T039 [US1] Implement software H.264 encoder fallback ⬅️ Completed (2026-02-15)
+  - [x] x264 encoder implementation (X264EncoderImpl)
+  - [x] BGRA format support (no color conversion needed)
+  - [x] Low-latency configuration (GOP=1, B-frames=0)
+  - [x] 18 unit tests all passing
+  - [x] Encoder factory integration with fallback
+  - [x] 10 integration tests all passing
 - [ ] T040 [US1] Implement mouse event processor
 - [ ] T041 [US1] Implement keyboard event processor
 - [ ] T042 [US1] Implement InputProcessor

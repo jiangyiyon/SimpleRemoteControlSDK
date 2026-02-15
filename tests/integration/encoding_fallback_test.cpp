@@ -56,7 +56,7 @@ protected:
   /**
    * @brief Create a test video frame
    */
-  VideoFrame createTestFrame(int width, int height) {
+  VideoFrameForTrans createTestFrame(int width, int height) {
     VideoFrameForTrans frame;
     frame.width = width;
     frame.height = height;
@@ -82,7 +82,7 @@ protected:
   /**
    * @brief Free a test video frame
    */
-  void freeTestFrame(VideoFrame& frame) {
+  void freeTestFrame(VideoFrameForTrans& frame) {
     if (frame.data != nullptr) {
       delete[] frame.data;
       frame.data = nullptr;
@@ -93,7 +93,7 @@ protected:
   /**
    * @brief Encode a single frame
    */
-  bool encodeFrame(IVideoEncoder* encoder, const VideoFrame& frame,
+  bool encodeFrame(IVideoEncoder* encoder, const VideoFrameForTrans& frame,
                    size_t* encoded_size = nullptr) {
     if (encoder == nullptr) {
       return false;
@@ -115,7 +115,7 @@ protected:
   /**
    * @brief Encode a single frame using member encoder_
    */
-  bool encodeFrame(const VideoFrame& frame, size_t* encoded_size = nullptr) {
+  bool encodeFrame(const VideoFrameForTrans& frame, size_t* encoded_size = nullptr) {
     return encodeFrame(encoder_, frame, encoded_size);
   }
 
