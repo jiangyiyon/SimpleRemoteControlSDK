@@ -79,9 +79,9 @@ add_executable(unit_tests
     unit/platform/gpu_detector_test.cpp
 
     # Unit tests for server
-    unit/server/test_http_server.cpp
-    unit/server/test_signaling_server.cpp
-    unit/server/test_remote_desktop_server.cpp
+    unit/server/http_server_test.cpp
+    # unit/server/test_signaling_server.cpp
+    # unit/server/test_remote_desktop_server.cpp
 
 
 

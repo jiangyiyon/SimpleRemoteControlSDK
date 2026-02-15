@@ -32,11 +32,20 @@
 #include "screensdk/utils/types.h"
 #include "screensdk/utils/error.h"
 
-namespace screensdk::server {
+namespace screensdk {
 
 // Forward declarations
-class HttpServer;
+struct IHttpServer;
+
+} // namespace screensdk
+
+namespace screensdk {
+namespace server {
 class SignalingServer;
+} // namespace server
+} // namespace screensdk
+
+namespace screensdk {
 
 /**
  * @brief Server configuration
@@ -182,8 +191,8 @@ private:
 
 private:
     // Sub-components
-    std::unique_ptr<HttpServer> http_server_;
-    std::unique_ptr<SignalingServer> signaling_server_;
+    IHttpServer* http_server_{nullptr};
+    std::unique_ptr<server::SignalingServer> signaling_server_;
 
     // Components created via factory functions (must be manually released)
     IScreenCapture* screen_capture_{nullptr};
@@ -207,4 +216,4 @@ private:
     mutable std::mutex mutex_;
 };
 
-} // namespace screensdk::server
+} // namespace screensdk

@@ -14,7 +14,7 @@ namespace screensdk {
 // PIMPL implementation class
 class Session::RemoteDesktopServerImpl {
 public:
-    server::RemoteDesktopServer server;
+    RemoteDesktopServer server;
 };
 
 Session::Session()
@@ -206,8 +206,8 @@ Result<void> Session::initializeDesktopServer(const DesktopServerConfig& config)
 
   desktop_server_ = std::make_unique<RemoteDesktopServerImpl>();
 
-  // Convert DesktopServerConfig to server::ServerConfig
-  server::ServerConfig server_config;
+  // Convert DesktopServerConfig to ServerConfig
+  ServerConfig server_config;
   server_config.http_port = config.http_port;
   server_config.signaling_port = config.signaling_port;
   server_config.web_root = config.web_root;

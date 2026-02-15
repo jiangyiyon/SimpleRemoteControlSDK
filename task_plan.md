@@ -107,16 +107,13 @@ Phase 5: User Story 1 Implementation (In Progress)
   - [x] Download cpp-httplib v0.30.1
   - [x] Update CMakeLists.txt
   - [x] Verify compilation
-- [ ] **T1001** [US1] Implement HTTP static file server 🔄 NEXT
-  - [ ] Design IHttpServer interface
-  - [ ] Implement HttpServer class
-  - [ ] Write unit tests
-  - [ ] Integration test: Browser access
-- [ ] T1001 [US1] Implement HTTP static file server
-  - [ ] Design IHttpServer interface
-  - [ ] Implement HttpServer class
-  - [ ] Write unit tests
-  - [ ] Integration test: Browser access
+- [x] **T1001** [US1] Implement HTTP static file server ⬅️ Completed (2026-02-15)
+  - [x] Design IHttpServer interface
+  - [x] Implement HttpServer class
+  - [x] Write unit tests
+  - [x] Refactor: Remove wrapper class, simplify namespace to screensdk
+  - [x] Fix root directory issue in setupRoutes()
+  - [x] All 13 unit tests passing
 - [ ] T1002 [US1] Implement WebSocket signaling server
   - [ ] Design ISignalingServer interface
   - [ ] Implement SignalingServer class

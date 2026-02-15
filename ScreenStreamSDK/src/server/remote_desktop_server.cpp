@@ -10,7 +10,7 @@
 
 #include <sstream>
 
-namespace screensdk::server {
+namespace screensdk {
 
 RemoteDesktopServer::RemoteDesktopServer() = default;
 
@@ -39,11 +39,20 @@ Result<void> RemoteDesktopServer::initialize(const ServerConfig& config) {
     config_ = config;
 
     // Create HTTP server
-    http_server_ = std::make_unique<HttpServer>();
-    http_server_->setRootDirectory(config_.web_root);
+    http_server_ = CreateHttpServer();
+    if (!http_server_) {
+        return Result<void>::make_error(ErrorType::kUnknownError, 0,
+                                     "Failed to create HTTP server");
+    }
+    auto set_root_result = http_server_->setRootDirectory(config_.web_root);
+    if (!set_root_result) {
+        DestroyHttpServer(http_server_);
+        http_server_ = nullptr;
+        return set_root_result;
+    }
 
     // Create signaling server
-    signaling_server_ = std::make_unique<SignalingServer>();
+    signaling_server_ = std::make_unique<screensdk::server::SignalingServer>();
 
     // Create screen capture
     screen_capture_ = CreateScreenCapture();
@@ -148,8 +157,14 @@ void RemoteDesktopServer::shutdown() {
     video_encoder_ = nullptr;
 
     // Destroy servers
+    if (http_server_) {
+        if (http_server_->isRunning()) {
+            http_server_->stop();
+        }
+        DestroyHttpServer(http_server_);
+        http_server_ = nullptr;
+    }
     signaling_server_.reset();
-    http_server_.reset();
 }
 
 Result<void> RemoteDesktopServer::start() {
@@ -252,7 +267,8 @@ void RemoteDesktopServer::setWebRootDirectory(const std::string& path) {
     std::lock_guard<std::mutex> lock(mutex_);
     config_.web_root = path;
     if (http_server_) {
-        http_server_->setRootDirectory(path);
+        auto result = http_server_->setRootDirectory(path);
+        (void)result; // Ignore result for backward compatibility
     }
 }
 
@@ -351,4 +367,4 @@ void RemoteDesktopServer::captureLoop() {
     }
 }
 
-} // namespace screensdk::server
+} // namespace screensdk

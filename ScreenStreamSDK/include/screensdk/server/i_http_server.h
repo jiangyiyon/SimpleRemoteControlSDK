@@ -1,22 +1,3 @@
-/**
- * @file http_server.h
- * @brief HTTP static file server interface for serving static files
- *
- * Provides a pure virtual interface for maximum ABI compatibility.
- * This interface allows serving static web files (HTML, CSS, JS, etc.)
- * with CORS support for cross-origin requests from mobile browsers.
- *
- * T1001: Implement HTTP static file server
- *
- * Usage:
- *   IHttpServer* server = CreateHttpServer();
- *   server->setRootDirectory("web");
- *   server->start(8080);
- *   // ... server is running ...
- *   server->stop();
- *   DestroyHttpServer(server);
- */
-
 #pragma once
 
 #include "screensdk/export.h"
