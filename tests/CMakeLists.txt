@@ -81,6 +81,7 @@ add_executable(unit_tests
     # Unit tests for server
     unit/server/http_server_test.cpp
     unit/server/test_signaling_server.cpp
+    unit/server/test_websocket_signaling.cpp
     # unit/server/test_remote_desktop_server.cpp
 
 

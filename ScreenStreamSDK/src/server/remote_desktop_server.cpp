@@ -292,7 +292,7 @@ std::string RemoteDesktopServer::getHttpUrl() const {
 std::string RemoteDesktopServer::getSignalingUrl() const {
     std::lock_guard<std::mutex> lock(mutex_);
     std::ostringstream oss;
-    oss << "http://localhost:" << config_.signaling_port;
+    oss << "ws://localhost:" << config_.signaling_port;
     return oss.str();
 }
 
