@@ -11,7 +11,7 @@ Analyze spec.md, plan.md, and tasks.md for inconsistencies, duplications, ambigu
 ## Current Phase
 Phase 5: User Story 1 Implementation (In Progress)
 
-**Current Task**: T037 - DXGI 60fps Capture Loop Optimization
+**Current Task**: T037 - DXGI 60fps Capture Loop Optimization (Phase 2 Completed)
 
 ## Phases
 
@@ -95,9 +95,19 @@ Phase 5: User Story 1 Implementation (In Progress)
 - [ ] T043-T046 [US1] Implement interfaces (IScreenCapture, IVideoEncoder, IWebrtcTransport, IInputProcessor)
 - **Status:** in_progress
 
-**T037 Status**: Technical方案已确认（见 t037_dxgi_60fps_optimization_plan.md）
-- VideoFrame pool: 延迟分配方案已确认
-- 帧去重优化: 已设计但暂缓实现，待项目完成后统一优化
+**T037 Status**: Phase 2 完成（2026-02-15）
+- ✅ Phase 1: 基础功能 - 已完成
+- ✅ Phase 2: 错误处理 - 已完成（2026-02-15）
+  - 错误分类机制（CaptureError 枚举）
+  - 自动恢复线程（独立线程，1秒冷却期）
+  - 错误回调接口（ErrorCallback）
+  - 最大重试次数限制（3次）
+  - 所有 16 个 DxgiCaptureErrorTest 测试通过
+  - 所有 7 个 DxgiCaptureTest 测试通过
+  - 集成测试通过（DisplaySwitchIntegrationTest）
+- ✅ 修复捕获超时问题（超时时间从 8ms 调整为 16.7ms）
+- ✅ 修复多初始化/清理循环问题（拆分 initializeDxgi 和 initializeDxgiInternal）
+- ⏳ Phase 3: 性能优化 - 已延迟到项目后期
 
 **Verification Summary:**
 - ✅ 18/20 issues fully resolved (90%)

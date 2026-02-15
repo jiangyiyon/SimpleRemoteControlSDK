@@ -14,14 +14,35 @@ DxgiCapture::~DxgiCapture() {
 }
 
 bool DxgiCapture::init() {
-  if (duplication_) {
-    return true;  // Already initialized
+  // Ensure recovery thread is stopped before reinitializing
+  recovery_running_ = false;
+  if (recovery_thread_.joinable()) {
+    recovery_thread_.join();
   }
-  return initializeDxgi();
+
+  // Always reinitialize to support multiple init/uninit cycles
+  bool result = initializeDxgiInternal();
+
+  // Start recovery thread if initialization succeeded
+  if (result) {
+    recovery_running_ = true;
+    recovery_thread_ = std::thread([this]() {
+      recoveryLoop();
+    });
+  }
+
+  return result;
 }
 
 void DxgiCapture::uninit() {
   stop();
+
+  // Stop recovery thread
+  recovery_running_ = false;
+  if (recovery_thread_.joinable()) {
+    recovery_thread_.join();
+  }
+
   releaseDxgi();
 }
 
@@ -68,19 +89,27 @@ bool DxgiCapture::captureFrame(VideoFrameForTrans& frame) {
     return false;
   }
 
-  // Use short timeout to maintain frame rate
-  const UINT kAcquireTimeoutMs = static_cast<UINT>(1000 / target_fps_ / 2);
+  // Use timeout based on target frame rate
+  // For single blocking capture, use full frame interval to allow time for screen update
+  const UINT kAcquireTimeoutMs = static_cast<UINT>(1000 / target_fps_);
 
   DXGI_OUTDUPL_FRAME_INFO frame_info;
   ComPtr<IDXGIResource> resource;
   HRESULT hr = duplication_->AcquireNextFrame(kAcquireTimeoutMs, &frame_info, &resource);
 
   if (hr == DXGI_ERROR_WAIT_TIMEOUT) {
-    return false;
+    return false;  // Normal timeout, not an error
   }
 
   if (FAILED(hr)) {
-    return false;
+    // Handle error
+    if (handleError(hr)) {
+      return false;  // Recovery triggered, skip this frame
+    } else {
+      // Fatal error, stop capture
+      running_ = false;
+      return false;
+    }
   }
 
   // RAII wrapper for ReleaseFrame
@@ -165,6 +194,9 @@ void DxgiCapture::captureLoop(std::stop_token stop_token) {
     bool captured = captureFrame(frame);
 
     if (captured && frame_callback_) {
+      // Successfully captured new frame, reset failure counter
+      consecutive_failures_ = 0;
+
       // Successfully captured new frame
       frame_callback_(frame);
 
@@ -181,8 +213,9 @@ void DxgiCapture::captureLoop(std::stop_token stop_token) {
         last_frame_.timestamp_ms = frame.timestamp_ms;
         has_last_frame = true;
       }
-    } else if (has_last_frame && frame_callback_) {
+    } else if (has_last_frame && frame_callback_ && !recovery_needed_) {
       // Screen not changed, send last frame to maintain frame rate
+      // Only send last frame if recovery is not needed
       last_frame_.timestamp_ms = std::chrono::duration_cast<std::chrono::milliseconds>(
           std::chrono::steady_clock::now().time_since_epoch()).count();
       frame_callback_(last_frame_);
@@ -197,6 +230,20 @@ void DxgiCapture::captureLoop(std::stop_token stop_token) {
 }
 
 bool DxgiCapture::initializeDxgi() {
+  bool result = initializeDxgiInternal();
+
+  // Start recovery thread if initialization succeeded
+  if (result && !recovery_running_) {
+    recovery_running_ = true;
+    recovery_thread_ = std::thread([this]() {
+      recoveryLoop();
+    });
+  }
+
+  return result;
+}
+
+bool DxgiCapture::initializeDxgiInternal() {
   // Release any existing resources
   releaseDxgi();
 
@@ -308,6 +355,92 @@ void DxgiCapture::releaseDxgi() {
   d3d_context_.Reset();
   d3d_device_.Reset();
   frame_buffer_.clear();
+}
+
+CaptureError DxgiCapture::classifyError(HRESULT hr) const {
+  switch (hr) {
+    case DXGI_ERROR_ACCESS_DENIED:
+      return CaptureError::kAccessDenied;
+    case DXGI_ERROR_DEVICE_REMOVED:
+      return CaptureError::kDeviceRemoved;
+    case DXGI_ERROR_SESSION_DISCONNECTED:
+      return CaptureError::kSessionDisconnected;
+    case DXGI_ERROR_INVALID_CALL:
+      return CaptureError::kInvalidCall;
+    default:
+      return CaptureError::kUnknown;
+  }
+}
+
+bool DxgiCapture::handleError(HRESULT hr) {
+  CaptureError error = classifyError(hr);
+
+  // Check if max retries exceeded
+  if (consecutive_failures_ >= kMaxConsecutiveFailures) {
+    if (error_callback_) {
+      std::string error_msg = "Max recovery attempts exceeded. Error: ";
+      switch (error) {
+        case CaptureError::kAccessDenied:
+          error_msg += "DXGI_ERROR_ACCESS_DENIED";
+          break;
+        case CaptureError::kDeviceRemoved:
+          error_msg += "DXGI_ERROR_DEVICE_REMOVED";
+          break;
+        case CaptureError::kSessionDisconnected:
+          error_msg += "DXGI_ERROR_SESSION_DISCONNECTED";
+          break;
+        case CaptureError::kInvalidCall:
+          error_msg += "DXGI_ERROR_INVALID_CALL";
+          break;
+        default:
+          error_msg += "Unknown error";
+          break;
+      }
+      error_callback_(error_msg);
+    }
+    return false;  // Fatal error, cannot recover
+  }
+
+  // Increment failure counter
+  consecutive_failures_++;
+
+  // Trigger recovery
+  recovery_needed_ = true;
+  return true;
+}
+
+void DxgiCapture::recoveryLoop() {
+  while (recovery_running_) {
+    // Wait for recovery request
+    if (!recovery_needed_) {
+      std::this_thread::sleep_for(std::chrono::milliseconds(100));
+      continue;
+    }
+
+    // Wait cooldown to avoid rapid retry
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+
+    // Attempt recovery
+    if (running_) {
+      // Release existing resources
+      releaseDxgi();
+
+      // Reinitialize DXGI resources only (not the recovery thread)
+      if (initializeDxgiInternal()) {
+        // Recovery succeeded
+        recovery_needed_ = false;
+        consecutive_failures_ = 0;
+      } else {
+        // Recovery failed
+        if (consecutive_failures_ >= kMaxConsecutiveFailures && error_callback_) {
+          error_callback_("Recovery failed: cannot reinitialize DXGI");
+        }
+      }
+    } else {
+      // Capture is stopped, reset recovery flag
+      recovery_needed_ = false;
+    }
+  }
 }
 
 } // namespace screensdk

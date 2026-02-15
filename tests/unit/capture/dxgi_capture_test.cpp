@@ -105,14 +105,15 @@ TEST_F(DxgiCaptureTest, StopAndRestartCapture) {
     GTEST_SKIP() << "Display initialization failed";
   }
 
-  int start_count = 0;
-  int restart_count = 0;
+  int first_phase_count = 0;
+  int second_phase_count = 0;
+  bool second_phase = false;
 
   capture_->setFrameCallback([&](const VideoFrameForTrans& frame) {
-    if (start_count < 50) {
-      start_count++;
+    if (!second_phase) {
+      first_phase_count++;
     } else {
-      restart_count++;
+      second_phase_count++;
     }
   });
 
@@ -122,15 +123,20 @@ TEST_F(DxgiCaptureTest, StopAndRestartCapture) {
   capture_->stop();
   capture_->uninit();
 
-  capture_->init();
+  bool reinitialized = capture_->init();
+  ASSERT_TRUE(reinitialized) << "Second init should succeed";
+
+  second_phase = true;
   capture_->start();
+  ASSERT_TRUE(capture_->isRunning()) << "Should be running after second start";
+
   std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
   capture_->stop();
   capture_->uninit();
 
-  EXPECT_GT(start_count, 0);
-  EXPECT_GT(restart_count, 0);
+  EXPECT_GT(first_phase_count, 0) << "First phase should capture frames";
+  EXPECT_GT(second_phase_count, 0) << "Second phase should capture frames";
 }
 
 TEST_F(DxgiCaptureTest, MultipleStops) {
