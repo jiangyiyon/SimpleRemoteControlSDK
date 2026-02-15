@@ -25,6 +25,15 @@ protected:
     void SetUp() override {
         server_ = std::make_unique<HttpServer>();
         test_port_ = 18090; // Use a different port to avoid conflicts
+
+        // Set test web directory relative to binary location
+        test_web_dir_ = "../../test_web";
+        std::error_code ec;
+        bool exists = std::filesystem::exists(test_web_dir_, ec);
+        if (!exists || ec) {
+            // Fallback to absolute path if relative doesn't work
+            test_web_dir_ = std::filesystem::path(__FILE__).parent_path().parent_path().parent_path() / "test_web";
+        }
     }
 
     void TearDown() override {
@@ -36,7 +45,7 @@ protected:
     }
 
     // Helper: Wait for server to be ready
-    void waitForServerReady(int milliseconds = 500) {
+    void waitForServerReady(int milliseconds = 1000) {
         std::this_thread::sleep_for(std::chrono::milliseconds(milliseconds));
     }
 
@@ -72,6 +81,7 @@ protected:
 
     std::unique_ptr<HttpServer> server_;
     int test_port_;
+    std::filesystem::path test_web_dir_;
 };
 
 // Test 1: Start and stop server
@@ -99,7 +109,7 @@ TEST_F(HttpServerTest, StartOnInvalidPort) {
 
 // Test 3: Set root directory
 TEST_F(HttpServerTest, SetRootDirectory) {
-    server_->setRootDirectory("web");
+    server_->setRootDirectory(test_web_dir_.string());
 
     // Start server
     auto result = server_->start(test_port_);
@@ -114,14 +124,12 @@ TEST_F(HttpServerTest, SetRootDirectory) {
 
 // Test 4: Serve static file (index.html)
 TEST_F(HttpServerTest, ServeStaticFile) {
-    // This test requires web/ directory with index.html
-    // Skip if directory doesn't exist
-    std::filesystem::path web_dir("web");
-    if (!std::filesystem::exists(web_dir)) {
-        GTEST_SKIP() << "web/ directory does not exist";
+    // Check if test web directory exists
+    if (!std::filesystem::exists(test_web_dir_)) {
+        GTEST_SKIP() << "Test web directory does not exist: " << test_web_dir_.string();
     }
 
-    server_->setRootDirectory("web");
+    server_->setRootDirectory(test_web_dir_.string());
     auto result = server_->start(test_port_);
     ASSERT_TRUE(result);
     waitForServerReady();
@@ -135,44 +143,45 @@ TEST_F(HttpServerTest, ServeStaticFile) {
 
 // Test 5: Serve CSS file
 TEST_F(HttpServerTest, ServeCssFile) {
-    std::filesystem::path web_dir("web");
-    if (!std::filesystem::exists(web_dir)) {
-        GTEST_SKIP() << "web/ directory does not exist";
+    if (!std::filesystem::exists(test_web_dir_)) {
+        GTEST_SKIP() << "Test web directory does not exist: " << test_web_dir_.string();
     }
 
-    server_->setRootDirectory("web");
+    server_->setRootDirectory(test_web_dir_.string());
     auto result = server_->start(test_port_);
     ASSERT_TRUE(result);
     waitForServerReady();
 
     auto body = httpGet("/style.css");
-    // May or may not exist, just check no crash
+    // CSS file should exist in test directory
+    ASSERT_TRUE(body.has_value());
+    EXPECT_TRUE(body->find("font-family") != std::string::npos);
 }
 
 // Test 6: Serve JS file
 TEST_F(HttpServerTest, ServeJsFile) {
-    std::filesystem::path web_dir("web");
-    if (!std::filesystem::exists(web_dir)) {
-        GTEST_SKIP() << "web/ directory does not exist";
+    if (!std::filesystem::exists(test_web_dir_)) {
+        GTEST_SKIP() << "Test web directory does not exist: " << test_web_dir_.string();
     }
 
-    server_->setRootDirectory("web");
+    server_->setRootDirectory(test_web_dir_.string());
     auto result = server_->start(test_port_);
     ASSERT_TRUE(result);
     waitForServerReady();
 
     auto body = httpGet("/app.js");
-    // May or may not exist, just check no crash
+    // JS file should exist in test directory
+    ASSERT_TRUE(body.has_value());
+    EXPECT_TRUE(body->find("console.log") != std::string::npos);
 }
 
 // Test 7: CORS headers are present
 TEST_F(HttpServerTest, CorsHeadersPresent) {
-    std::filesystem::path web_dir("web");
-    if (!std::filesystem::exists(web_dir)) {
-        GTEST_SKIP() << "web/ directory does not exist";
+    if (!std::filesystem::exists(test_web_dir_)) {
+        GTEST_SKIP() << "Test web directory does not exist: " << test_web_dir_.string();
     }
 
-    server_->setRootDirectory("web");
+    server_->setRootDirectory(test_web_dir_.string());
     auto result = server_->start(test_port_);
     ASSERT_TRUE(result);
     waitForServerReady();
@@ -199,12 +208,11 @@ TEST_F(HttpServerTest, StopWhenNotRunning) {
 
 // Test 10: Concurrent requests
 TEST_F(HttpServerTest, ConcurrentRequests) {
-    std::filesystem::path web_dir("web");
-    if (!std::filesystem::exists(web_dir)) {
-        GTEST_SKIP() << "web/ directory does not exist";
+    if (!std::filesystem::exists(test_web_dir_)) {
+        GTEST_SKIP() << "Test web directory does not exist: " << test_web_dir_.string();
     }
 
-    server_->setRootDirectory("web");
+    server_->setRootDirectory(test_web_dir_.string());
     auto result = server_->start(test_port_);
     ASSERT_TRUE(result);
     waitForServerReady();
@@ -226,8 +234,8 @@ TEST_F(HttpServerTest, ConcurrentRequests) {
         thread.join();
     }
 
-    // At least some requests should succeed
-    EXPECT_GT(success_count.load(), 0);
+    // All requests should succeed
+    EXPECT_EQ(success_count.load(), 5);
 }
 
 } // namespace screensdk::server

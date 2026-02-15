@@ -8,8 +8,8 @@
 
 ## 📊 提交统计
 
-- **4 个文件新增**
-- **约 400 行代码**
+- **7 个文件新增**
+- **约 450 行代码**
 
 ## 📁 新增文件
 
@@ -19,17 +19,29 @@
    - 使用 std::jthread 和 std::mutex
    - Result<void> 错误处理
 
-2. `ScreenStreamSDK/src/server/http_server.cpp` (148 行)
+2. `ScreenStreamSDK/src/server/http_server.cpp` (154 行)
    - HttpServer 类实现
    - 基于 cpp-httplib v0.30.1
    - CORS 支持
    - 静态文件服务
    - 健康检查端点
+   - 自动创建根目录（如果不存在）
 
 ### 测试代码
-3. `tests/unit/server/test_http_server.cpp` (233 行)
+3. `tests/unit/server/test_http_server.cpp` (242 行)
    - 10 个单元测试
    - 测试覆盖率：启动/停止、端口验证、目录验证、静态文件服务、CORS头、并发请求
+   - 使用独立的测试 web 目录
+
+### 测试资源
+4. `tests/test_web/index.html` (17 行)
+   - 测试用 HTML 文件
+
+5. `tests/test_web/style.css` (17 行)
+   - 测试用 CSS 文件
+
+6. `tests/test_web/app.js` (10 行)
+   - 测试用 JavaScript 文件
 
 ## 🔧 修改文件
 
@@ -83,6 +95,7 @@ Running 342 tests from 28 test suites:
 ### 错误处理
 - ✅ 端口范围验证（1-65535）
 - ✅ 目录存在性检查（带 error_code）
+- ✅ 自动创建根目录（如果不存在）
 - ✅ 目录类型验证
 - ✅ 重复启动防护
 - ✅ 使用 std::filesystem 的 error_code 版本避免异常
@@ -124,6 +137,14 @@ Running 342 tests from 28 test suites:
 ### 问题 3: 命名空间污染
 - **问题**: 错误地在头文件中添加 `namespace screensdk`
 - **解决**: 修复为正确的命名空间结构
+
+### 问题 4: 测试依赖外部 web 目录
+- **问题**: 测试依赖项目根目录的 `web` 文件夹，不可靠
+- **解决**: 创建独立的 `tests/test_web` 目录，包含测试用的静态文件（index.html, style.css, app.js）
+
+### 问题 5: StartAndStopServer 测试失败
+- **问题**: 服务器启动时检查根目录是否存在，默认 `"web"` 目录不存在导致启动失败
+- **解决**: 修改 `start()` 方法，如果根目录不存在则自动创建
 
 ## 📈 整体进度
 
