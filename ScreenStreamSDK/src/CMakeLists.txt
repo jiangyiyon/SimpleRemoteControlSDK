@@ -43,6 +43,7 @@ set(SOURCE_FILES
     # Server
     server/http_server.cpp
     server/signaling_server.cpp
+    server/remote_desktop_server.cpp
 )
 
 # Header files
@@ -90,6 +91,7 @@ set(HEADER_FILES
     # Server
     ${CMAKE_SOURCE_DIR}/include/screensdk/server/http_server.h
     ${CMAKE_SOURCE_DIR}/include/screensdk/server/signaling_server.h
+    ${CMAKE_SOURCE_DIR}/include/screensdk/server/remote_desktop_server.h
 )
 
 # Create library

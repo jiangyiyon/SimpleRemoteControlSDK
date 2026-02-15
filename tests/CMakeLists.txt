@@ -81,6 +81,9 @@ add_executable(unit_tests
     # Unit tests for server
     unit/server/test_http_server.cpp
     unit/server/test_signaling_server.cpp
+    unit/server/test_remote_desktop_server.cpp
+
+
 
 
     # Unit tests for transport
@@ -178,6 +181,7 @@ add_executable(integration_tests
     integration/display_controller_sdp_test.cpp
     integration/display_controller_sdp_test_single_display.cpp
     integration/transport_test.cpp
+    integration/test_remote_desktop_integration.cpp
 )
 
 # Link Google Test and project libraries

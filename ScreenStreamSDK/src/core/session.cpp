@@ -1,4 +1,5 @@
 #include "screensdk/core/session.h"
+#include "screensdk/server/remote_desktop_server.h"
 
 #include <algorithm>
 #include <iomanip>
@@ -9,6 +10,12 @@
 #undef min
 
 namespace screensdk {
+
+// PIMPL implementation class
+class Session::RemoteDesktopServerImpl {
+public:
+    server::RemoteDesktopServer server;
+};
 
 Session::Session()
     : session_id_(generateSessionId()),
@@ -22,6 +29,11 @@ Session::Session()
       video_track_id_(),
       data_channel_id_() {
   state_history_.push_back(SessionState::kDisconnected);
+}
+
+Session::~Session() {
+  std::lock_guard<std::mutex> lock(mutex_);
+  desktop_server_.reset();
 }
 
 std::string Session::getSessionId() const {
@@ -182,6 +194,84 @@ void Session::setDataChannelId(const std::string& channel_id) {
 void Session::updateActivity() {
   std::lock_guard<std::mutex> lock(mutex_);
   last_activity_ = std::chrono::system_clock::now();
+}
+
+Result<void> Session::initializeDesktopServer(const DesktopServerConfig& config) {
+  std::lock_guard<std::mutex> lock(mutex_);
+
+  if (desktop_server_) {
+    return Result<void>::make_error(ErrorType::kUnknownError, 0,
+                                     "Desktop server already initialized");
+  }
+
+  desktop_server_ = std::make_unique<RemoteDesktopServerImpl>();
+
+  // Convert DesktopServerConfig to server::ServerConfig
+  server::ServerConfig server_config;
+  server_config.http_port = config.http_port;
+  server_config.signaling_port = config.signaling_port;
+  server_config.web_root = config.web_root;
+  server_config.display_id = config.display_id;
+  server_config.fps = config.fps;
+  server_config.max_bitrate_bps = config.max_bitrate_bps;
+  server_config.stun_server = config.stun_server;
+
+  auto result = desktop_server_->server.initialize(server_config);
+
+  if (!result) {
+    desktop_server_.reset();
+  }
+
+  return result;
+}
+
+Result<void> Session::startDesktopServer() {
+  std::lock_guard<std::mutex> lock(mutex_);
+
+  if (!desktop_server_) {
+    return Result<void>::make_error(ErrorType::kUnknownError, 0,
+                                     "Desktop server not initialized");
+  }
+
+  return desktop_server_->server.start();
+}
+
+void Session::stopDesktopServer() {
+  std::lock_guard<std::mutex> lock(mutex_);
+
+  if (desktop_server_) {
+    desktop_server_->server.stop();
+  }
+}
+
+bool Session::isDesktopServerRunning() const noexcept {
+  std::lock_guard<std::mutex> lock(mutex_);
+
+  if (!desktop_server_) {
+    return false;
+  }
+
+  return desktop_server_->server.isRunning();
+}
+
+std::string Session::getHttpUrl() const {
+  std::lock_guard<std::mutex> lock(mutex_);
+
+  if (!desktop_server_) {
+    return "";
+  }
+
+  return desktop_server_->server.getHttpUrl();
+}
+
+std::string Session::getSignalingUrl() const {
+  std::lock_guard<std::mutex> lock(mutex_);
+
+  if (!desktop_server_) {
+    return "";
+  }
+
+  return desktop_server_->server.getSignalingUrl();
 }
 
 std::string Session::generateSessionId() {

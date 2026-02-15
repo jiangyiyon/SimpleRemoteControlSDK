@@ -9,6 +9,7 @@
 #include <thread>
 #include <stop_token>
 #include <atomic>
+#include <mutex>
 
 #include "screensdk/transport/video_source.h"
 #include "screensdk/capture/display_detector.h"
@@ -160,6 +161,7 @@ private:
 
   // Capture thread
   std::jthread capture_thread_;
+  mutable std::mutex capture_mutex_;  // Protect stop/uninit from concurrent calls
 };
 
 } // namespace screensdk

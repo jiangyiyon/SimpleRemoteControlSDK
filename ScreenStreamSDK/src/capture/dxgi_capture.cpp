@@ -35,7 +35,25 @@ bool DxgiCapture::init() {
 }
 
 void DxgiCapture::uninit() {
-  stop();
+  std::lock_guard<std::mutex> lock(capture_mutex_);
+
+  // Check if already stopped to avoid double cleanup
+  if (!running_ && !capture_thread_.joinable()) {
+    // Already uninitialized, just ensure recovery thread is stopped
+    recovery_running_ = false;
+    if (recovery_thread_.joinable()) {
+      recovery_thread_.join();
+    }
+    releaseDxgi();
+    return;
+  }
+
+  // Stop capture
+  running_ = false;
+  if (capture_thread_.joinable()) {
+    capture_thread_.request_stop();
+    capture_thread_.join();
+  }
 
   // Stop recovery thread
   recovery_running_ = false;
@@ -65,6 +83,8 @@ void DxgiCapture::start() {
 }
 
 void DxgiCapture::stop() {
+  std::lock_guard<std::mutex> lock(capture_mutex_);
+
   if (!running_) return;
 
   running_ = false;
@@ -72,6 +92,12 @@ void DxgiCapture::stop() {
 
   if (capture_thread_.joinable()) {
     capture_thread_.join();
+  }
+
+  // Stop recovery thread
+  recovery_running_ = false;
+  if (recovery_thread_.joinable()) {
+    recovery_thread_.join();
   }
 }
 

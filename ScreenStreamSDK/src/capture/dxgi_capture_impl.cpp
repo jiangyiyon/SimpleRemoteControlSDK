@@ -31,7 +31,10 @@ public:
   // IScreenCapture interface implementation
 
   bool initialize(int display_id) override {
-    if (display_id < 1 || display_id > display_detector_.getDisplaySourceCount()) {
+    // Convert 1-based display ID to 0-based index for internal use
+    int display_index = display_id - 1;
+
+    if (display_index < 0 || display_index >= display_detector_.getDisplaySourceCount()) {
       return false;
     }
 
@@ -39,7 +42,7 @@ public:
       dxgi_capture_ = std::make_unique<DxgiCapture>();
     }
 
-    dxgi_capture_->selectDisplayIndex(display_id - 1);
+    dxgi_capture_->selectDisplayIndex(display_index);
     return dxgi_capture_->init();
   }
 

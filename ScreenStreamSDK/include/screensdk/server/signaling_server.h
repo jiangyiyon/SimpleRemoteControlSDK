@@ -25,10 +25,21 @@
 #include <atomic>
 #include <mutex>
 #include <cstdint>
+#include <memory>
+#include <thread>
 
 #include "screensdk/utils/error.h"
 
-namespace screensdk::server {
+// Forward declaration to avoid including httplib in header
+namespace httplib {
+class Server;
+}
+
+namespace screensdk {
+
+namespace server {
+
+
 
 /**
  * @brief Base message structure for signaling
@@ -155,9 +166,17 @@ public:
     [[nodiscard]] size_t getClientCount() const noexcept;
 
 private:
-    // Forward declaration of implementation class (PIMPL pattern)
-    class Impl;
-    std::unique_ptr<Impl> impl_;
+    void setupRoutes();
+    void serverThreadFunc(int port);
+
+private:
+    std::unique_ptr<httplib::Server> server_;
+    std::atomic<bool> running_{false};
+    std::atomic<size_t> client_count_{0};
+    std::jthread server_thread_;
+    mutable std::mutex server_mutex_;
 };
 
-} // namespace screensdk::server
+} // namespace server
+
+} // namespace screensdk

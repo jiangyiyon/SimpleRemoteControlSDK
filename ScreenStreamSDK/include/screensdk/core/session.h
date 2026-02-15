@@ -2,26 +2,32 @@
 
 #include <atomic>
 #include <chrono>
+#include <memory>
 #include <mutex>
 #include <string>
 #include <vector>
 
+#include "screensdk/utils/types.h"
 #include "screensdk/utils/error.h"
 
 namespace screensdk {
 
+// Forward declaration
+namespace server {
+class RemoteDesktopServer;
+}
+
 /**
- * @brief Session state enumeration
- *
- * Represents the connection state of a remote desktop session.
- * State machine: kDisconnected -> kConnecting -> kConnected -> [kReconnecting*] -> kError/Reconnected
+ * @brief Remote desktop server configuration
  */
-enum class SessionState {
-  kDisconnected,
-  kConnecting,
-  kConnected,
-  kReconnecting,
-  kError
+struct DesktopServerConfig {
+    int http_port{8080};
+    int signaling_port{8081};
+    std::string web_root{"web"};
+    int display_id{0};
+    int fps{30};
+    int max_bitrate_bps{15000000};
+    std::string stun_server{"stun:stun.l.google.com:19302"};
 };
 
 /**
@@ -44,7 +50,7 @@ public:
   /**
    * @brief Destructor
    */
-  ~Session() = default;
+  ~Session();
 
   // Disable copy and move operations
   Session(const Session&) = delete;
@@ -203,6 +209,42 @@ public:
    */
   void updateActivity();
 
+  /**
+   * @brief Initialize remote desktop server
+   * @param config Server configuration
+   * @return Success or error
+   */
+  Result<void> initializeDesktopServer(const DesktopServerConfig& config);
+
+  /**
+   * @brief Start remote desktop server
+   * @return Success or error
+   */
+  Result<void> startDesktopServer();
+
+  /**
+   * @brief Stop remote desktop server
+   */
+  void stopDesktopServer();
+
+  /**
+   * @brief Check if desktop server is running
+   * @return true if running, false otherwise
+   */
+  [[nodiscard]] bool isDesktopServerRunning() const noexcept;
+
+  /**
+   * @brief Get HTTP server URL
+   * @return HTTP URL string
+   */
+  std::string getHttpUrl() const;
+
+  /**
+   * @brief Get signaling server URL
+   * @return Signaling URL string
+   */
+  std::string getSignalingUrl() const;
+
 private:
   std::string generateSessionId();
   bool isValidStateTransition(SessionState from, SessionState to);
@@ -218,6 +260,10 @@ private:
   std::string video_track_id_;
   std::string data_channel_id_;
   std::vector<SessionState> state_history_;
+
+  // Remote desktop server (PIMPL pattern to avoid circular dependency)
+  class RemoteDesktopServerImpl;
+  std::unique_ptr<RemoteDesktopServerImpl> desktop_server_;
 
   mutable std::mutex mutex_;
 };
