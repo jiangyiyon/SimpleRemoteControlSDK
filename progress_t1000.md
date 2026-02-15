@@ -152,21 +152,28 @@ Running 342 tests from 28 test suites:
 |------|------|--------|
 | Phase 1: Setup & Dependencies | ✅ 完成 | 100% |
 | Phase 2: HTTP 静态文件服务器 | ✅ 完成 | 100% |
-| Phase 3: WebSocket 信令服务器 | ⏳ 下一步 | 0% |
-| Phase 4: RemoteDesktopServer 集成 | ⏳ 待开始 | 0% |
+| Phase 3: WebSocket 信令服务器 | ✅ 完成 | 100% (HTTP 模式) |
+| Phase 4: RemoteDesktopServer 集成 | ⏳ 下一步 | 0% |
 | Phase 5: 真机测试 | ⏳ 待开始 | 0% |
 | Phase 6: 最终打磨 | ⏳ 待开始 | 0% |
 | Phase 7: 回溯集成 | ⏳ 待开始 | 0% |
 
 ## 🎯 下一阶段
 
-### Phase 3: WebSocket 信令服务器 (T1002)
-- [ ] 设计 WebSocket 消息协议（JSON 格式）
-- [ ] 实现 SignalingServer 类
-- [ ] 实现 SDP offer/answer 交换
-- [ ] 实现 ICE candidate 转发
-- [ ] 会话管理
+### Phase 4: RemoteDesktopServer 集成 (T1003)
+- [ ] 设计 IRemoteDesktopServer 接口
+- [ ] 实现 RemoteDesktopServer 类
+- [ ] 集成 capture + encode + WebRTC + HTTP + Signaling
 - [ ] 编写单元测试
+- [ ] 集成测试：端到端流媒体
+
+### Phase 3: WebSocket 信令服务器 (T1002) ✅ 已完成
+- [x] 设计 WebSocket 消息协议（JSON 格式）
+- [x] 实现 SignalingServer 类
+- [x] 实现 SDP offer/answer 交换（HTTP POST 端点）
+- [x] 实现 ICE candidate 转发（HTTP POST 端点）
+- [ ] 会话管理（延迟到 T1003）
+- [x] 编写单元测试
 
 ## 📝 技术规格
 

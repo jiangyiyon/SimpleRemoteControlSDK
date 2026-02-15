@@ -42,6 +42,7 @@ set(SOURCE_FILES
 
     # Server
     server/http_server.cpp
+    server/signaling_server.cpp
 )
 
 # Header files
@@ -85,6 +86,10 @@ set(HEADER_FILES
 
     # Platform
     ${CMAKE_SOURCE_DIR}/include/screensdk/platform/gpu_detector.h
+
+    # Server
+    ${CMAKE_SOURCE_DIR}/include/screensdk/server/http_server.h
+    ${CMAKE_SOURCE_DIR}/include/screensdk/server/signaling_server.h
 )
 
 # Create library

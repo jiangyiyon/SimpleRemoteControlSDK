@@ -80,6 +80,8 @@ add_executable(unit_tests
 
     # Unit tests for server
     unit/server/test_http_server.cpp
+    unit/server/test_signaling_server.cpp
+
 
     # Unit tests for transport
     unit/transport/webrtc_manager_test.cpp

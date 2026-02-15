@@ -7,7 +7,7 @@
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
 
-#include "http_server.h"
+#include "screensdk/server/http_server.h"
 #include "screensdk/utils/error.h"
 #include <httplib.h>
 #include <filesystem>
