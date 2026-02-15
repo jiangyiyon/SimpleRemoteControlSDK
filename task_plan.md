@@ -125,11 +125,15 @@ Phase 5: User Story 1 Implementation (In Progress)
   - [x] Integrate capture + encode + WebRTC + HTTP + Signaling
   - [x] Write unit tests
   - [x] Integration test: End-to-end streaming (8/8 tests passing)
-- [ ] T1004 [US1] Real device testing
+- [ ] T1004 [US1] Real device testing ⬅️ In Progress (2026-02-15)
+  - [x] Create test plan (t1004_test_plan.md)
+  - [x] Create test launcher script (start_server_test.bat)
+  - [x] Create test server main (test_server_main.cpp)
+  - [x] Create build instructions (t1004_build_instructions.md)
   - [ ] Test on Android device
   - [ ] Test on iOS device
-  - [ ] Test on desktop browsers
-  - [ ] Document issues
+  - [ ] Test on desktop browsers (Chrome, Edge, Firefox)
+  - [ ] Document issues and create completion report
 - **Deferred to Phase 7**:
   - [ ] T040 [US1] Implement mouse event processor
   - [ ] T041 [US1] Implement keyboard event processor
