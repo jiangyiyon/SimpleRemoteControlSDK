@@ -78,9 +78,11 @@ Phase 5: User Story 1 Implementation (In Progress)
 
 ---
 
-### Phase 5: User Story 1 Implementation (In Progress)
+### Phase 5: User Story 1 Implementation (Priority Adjustment)
 
 **Purpose**: Implement core User Story 1 features for MVP
+
+**Priority Adjustment**: Focus on mobile browser access first
 
 - [x] T037 [US1] Implement DXGI screen capture loop at 60fps
   - [x] Optimization point 1: Precise frame rate control
@@ -101,11 +103,42 @@ Phase 5: User Story 1 Implementation (In Progress)
   - [x] 18 unit tests all passing
   - [x] Encoder factory integration with fallback
   - [x] 10 integration tests all passing
-- [ ] T040 [US1] Implement mouse event processor
-- [ ] T041 [US1] Implement keyboard event processor
-- [ ] T042 [US1] Implement InputProcessor
-- [ ] T043-T046 [US1] Implement interfaces (IScreenCapture, IVideoEncoder, IWebrtcTransport, IInputProcessor)
-- **Status:** in_progress
+- [x] **T1000** [US1] Download and integrate cpp-httplib library ⬅️ Completed (2026-02-15)
+  - [x] Download cpp-httplib v0.30.1
+  - [x] Update CMakeLists.txt
+  - [x] Verify compilation
+- [ ] **T1001** [US1] Implement HTTP static file server 🔄 NEXT
+  - [ ] Design IHttpServer interface
+  - [ ] Implement HttpServer class
+  - [ ] Write unit tests
+  - [ ] Integration test: Browser access
+- [ ] T1001 [US1] Implement HTTP static file server
+  - [ ] Design IHttpServer interface
+  - [ ] Implement HttpServer class
+  - [ ] Write unit tests
+  - [ ] Integration test: Browser access
+- [ ] T1002 [US1] Implement WebSocket signaling server
+  - [ ] Design ISignalingServer interface
+  - [ ] Implement SignalingServer class
+  - [ ] Write unit tests
+  - [ ] Integration test: SDP/ICE exchange
+- [ ] T1003 [US1] Implement RemoteDesktopServer integration
+  - [ ] Design IRemoteDesktopServer interface
+  - [ ] Implement RemoteDesktopServer class
+  - [ ] Integrate capture + encode + WebRTC + HTTP
+  - [ ] Write unit tests
+  - [ ] Integration test: End-to-end streaming
+- [ ] T1004 [US1] Real device testing
+  - [ ] Test on Android device
+  - [ ] Test on iOS device
+  - [ ] Test on desktop browsers
+  - [ ] Document issues
+- **Deferred to Phase 7**:
+  - [ ] T040 [US1] Implement mouse event processor
+  - [ ] T041 [US1] Implement keyboard event processor
+  - [ ] T042 [US1] Implement InputProcessor
+  - [ ] T043-T046 [US1] Implement interfaces (already partially complete)
+- **Status:** in_progress (MVP Priority: Browser Access)
 
 **T037 Status**: Phase 2 完成（2026-02-15）
 - ✅ Phase 1: 基础功能 - 已完成

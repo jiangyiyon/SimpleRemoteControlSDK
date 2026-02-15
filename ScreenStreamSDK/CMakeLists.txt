@@ -22,6 +22,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 # Source directories
 include_directories(${CMAKE_SOURCE_DIR}/include)
 include_directories(${CMAKE_SOURCE_DIR}/third_party/nlohmann)
+include_directories(${CMAKE_SOURCE_DIR}/third_party/cpp-httplib)
 include_directories(${CMAKE_SOURCE_DIR}/../third_party/x264/include)
 
 # x264 library integration
@@ -56,7 +57,7 @@ endif()
 
 # Windows libraries
 if(WIN32)
-    add_definitions(-D_WIN32_WINNT=0x0601)  # Windows 7+
+    add_definitions(-D_WIN32_WINNT=0x0A00)  # Windows 10+ (required by cpp-httplib v0.30.1)
     link_libraries(d3d11 dxgi user32 gdi32)
 endif()
 
@@ -66,6 +67,14 @@ add_subdirectory(src)
 # Simple test programs
 add_executable(test_dxgi_display tests/test_dxgi_display.cpp)
 target_link_libraries(test_dxgi_display PRIVATE screensdk)
+
+# cpp-httplib integration test
+add_executable(test_httplib ../tests/test_httplib.cpp)
+target_include_directories(test_httplib PRIVATE
+    ${CMAKE_SOURCE_DIR}/third_party/cpp-httplib
+)
+target_link_libraries(test_httplib PRIVATE screensdk)
+
 if(EXISTS "${CMAKE_SOURCE_DIR}/../tests/CMakeLists.txt")
     # Explicitly specify binary directory for out-of-tree source
     add_subdirectory(${CMAKE_SOURCE_DIR}/../tests ${CMAKE_BINARY_DIR}/tests)
