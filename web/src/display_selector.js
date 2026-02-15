@@ -1,12 +1,12 @@
 /**
  * Display Selector UI Component
- * 
+ *
  * Provides a dropdown menu for selecting and switching between available displays.
  * Handles display list retrieval, selection changes, and SDP renegotiation for
  * seamless display switching.
  */
 
-export class DisplaySelector {
+class DisplaySelector {
   /**
    * @param {HTMLElement} container - Container element for the selector
    * @param {Object} options - Configuration options
@@ -90,11 +90,11 @@ export class DisplaySelector {
    */
   async _loadDisplayList() {
     try {
-      this.displays = this.getDisplayList();
+      this.displays = await this.getDisplayList();
       this._populateDropdown();
 
       // Get current display info
-      const currentDisplay = this.getDisplayInfo();
+      const currentDisplay = await this.getDisplayInfo();
       if (currentDisplay) {
         this.currentDisplayId = currentDisplay.id;
         this._updateDisplayInfo(currentDisplay);
@@ -121,7 +121,7 @@ export class DisplaySelector {
     this.refreshButton.classList.add('spinning');
 
     try {
-      this.displays = this.getDisplayList();
+      this.displays = await this.getDisplayList();
       this._populateDropdown();
 
       // Restore selection

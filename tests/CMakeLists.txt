@@ -462,3 +462,61 @@ target_include_directories(test_dc_lib
     PRIVATE
     ${CMAKE_SOURCE_DIR}/third_party/webrtc/libdatachannel_x64-windows/include
 )
+
+# RemoteDesktopServer Test Launcher (Standalone Server)
+add_executable(test_server
+    ../test_server_main.cpp
+)
+
+target_link_libraries(test_server
+    PRIVATE
+    screensdk
+)
+
+# Link libdatachannel
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    if(EXISTS "${CMAKE_SOURCE_DIR}/third_party/webrtc/libdatachannel_x64-windows/debug/lib/datachannel.lib")
+        target_link_libraries(test_server
+            PRIVATE
+            ${CMAKE_SOURCE_DIR}/third_party/webrtc/libdatachannel_x64-windows/debug/lib/datachannel.lib
+        )
+        # Copy DLLs to output directory
+        add_custom_command(TARGET test_server POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                ${CMAKE_SOURCE_DIR}/third_party/webrtc/libdatachannel_x64-windows/debug/bin/*.dll
+                $<TARGET_FILE_DIR:test_server>
+            COMMENT "Copying libdatachannel DLLs to output directory")
+    endif()
+else()
+    if(EXISTS "${CMAKE_SOURCE_DIR}/third_party/webrtc/libdatachannel_x64-windows/lib/datachannel.lib")
+        target_link_libraries(test_server
+            PRIVATE
+            ${CMAKE_SOURCE_DIR}/third_party/webrtc/libdatachannel_x64-windows/lib/datachannel.lib
+        )
+        # Copy DLLs to output directory
+        add_custom_command(TARGET test_server POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                ${CMAKE_SOURCE_DIR}/third_party/webrtc/libdatachannel_x64-windows/bin/*.dll
+                $<TARGET_FILE_DIR:test_server>
+            COMMENT "Copying libdatachannel DLLs to output directory")
+    endif()
+endif()
+
+# Add Windows socket libraries
+target_link_libraries(test_server
+    PRIVATE
+    ws2_32
+    crypt32
+    secur32
+)
+
+target_include_directories(test_server
+    PRIVATE
+    ${CMAKE_SOURCE_DIR}/../ScreenStreamSDK/include
+    ${CMAKE_SOURCE_DIR}/third_party/webrtc/libdatachannel_x64-windows/include
+)
+
+# Add compile definition for static library
+target_compile_definitions(test_server PRIVATE
+    SCREEN_STREAM_SDK_STATIC
+)

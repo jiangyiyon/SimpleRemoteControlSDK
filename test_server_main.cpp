@@ -71,8 +71,8 @@ int main() {
     ServerConfig config;
     config.http_port = 8080;
     config.signaling_port = 8081;
-    config.web_root = "web";
-    config.display_id = 0;
+    config.web_root = "e:/TestWebRTC/RemoteControlSDK/web";  // Use absolute path
+    config.display_id = 1;  // Use display 1 instead of 0
     config.fps = 30;
     config.max_bitrate_bps = 15000000;
     config.stun_server = "stun:stun.l.google.com:19302";

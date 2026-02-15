@@ -130,10 +130,20 @@ Phase 5: User Story 1 Implementation (In Progress)
   - [x] Create test launcher script (start_server_test.bat)
   - [x] Create test server main (test_server_main.cpp)
   - [x] Create build instructions (t1004_build_instructions.md)
+  - [x] Fix web client issues (DisplaySelector async/await, RemoteDesktopApp initialization)
   - [ ] Test on Android device
   - [ ] Test on iOS device
   - [ ] Test on desktop browsers (Chrome, Edge, Firefox)
   - [ ] Document issues and create completion report
+- [ ] **T1005** [US1] Implement WebSocket signaling using libdatachannel ⬅️ Not Started (2026-02-15)
+  - [ ] Design WebSocket signaling architecture
+  - [ ] Replace SignalingServer HTTP POST with libdatachannel WebSocket
+  - [ ] Implement SDP offer/answer exchange
+  - [ ] Implement ICE candidate exchange
+  - [ ] Integrate with RemoteDesktopServer
+  - [ ] Update web client to use WebSocket API
+  - [ ] Integration test: End-to-end WebRTC connection
+  - [ ] Document completion report
 - **Deferred to Phase 7**:
   - [ ] T040 [US1] Implement mouse event processor
   - [ ] T041 [US1] Implement keyboard event processor

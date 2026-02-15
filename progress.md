@@ -5,6 +5,33 @@
   WHEN: Update after completing each phase or encountering errors. More detailed than task_plan.md.
 -->
 
+## Session: 2026-02-15 (T1005: WebSocket Signaling Implementation Preparation)
+- **Status**: T1005 planning phase ✅
+- **Status**: T1004 web client bugs fixed ✅
+- **Status**: Test server infrastructure complete ✅
+
+### T1005 Planning Summary
+- **Technical decision**: Use libdatachannel WebSocket instead of HTTP POST
+- **Rationale**:
+  * libdatachannel has built-in WebSocket support (rtc::WebSocketServer)
+  * Low latency bidirectional communication
+  * No polling overhead
+  * Standard WebRTC signaling approach
+- **Implementation plan**:
+  1. Replace SignalingServer HTTP POST with libdatachannel WebSocket
+  2. Implement SDP offer/answer exchange
+  3. Implement ICE candidate exchange
+  4. Integrate with RemoteDesktopServer
+  5. Update web client to use WebSocket API
+
+### T1004 Web Client Fixes
+- Fixed DisplaySelector async/await issues (added await to getDisplayList() and getDisplayInfo())
+- Fixed RemoteDesktopApp initialization (corrected class name)
+- Server test infrastructure complete:
+  * test_server.exe compiled and running
+  * Web root configured with absolute path
+  * Server accessible at http://localhost:8080
+
 ## Session: 2026-02-15 (T1004: Real Device Testing Preparation)
 - **Status**: T1004 infrastructure complete ✅
 - **Status**: Ready for real device testing
