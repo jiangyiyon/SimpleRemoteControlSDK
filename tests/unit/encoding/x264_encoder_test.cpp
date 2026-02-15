@@ -65,7 +65,7 @@ TEST_F(X264EncoderTest, InitializeWithEmptyConfig) {
 }
 
 TEST_F(X264EncoderTest, EncodeBeforeInitialize) {
-  VideoFrame frame;
+  VideoFrameForTrans frame;
   frame.data = nullptr;
   frame.size = 0;
   frame.width = 1920;
@@ -84,7 +84,7 @@ TEST_F(X264EncoderTest, EncodeNullFrame) {
 
   ASSERT_TRUE(encoder->initialize(1920, 1080, 60, config_json));
 
-  VideoFrame frame;
+  VideoFrameForTrans frame;
   frame.data = nullptr;
   frame.size = 0;
   frame.width = 1920;
@@ -103,7 +103,7 @@ TEST_F(X264EncoderTest, EncodeNullOutput) {
 
   ASSERT_TRUE(encoder->initialize(1920, 1080, 60, config_json));
 
-  VideoFrame frame;
+  VideoFrameForTrans frame;
   const int kFrameSize = 1920 * 1080 * 4;
   frame.data = new uint8_t[kFrameSize];
   frame.size = kFrameSize;
@@ -132,7 +132,7 @@ TEST_F(X264EncoderTest, EncodeValidFrame) {
     frame_data[i + 3] = 255;
   }
 
-  VideoFrame frame;
+  VideoFrameForTrans frame;
   frame.data = frame_data;
   frame.size = kFrameSize;
   frame.width = 1920;
@@ -175,7 +175,7 @@ TEST_F(X264EncoderTest, EncodeMultipleFrames) {
       frame_data[j + 3] = 255;
     }
 
-    VideoFrame frame;
+    VideoFrameForTrans frame;
     frame.data = frame_data;
     frame.size = kFrameSize;
     frame.width = 1920;
@@ -256,7 +256,7 @@ TEST_F(X264EncoderTest, EncodeWithBFrameConfig) {
 
   int success_count = 0;
   for (int i = 0; i < 20; ++i) {
-    VideoFrame frame;
+    VideoFrameForTrans frame;
     frame.data = frame_data;
     frame.size = kFrameSize;
     frame.width = 1920;
@@ -296,7 +296,7 @@ TEST_F(X264EncoderTest, EncodeWithDifferentResolutions) {
     uint8_t* output = new uint8_t[kOutputBufferSize];
     size_t output_size = kOutputBufferSize;
 
-    VideoFrame frame;
+    VideoFrameForTrans frame;
     frame.data = frame_data;
     frame.size = kFrameSize;
     frame.width = width;
@@ -314,3 +314,4 @@ TEST_F(X264EncoderTest, EncodeWithDifferentResolutions) {
 }
 
 } // namespace screensdk
+

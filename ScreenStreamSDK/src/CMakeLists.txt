@@ -27,15 +27,15 @@ set(SOURCE_FILES
 
     # Input
     input/windows_input.cpp
-    input/input_event.cpp
+    # input/input_event.cpp  # TODO: Implement input_event.cpp
 
     # Core
     core/session.cpp
-    core/session_manager.cpp
+    # core/session_manager.cpp  # TODO: Implement session_manager.cpp
     core/display_controller.cpp
 
     # Capture
-    capture/capture_pipeline.cpp
+    # capture/capture_pipeline.cpp  # TODO: Implement capture_pipeline.cpp
 
     # Platform
     platform/gpu_detector.cpp
@@ -70,15 +70,15 @@ set(HEADER_FILES
 
     # Input
     ${CMAKE_SOURCE_DIR}/include/screensdk/input/windows_input.h
-    ${CMAKE_SOURCE_DIR}/include/screensdk/input/input_event.h
+    # ${CMAKE_SOURCE_DIR}/include/screensdk/input/input_event.h  # TODO: Implement
 
     # Core
     ${CMAKE_SOURCE_DIR}/include/screensdk/core/session.h
-    ${CMAKE_SOURCE_DIR}/include/screensdk/core/session_manager.h
+    # ${CMAKE_SOURCE_DIR}/include/screensdk/core/session_manager.h  # TODO: Implement
     ${CMAKE_SOURCE_DIR}/include/screensdk/core/display_controller.h
 
     # Capture
-    ${CMAKE_SOURCE_DIR}/include/screensdk/capture/capture_pipeline.h
+    # ${CMAKE_SOURCE_DIR}/include/screensdk/capture/capture_pipeline.h  # TODO: Implement
 
     # Platform
     ${CMAKE_SOURCE_DIR}/include/screensdk/platform/gpu_detector.h

@@ -24,7 +24,7 @@ namespace screensdk {
  *
  * Scenarios:
  * - GPU detection and best encoder selection
- * - Hardware encoder unavailable â†’ software fallback
+ * - Hardware encoder unavailable â†?software fallback
  * - Encoding success after fallback
  * - Performance comparison: hardware vs software
  * - Multiple encoder creation with fallback
@@ -57,7 +57,7 @@ protected:
    * @brief Create a test video frame
    */
   VideoFrame createTestFrame(int width, int height) {
-    VideoFrame frame;
+    VideoFrameForTrans frame;
     frame.width = width;
     frame.height = height;
     frame.stride = width * 4;  // BGRA = 4 bytes per pixel
@@ -184,7 +184,7 @@ TEST_F(EncodingFallbackTest, AutomaticEncoderSelection) {
   EXPECT_TRUE(encoder_->isAvailable()) << "Encoder should be available";
 
   // Encode a frame
-  VideoFrame frame = createTestFrame(width, height);
+  VideoFrameForTrans frame = createTestFrame(width, height);
   size_t encoded_size;
   ASSERT_TRUE(encodeFrame(frame, &encoded_size))
     << "Should encode frame successfully";
@@ -214,7 +214,7 @@ TEST_F(EncodingFallbackTest, SoftwareEncoderAlwaysWorks) {
   std::vector<size_t> encoded_sizes;
 
   for (int i = 0; i < kFrameCount; ++i) {
-    VideoFrame frame = createTestFrame(width, height);
+    VideoFrameForTrans frame = createTestFrame(width, height);
     size_t encoded_size;
 
     if (encodeFrame(frame, &encoded_size)) {
@@ -279,7 +279,7 @@ TEST_F(EncodingFallbackTest, HardwareEncoderFallsBackToSoftware) {
   ASSERT_TRUE(encoder_->initialize(width, height, 60, config_json_))
     << "Encoder should initialize after fallback";
 
-  VideoFrame frame = createTestFrame(width, height);
+  VideoFrameForTrans frame = createTestFrame(width, height);
   size_t encoded_size;
   ASSERT_TRUE(encodeFrame(frame, &encoded_size))
     << "Should encode after fallback";
@@ -333,7 +333,7 @@ TEST_F(EncodingFallbackTest, EncodingPerformanceComparison) {
     auto start = std::chrono::high_resolution_clock::now();
 
     for (int i = 0; i < kFrameCount; ++i) {
-      VideoFrame frame = createTestFrame(kWidth, kHeight);
+      VideoFrameForTrans frame = createTestFrame(kWidth, kHeight);
       encodeFrame(enc, frame);
       freeTestFrame(frame);
     }
@@ -360,7 +360,7 @@ TEST_F(EncodingFallbackTest, EncodingPerformanceComparison) {
     auto start = std::chrono::high_resolution_clock::now();
 
     for (int i = 0; i < kFrameCount; ++i) {
-      VideoFrame frame = createTestFrame(kWidth, kHeight);
+      VideoFrameForTrans frame = createTestFrame(kWidth, kHeight);
       encodeFrame(enc, frame);
       freeTestFrame(frame);
     }
@@ -411,7 +411,7 @@ TEST_F(EncodingFallbackTest, MultipleEncoderTypesIndependent) {
   std::vector<size_t> sizes;
 
   for (auto* enc : encoders) {
-    VideoFrame frame = createTestFrame(width, height);
+    VideoFrameForTrans frame = createTestFrame(width, height);
     size_t encoded_size;
 
     ASSERT_TRUE(encodeFrame(enc, frame, &encoded_size));
@@ -460,7 +460,7 @@ TEST_F(EncodingFallbackTest, EncoderHandlesDifferentResolutions) {
       << "Should initialize for " << w << "x" << h;
 
     // Encode frame
-    VideoFrame frame = createTestFrame(w, h);
+    VideoFrameForTrans frame = createTestFrame(w, h);
     size_t encoded_size;
     ASSERT_TRUE(encodeFrame(frame, &encoded_size))
       << "Should encode " << w << "x" << h;
@@ -507,3 +507,4 @@ TEST_F(EncodingFallbackTest, FactoryReportsHardwareAvailability) {
 }
 
 } // namespace screensdk
+

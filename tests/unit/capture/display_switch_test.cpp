@@ -12,7 +12,7 @@ namespace screensdk {
  * @brief Unit test for display enumeration and switching
  *
  * T056 [P] [US2]: Test for display enumeration
- * T057 [P] [US2]: Test for display switch timing (â‰¤100ms)
+ * T057 [P] [US2]: Test for display switch timing (â‰?00ms)
  * T057a [P] [US2]: Test for display hot-plug
  *
  * FR-010: Support multi-display configuration with display switching
@@ -21,7 +21,7 @@ namespace screensdk {
  * Tests:
  * - Multi-display enumeration
  * - Display switching between different displays
- * - Display switch timing (â‰¤100ms requirement)
+ * - Display switch timing (â‰?00ms requirement)
  * - Display hot-plug detection
  * - Frame capture consistency across displays
  */
@@ -169,7 +169,7 @@ TEST_F(DisplaySwitchTest, CaptureFrameFromPrimaryDisplay) {
 
   ASSERT_TRUE(capture_->initialize(primary.index));
 
-  VideoFrame frame;
+  VideoFrameForTrans frame;
   bool captured = capture_->captureFrame(frame);
 
   EXPECT_TRUE(captured) << "Should capture frame from primary display";
@@ -183,7 +183,7 @@ TEST_F(DisplaySwitchTest, CaptureFrameFromPrimaryDisplay) {
 }
 
 TEST_F(DisplaySwitchTest, SwitchBetweenDisplaysTiming) {
-  // T057: Test for display switch timing (â‰¤100ms)
+  // T057: Test for display switch timing (â‰?00ms)
   if (displays_.size() < 2) {
     GTEST_SKIP() << "Need at least 2 displays for switch testing, found: "
                  << displays_.size();
@@ -205,7 +205,7 @@ TEST_F(DisplaySwitchTest, SwitchBetweenDisplaysTiming) {
         << "Should initialize on display " << from_index;
 
       // Capture a frame from first display
-      VideoFrame frame1;
+      VideoFrameForTrans frame1;
       ASSERT_TRUE(capture_->captureFrame(frame1));
 
       // Measure switch time
@@ -220,7 +220,7 @@ TEST_F(DisplaySwitchTest, SwitchBetweenDisplaysTiming) {
         << "Should initialize on display " << to_index;
 
       // Capture a frame from second display
-      VideoFrame frame2;
+      VideoFrameForTrans frame2;
       ASSERT_TRUE(capture_->captureFrame(frame2));
 
       auto end_time = std::chrono::high_resolution_clock::now();
@@ -230,10 +230,10 @@ TEST_F(DisplaySwitchTest, SwitchBetweenDisplaysTiming) {
       // SC-004: Display switch operation completes within 100ms
       // Note: This is a relaxed test as actual switch time depends on system
       EXPECT_LE(switch_ms, 200) // Relaxed to 200ms for development
-        << "Display " << from_index << " â†’ " << to_index
-        << " switch took " << switch_ms << "ms (should be â‰¤100ms)";
+        << "Display " << from_index << " â†?" << to_index
+        << " switch took " << switch_ms << "ms (should be â‰?00ms)";
 
-      std::cout << "  Display " << from_index << " â†’ " << to_index
+      std::cout << "  Display " << from_index << " â†?" << to_index
                 << ": " << switch_ms << "ms" << std::endl;
 
       // Verify frames are from different displays
@@ -263,7 +263,7 @@ TEST_F(DisplaySwitchTest, MultipleSwitchesPerformance) {
 
     ASSERT_TRUE(capture_->initialize(from_index));
 
-    VideoFrame frame1;
+    VideoFrameForTrans frame1;
     ASSERT_TRUE(capture_->captureFrame(frame1));
 
     delete capture_;
@@ -271,7 +271,7 @@ TEST_F(DisplaySwitchTest, MultipleSwitchesPerformance) {
 
     ASSERT_TRUE(capture_->initialize(to_index));
 
-    VideoFrame frame2;
+    VideoFrameForTrans frame2;
     ASSERT_TRUE(capture_->captureFrame(frame2));
   }
 
@@ -324,7 +324,7 @@ TEST_F(DisplaySwitchTest, CaptureFromAllDisplays) {
     ASSERT_TRUE(capture_->initialize(display.index))
       << "Should initialize on display " << display.index;
 
-    VideoFrame frame;
+    VideoFrameForTrans frame;
     ASSERT_TRUE(capture_->captureFrame(frame))
       << "Should capture frame from display " << display.index;
 
@@ -440,3 +440,4 @@ TEST_F(DisplaySwitchTest, HotPlugDetection) {
 }
 
 } // namespace screensdk
+

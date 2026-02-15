@@ -38,7 +38,7 @@ struct IVideoEncoder {
    * @param output_size Output buffer size
    * @return true on success
    */
-  virtual bool encode(const VideoFrame& frame,
+  virtual bool encode(const VideoFrameForTrans& frame,
                     uint8_t* output, size_t* output_size) = 0;
 
   /**

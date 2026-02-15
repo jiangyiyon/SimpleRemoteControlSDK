@@ -38,7 +38,7 @@ public:
   bool initialize(int width, int height, int fps,
                  const std::string& config) override;
 
-  bool encode(const VideoFrame& frame,
+  bool encode(const VideoFrameForTrans& frame,
               uint8_t* output, size_t* output_size) override;
 
   void flush() override;

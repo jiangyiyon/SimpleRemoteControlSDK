@@ -84,7 +84,7 @@ bool X264EncoderImpl::initialize(int width, int height, int fps,
   return true;
 }
 
-bool X264EncoderImpl::encode(const VideoFrame& frame,
+bool X264EncoderImpl::encode(const VideoFrameForTrans& frame,
                               uint8_t* output, size_t* output_size) {
   std::lock_guard<std::mutex> lock(mutex_);
 

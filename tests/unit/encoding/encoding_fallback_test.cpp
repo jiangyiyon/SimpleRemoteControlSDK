@@ -164,7 +164,7 @@ TEST_F(EncodingFallbackTest, SoftwareEncoderEncodesFrames) {
   const size_t frame_size = primary_display_.width * primary_display_.height * 4; // BGRA
   std::vector<uint8_t> frame_data(frame_size, 0x80); // Gray frame
 
-  VideoFrame frame;
+  VideoFrameForTrans frame;
   frame.data = frame_data.data();
   frame.size = frame_size;
   frame.width = primary_display_.width;
@@ -206,7 +206,7 @@ TEST_F(EncodingFallbackTest, SoftwareEncoderEncodesMultipleFrames) {
   const int kFrameCount = 30;
 
   for (int i = 0; i < kFrameCount; ++i) {
-    VideoFrame frame;
+    VideoFrameForTrans frame;
     frame.data = frame_data.data();
     frame.size = frame_size;
     frame.width = primary_display_.width;
@@ -302,7 +302,7 @@ TEST_F(EncodingFallbackTest, AutoSelectEncoderAndEncode) {
   const size_t frame_size = primary_display_.width * primary_display_.height * 4;
   std::vector<uint8_t> frame_data(frame_size, 0x80);
 
-  VideoFrame frame;
+  VideoFrameForTrans frame;
   frame.data = frame_data.data();
   frame.size = frame_size;
   frame.width = primary_display_.width;
@@ -347,7 +347,7 @@ TEST_F(EncodingFallbackTest, PerformanceSoftwareEncoderFallback) {
   auto start_time = std::chrono::high_resolution_clock::now();
 
   for (int i = 0; i < kFrameCount; ++i) {
-    VideoFrame frame;
+    VideoFrameForTrans frame;
     frame.data = frame_data.data();
     frame.size = frame_size;
     frame.width = primary_display_.width;
@@ -395,7 +395,7 @@ TEST_F(EncodingFallbackTest, FlushAfterEncoding) {
 
   // Encode multiple frames
   for (int i = 0; i < 10; ++i) {
-    VideoFrame frame;
+    VideoFrameForTrans frame;
     frame.data = frame_data.data();
     frame.size = frame_size;
     frame.width = primary_display_.width;
@@ -438,3 +438,4 @@ TEST_F(EncodingFallbackTest, GpuDetectorAndFactoryConsistent) {
 }
 
 } // namespace screensdk
+
