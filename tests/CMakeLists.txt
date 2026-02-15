@@ -58,6 +58,7 @@ add_executable(unit_tests
     unit/encoder_config_test.cpp
     unit/encoder_factory_test.cpp
     unit/encoding/x264_encoder_test.cpp
+    unit/encoding/nvenc_encoder_test.cpp
     unit/encoding/encoding_fallback_test.cpp
 
     # Unit tests for core components

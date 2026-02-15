@@ -44,6 +44,16 @@ else()
     message(WARNING "libdatachannel not found in third_party/webrtc/libdatachannel_x64-windows")
 endif()
 
+# NVENC SDK integration
+if(EXISTS "${CMAKE_SOURCE_DIR}/../third_party/nvenc/Interface/nvEncodeAPI.h")
+    message(STATUS "NVENC SDK found, hardware encoding enabled")
+    add_definitions(-DHAS_NVENC)
+    include_directories(${CMAKE_SOURCE_DIR}/../third_party/nvenc/Interface)
+    link_directories(${CMAKE_SOURCE_DIR}/../third_party/nvenc/x64)
+else()
+    message(WARNING "NVENC SDK not found, hardware encoding disabled")
+endif()
+
 # Windows libraries
 if(WIN32)
     add_definitions(-D_WIN32_WINNT=0x0601)  # Windows 7+

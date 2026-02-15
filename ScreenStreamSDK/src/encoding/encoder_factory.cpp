@@ -2,6 +2,7 @@
 #include "screensdk/encoding/encoder_factory.h"
 
 #include "screensdk/encoding/x264_encoder.h"
+#include "screensdk/encoding/nvenc_encoder.h"
 #include "screensdk/platform/gpu_detector.h"
 
 namespace screensdk {
@@ -60,11 +61,16 @@ IVideoEncoder* EncoderFactoryImpl::createEncoder(EncoderType type) {
       return new X264EncoderImpl();
 
     case EncoderType::kHardwareNVENC:
-      // NVENC encoder not implemented yet, fallback to software
-      if (!has_nvenc_) {
-        return new X264EncoderImpl();
+#ifdef HAS_NVENC
+      if (has_nvenc_) {
+        auto encoder = new NvencEncoderImpl();
+        if (encoder->isAvailable()) {
+          return encoder;
+        }
+        delete encoder;
       }
-      // TODO: Implement NVENC encoder. For now, fallback to software
+#endif
+      // Fallback to software encoder
       return new X264EncoderImpl();
 
     case EncoderType::kHardwareQuickSync:

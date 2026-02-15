@@ -17,6 +17,7 @@ set(SOURCE_FILES
     encoding/encoder_factory.cpp
     encoding/encoder_config.cpp
     encoding/x264_encoder.cpp
+    encoding/nvenc_encoder.cpp
 
     # Transport
     transport/video_source.cpp
@@ -26,10 +27,15 @@ set(SOURCE_FILES
 
     # Input
     input/windows_input.cpp
+    input/input_event.cpp
 
     # Core
     core/session.cpp
+    core/session_manager.cpp
     core/display_controller.cpp
+
+    # Capture
+    capture/capture_pipeline.cpp
 
     # Platform
     platform/gpu_detector.cpp
@@ -54,6 +60,7 @@ set(HEADER_FILES
     ${CMAKE_SOURCE_DIR}/include/screensdk/encoding/encoder_factory.h
     ${CMAKE_SOURCE_DIR}/include/screensdk/encoding/encoder_config.h
     ${CMAKE_SOURCE_DIR}/include/screensdk/encoding/x264_encoder.h
+    ${CMAKE_SOURCE_DIR}/include/screensdk/encoding/nvenc_encoder.h
 
     # Transport
     ${CMAKE_SOURCE_DIR}/include/screensdk/transport/video_source.h
@@ -63,10 +70,15 @@ set(HEADER_FILES
 
     # Input
     ${CMAKE_SOURCE_DIR}/include/screensdk/input/windows_input.h
+    ${CMAKE_SOURCE_DIR}/include/screensdk/input/input_event.h
 
     # Core
     ${CMAKE_SOURCE_DIR}/include/screensdk/core/session.h
+    ${CMAKE_SOURCE_DIR}/include/screensdk/core/session_manager.h
     ${CMAKE_SOURCE_DIR}/include/screensdk/core/display_controller.h
+
+    # Capture
+    ${CMAKE_SOURCE_DIR}/include/screensdk/capture/capture_pipeline.h
 
     # Platform
     ${CMAKE_SOURCE_DIR}/include/screensdk/platform/gpu_detector.h
@@ -97,6 +109,12 @@ endif()
 # Windows libraries
 if(WIN32)
     target_link_libraries(screensdk d3d11 dxgi d3d11.lib user32 gdi32)
+endif()
+
+# Link NVENC
+if(EXISTS "${CMAKE_SOURCE_DIR}/../third_party/nvenc/x64/nvencodeapi.lib")
+    target_link_libraries(screensdk
+        ${CMAKE_SOURCE_DIR}/../third_party/nvenc/x64/nvencodeapi.lib)
 endif()
 
 # C++20
