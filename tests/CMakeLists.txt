@@ -93,6 +93,8 @@ add_executable(unit_tests
     unit/transport/data_channel_test.cpp
     unit/transport/sdp_renegotiation_test.cpp
     unit/transport/transport_test.cpp
+    unit/transport/track_opening_tdd_test.cpp
+    unit/transport/ice_exchange_test.cpp
 )
 
 # Link Google Test
@@ -183,6 +185,7 @@ add_executable(integration_tests
     integration/display_controller_sdp_test_single_display.cpp
     integration/transport_test.cpp
     integration/test_remote_desktop_integration.cpp
+    integration/track_opening_debug_test.cpp
 )
 
 # Link Google Test and project libraries

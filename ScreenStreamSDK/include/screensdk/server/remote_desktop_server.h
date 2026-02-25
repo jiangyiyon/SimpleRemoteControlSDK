@@ -56,7 +56,7 @@ struct ServerConfig {
     int http_port{8080};
     int signaling_port{8081};
     std::string web_root{"web"};
-    int display_id{0};
+    int display_id{1};
     int fps{30};
     int max_bitrate_bps{15000000};
     std::string stun_server{"stun:stun.l.google.com:19302"};

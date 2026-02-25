@@ -55,15 +55,14 @@ private:
   std::unique_ptr<httplib::Server> server_;
   std::atomic<bool> running_{false};
   std::string root_directory_{"web"};
-  std::jthread server_thread_;
-  mutable std::mutex server_mutex_;
+  std::thread server_thread_;
+  mutable std::recursive_mutex server_mutex_;
   WebSocketCallback ws_callback_;
 };
 
 HttpServerImpl::HttpServerImpl() {
   server_ = std::make_unique<httplib::Server>();
-  // Note: set_base_dir is called in start() after verifying the directory
-  setupRoutes();
+  // Note: set_base_dir will be called in start() after verifying the directory
 }
 
 HttpServerImpl::~HttpServerImpl() {
@@ -73,23 +72,29 @@ HttpServerImpl::~HttpServerImpl() {
 }
 
 Result<void> HttpServerImpl::start(int port) {
-  std::lock_guard<std::mutex> lock(server_mutex_);
+  std::cout << "[HttpServer] start() called with port: " << port << std::endl;
+  std::lock_guard<std::recursive_mutex> lock(server_mutex_);
 
+  std::cout << "[HttpServer] Checking running state..." << std::endl;
   if (running_.load()) {
     return Result<void>::make_error(ErrorType::kUnknownError, 0, "Server is already running");
   }
 
+  std::cout << "[HttpServer] Checking port validity..." << std::endl;
   if (port <= 0 || port > 65535) {
     return Result<void>::make_error(ErrorType::kUnknownError, 0, "Invalid port number: " + std::to_string(port));
   }
 
   // Check if root directory exists, create if not
+  std::cout << "[HttpServer] Checking root directory: " << root_directory_ << std::endl;
   std::error_code ec;
   bool exists = std::filesystem::exists(root_directory_, ec);
   if (ec) {
+    std::cerr << "[HttpServer] Failed to check root directory: " << ec.message() << std::endl;
     return Result<void>::make_error(ErrorType::kUnknownError, 0, "Failed to check root directory: " + ec.message());
   }
 
+  std::cout << "[HttpServer] Root directory exists: " << (exists ? "yes" : "no") << std::endl;
   if (!exists) {
     // Try to create the directory
     std::filesystem::create_directories(root_directory_, ec);
@@ -110,8 +115,36 @@ Result<void> HttpServerImpl::start(int port) {
 
   // Start server in a separate thread
   running_.store(true);
-  server_->set_base_dir(root_directory_);
-  server_thread_ = std::jthread(&HttpServerImpl::serverThreadFunc, this, port);
+
+  // Set base directory for static file serving
+  std::cout << "[HttpServer] Setting base directory: " << root_directory_ << std::endl;
+  try {
+    bool set_dir_result = server_->set_base_dir(root_directory_);
+    if (!set_dir_result) {
+      std::cerr << "[HttpServer] Failed to set base directory" << std::endl;
+      return Result<void>::make_error(ErrorType::kUnknownError, 0,
+                                       "Failed to set base directory: " + root_directory_);
+    }
+    std::cout << "[HttpServer] Base directory set successfully" << std::endl;
+  } catch (const std::exception& e) {
+    std::cerr << "[HttpServer] Exception in set_base_dir: " << e.what() << std::endl;
+    return Result<void>::make_error(ErrorType::kUnknownError, 0,
+                                     "Exception in set_base_dir: " + std::string(e.what()));
+  }
+
+  // Setup routes
+  try {
+    setupRoutes();
+  } catch (const std::exception& e) {
+    std::cerr << "[HttpServer] Exception in setupRoutes: " << e.what() << std::endl;
+  }
+
+  std::cout << "[HttpServer] Starting server thread..." << std::endl;
+  std::cout.flush();
+  // Use std::thread instead of std::jthread
+  server_thread_ = std::thread(&HttpServerImpl::serverThreadFunc, this, port);
+  std::cout << "[HttpServer] Server thread started" << std::endl;
+  std::cout.flush();
 
   // Give server a moment to start
   std::this_thread::sleep_for(std::chrono::milliseconds(100));
@@ -120,7 +153,7 @@ Result<void> HttpServerImpl::start(int port) {
 }
 
 void HttpServerImpl::stop() {
-  std::lock_guard<std::mutex> lock(server_mutex_);
+  std::lock_guard<std::recursive_mutex> lock(server_mutex_);
 
   if (!running_.load()) {
     return;
@@ -133,8 +166,10 @@ void HttpServerImpl::stop() {
     server_->stop();
   }
 
-  // jthread will automatically join when destroyed
-  server_thread_.request_stop();
+  // Join the thread
+  if (server_thread_.joinable()) {
+    server_thread_.join();
+  }
 }
 
 bool HttpServerImpl::isRunning() const noexcept {
@@ -142,7 +177,7 @@ bool HttpServerImpl::isRunning() const noexcept {
 }
 
 Result<void> HttpServerImpl::setRootDirectory(const std::string& path) {
-  std::lock_guard<std::mutex> lock(server_mutex_);
+  std::lock_guard<std::recursive_mutex> lock(server_mutex_);
 
   if (running_.load()) {
     return Result<void>::make_error(ErrorType::kUnknownError, 0, "Cannot set root directory while server is running");
@@ -153,12 +188,12 @@ Result<void> HttpServerImpl::setRootDirectory(const std::string& path) {
 }
 
 std::string HttpServerImpl::getRootDirectory() const {
-  std::lock_guard<std::mutex> lock(server_mutex_);
+  std::lock_guard<std::recursive_mutex> lock(server_mutex_);
   return root_directory_;
 }
 
 void HttpServerImpl::onWebSocketConnection(WebSocketCallback callback) {
-  std::lock_guard<std::mutex> lock(server_mutex_);
+  std::lock_guard<std::recursive_mutex> lock(server_mutex_);
   ws_callback_ = std::move(callback);
 }
 

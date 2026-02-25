@@ -20,6 +20,7 @@
 // Define before including any Windows headers to avoid conflicts
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
+#include <windows.h>
 
 #include <screensdk/server/remote_desktop_server.h>
 #include <screensdk/utils/error.h>
@@ -107,6 +108,27 @@ int main(int argc, char* argv[]) {
     // Parse command line arguments
     ServerConfig config = parseArguments(argc, argv);
 
+    // Convert relative web_root to absolute path if needed
+    if (config.web_root.find(':') == std::string::npos && config.web_root[0] != '/' && config.web_root[0] != '\\') {
+        // Relative path detected, convert to absolute
+        char buffer[MAX_PATH];
+        GetModuleFileNameA(NULL, buffer, MAX_PATH);
+        std::string exe_path(buffer);
+        size_t pos = exe_path.find_last_of("\\/");
+        if (pos != std::string::npos) {
+            exe_path = exe_path.substr(0, pos);
+            // Navigate from build/bin/Debug to project root (up 3 levels)
+            for (int i = 0; i < 3; ++i) {
+                pos = exe_path.find_last_of("\\/");
+                if (pos != std::string::npos) {
+                    exe_path = exe_path.substr(0, pos);
+                }
+            }
+            config.web_root = exe_path + "\\web";
+            std::cout << "[Server] Converted web_root to absolute path: " << config.web_root << std::endl;
+        }
+    }
+
     // Display configuration
     std::cout << "Configuration:" << std::endl;
     std::cout << "  HTTP Port:      " << config.http_port << std::endl;
@@ -126,7 +148,9 @@ int main(int argc, char* argv[]) {
 
     // Initialize
     std::cout << "[Server] Initializing..." << std::endl;
+    std::cout << "[Server] Calling server->initialize()..." << std::endl;
     [[maybe_unused]] auto init_result = server->initialize(config);
+    std::cout << "[Server] server->initialize() returned" << std::endl;
     if (!init_result) {
         std::cerr << "[Server] Initialization failed: " << init_result.error().message << std::endl;
         return 1;
@@ -136,7 +160,9 @@ int main(int argc, char* argv[]) {
 
     // Start
     std::cout << "[Server] Starting..." << std::endl;
+    std::cout << "[Server] Calling server->start()..." << std::endl;
     [[maybe_unused]] auto start_result = server->start();
+    std::cout << "[Server] server->start() returned" << std::endl;
     if (!start_result) {
         std::cerr << "[Server] Start failed: " << start_result.error().message << std::endl;
         return 1;

@@ -55,7 +55,7 @@ echo [Info] Source directory: %SOURCE_DIR%
 echo.
 
 cmake "%SOURCE_DIR%" ^
-    -G "Visual Studio 17 2022" ^
+    -G "Visual Studio 18 2026" ^
     -A x64 ^
     -DCMAKE_BUILD_TYPE=Release ^
     -DCMAKE_INSTALL_PREFIX="%INSTALL_DIR%" ^

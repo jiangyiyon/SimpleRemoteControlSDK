@@ -48,6 +48,7 @@ struct TransportConfig {
   bool use_ipv6 = false;
   int max_bitrate_bps = 15000000;
   bool enable_ice_tcp = false;
+  bool force_media_transport = false;  // Force media transport initialization
 };
 
 /**
@@ -132,6 +133,13 @@ struct SCREEN_STREAM_SDK_EXPORT IWebrtcTransport {
    * @brief Stop video track
    */
   virtual void stopVideoTrack() = 0;
+
+  /**
+   * @brief Send initial NAL units (key frame) to reduce first frame delay
+   * @param h264_data H.264 NALU data to send
+   * @param size Size of H.264 data
+   */
+  virtual void sendInitialNalus(const uint8_t* h264_data, size_t size) = 0;
 
   /**
    * @brief Send data channel message to peer
