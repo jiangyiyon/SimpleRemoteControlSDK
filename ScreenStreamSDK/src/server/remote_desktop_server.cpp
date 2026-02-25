@@ -116,6 +116,7 @@ Result<void> RemoteDesktopServer::initialize(const ServerConfig& config) {
     TransportConfig transport_config;
     transport_config.stun_server = config_.stun_server;
     transport_config.max_bitrate_bps = config_.max_bitrate_bps;
+    transport_config.force_media_transport = true;  // Required for sending tracks
 
     if (!webrtc_transport_->initialize(transport_config)) {
         DestroyScreenCapture(screen_capture_);
@@ -126,6 +127,30 @@ Result<void> RemoteDesktopServer::initialize(const ServerConfig& config) {
         webrtc_transport_ = nullptr;
         return Result<void>::make_error(ErrorType::kUnknownError, 0,
                                      "Failed to initialize WebRTC transport");
+    }
+
+    // Create video source and initialize video track
+    // This ensures the track is available before receiving any offer
+    std::cout << "[RemoteDesktopServer] Creating video source..." << std::endl;
+    video_source_ = CreateVideoSourceFromScreenCapture(screen_capture_);
+    if (!video_source_) {
+        std::cerr << "[RemoteDesktopServer] Failed to create video source" << std::endl;
+        // Continue without video source - it's optional for setup
+    } else {
+        std::cout << "[RemoteDesktopServer] Video source created, initializing..." << std::endl;
+        if (!video_source_->init()) {
+            std::cerr << "[RemoteDesktopServer] Failed to initialize video source" << std::endl;
+            DestroyVideoSource(video_source_);
+            video_source_ = nullptr;
+        } else {
+            std::cout << "[RemoteDesktopServer] Video source initialized" << std::endl;
+
+            // Start video track (this will add the track to PeerConnection)
+            // The track will be opened when DTLS-SRTP handshake completes
+            std::cout << "[RemoteDesktopServer] Adding video track to PeerConnection..." << std::endl;
+            webrtc_transport_->startVideoTrack(video_source_);
+            std::cout << "[RemoteDesktopServer] Video track added successfully" << std::endl;
+        }
     }
 
     return Result<void>::make_ok();
@@ -333,20 +358,17 @@ void RemoteDesktopServer::onWebrtcStateChange(ConnectionState state) {
         case ConnectionState::kCompleted:
             session_state = screensdk::SessionState::kConnected;
 
-            // Start video track when connection is established
-            std::cout << "[RemoteDesktopServer] Connection established, starting video track..." << std::endl;
-            if (webrtc_transport_ && screen_capture_) {
-                // Create video source adapter
-                video_source_ = CreateVideoSourceFromScreenCapture(screen_capture_);
-                if (video_source_) {
-                    video_source_->init();
-                    video_source_->start();
-                    webrtc_transport_->startVideoTrack(video_source_);
-                    std::cout << "[RemoteDesktopServer] Video track started successfully" << std::endl;
-                } else {
-                    std::cerr << "[RemoteDesktopServer] Failed to create video source" << std::endl;
-                }
+            std::cout << "[RemoteDesktopServer] ========== Connection ESTABLISHED ==========" << std::endl;
+            std::cout << "[RemoteDesktopServer] Connection established" << std::endl;
+
+            // Check if we have a video track (should have been created in onOfferReceived)
+            if (video_source_) {
+                std::cout << "[RemoteDesktopServer] Video source exists" << std::endl;
+            } else {
+                std::cerr << "[RemoteDesktopServer] Video source is nullptr!" << std::endl;
             }
+
+            std::cout << "[RemoteDesktopServer] ==========================================" << std::endl;
             break;
         case ConnectionState::kFailed:
             session_state = screensdk::SessionState::kError;
